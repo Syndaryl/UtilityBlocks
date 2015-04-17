@@ -11,13 +11,6 @@ import java.util.Random;
 import org.syndaryl.animalsdropbones.NamespaceManager;
 
 
-
-
-
-
-
-
-
 //import cpw.mods.fml.relauncher.Side;
 //import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -43,7 +36,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class ToolMattock extends ItemSpade implements IItemName {
     static Random r = new Random();
-    private final String name = "Mattock"; 
+    private String name = "Mattock"; 
 
 	/**
 	 * @param material
@@ -51,8 +44,8 @@ public class ToolMattock extends ItemSpade implements IItemName {
 	public ToolMattock(ToolMaterial material) {
 		super(material);
 		String materialName = NamespaceManager.capitalizeWord(material.toString()) ;
-		
-		setUnlocalizedName(NamespaceManager.getLocalized( materialName +"_Mattock"));
+		name = materialName +"_Mattock";
+		setUnlocalizedName(NamespaceManager.getLocalized(getName()));
 		
         this.setMaxDamage(material.getMaxUses()*4);
 
@@ -68,16 +61,20 @@ public class ToolMattock extends ItemSpade implements IItemName {
 	//	}
 
 	//@SideOnly(Side.SERVER)
-    public boolean onBlockDestroyed(ItemStack toolInstance, World gameWorld_, Block blockStruck, int worldX, int worldY, int worldZ, EntityLivingBase actor)
+	@Override
+    public boolean onBlockDestroyed(ItemStack toolInstance, World gameWorld_, Block blockStruck, BlockPos pos, EntityLivingBase actor)
     {
+	    //AnimalsDropBones.LOG.debug("SYNDARYL: onBlockDestroyed: "  + toolInstance.getDisplayName() );
     	if(!gameWorld_.isRemote)
     	{
+    	    //AnimalsDropBones.LOG.debug("SYNDARYL: onBlockDestroyed: Not is remote" );
 			//System.out.println(String.format("onBlockDestroyed() nuking block at %d %d %d", worldX, worldY, worldZ));
 	        Deque<BlockWithLocation> blockDeck = new LinkedList<BlockWithLocation>();
-	        getNeighbouringBlocksToDeque(gameWorld_, blockStruck, worldX, worldY,
-					worldZ, blockDeck);
+	        getNeighbouringBlocksToDeque(gameWorld_, blockStruck, pos.getX(), pos.getY(),
+					pos.getZ(), blockDeck);
 			//System.out.println(String.format("getNeighbouringBlocksToDeque(): returned deck of %d", blockDeck.size()));
-	        hitManyBlocks(toolInstance, gameWorld_, worldX, worldY, worldZ,
+	        hitManyBlocks(toolInstance, gameWorld_, pos.getX(), pos.getY(),
+					pos.getZ(),
 					actor, blockDeck);
     	}
         return true;
@@ -99,11 +96,17 @@ public class ToolMattock extends ItemSpade implements IItemName {
 		//System.out.println(String.format("hitManyBlocks(): Working with deck of %d", blockDeck.size()));
 		// Damage tool for each neighbour as well as for the originally struck block.
 		// then nuke the neighbours and drop items
+	    //AnimalsDropBones.LOG.debug("SYNDARYL: hitManyBlocks deck size: " + blockDeck.size() );
+	    
+	    
         for(Iterator<BlockWithLocation> iter = blockDeck.iterator(); iter.hasNext();)
         {
         	BlockWithLocation neighbourBlockContainer = iter.next();
     		//System.out.println(String.format("checking block at %d %d %d", neighbourBlockContainer.x, neighbourBlockContainer.y, neighbourBlockContainer.z));
 
+    	    //AnimalsDropBones.LOG.debug("SYNDARYL: X; " + neighbourBlockContainer.x + ":" + worldX );
+    	    //AnimalsDropBones.LOG.debug("SYNDARYL: Y; " + neighbourBlockContainer.y + ":" + worldY );
+    	    //AnimalsDropBones.LOG.debug("SYNDARYL: Z; " + neighbourBlockContainer.z + ":" + worldZ );
             if (! (neighbourBlockContainer.x == worldX && neighbourBlockContainer.y == worldY && neighbourBlockContainer.z == worldZ)) // is not source block
             {
             	BlockPos pos = new BlockPos(worldX, worldY, worldZ);
@@ -134,6 +137,7 @@ public class ToolMattock extends ItemSpade implements IItemName {
 
     public void breakBlock(World gameWorld_,
 			BlockWithLocation blockXYZ, EntityLivingBase player) {
+	    //AnimalsDropBones.LOG.debug("SYNDARYL: breakBlock" );
 		
 		//System.out.println(String.format("breakBlock() dropping at %d %d %d", blockXYZ.x, blockXYZ.y, blockXYZ.z));
         int fortune = EnchantmentHelper.getFortuneModifier(player);
@@ -165,6 +169,7 @@ public class ToolMattock extends ItemSpade implements IItemName {
         IBlockState coreState = gameWorld_.getBlockState( new BlockPos(worldX, worldY, worldZ));
         int coreData = blockStruck.getMetaFromState(coreState);
 		String blockName = blockStruck.getLocalizedName();
+	    ////AnimalsDropBones.LOG.debug("SYNDARYL: getNeighbouringBlocksToDeque" );
 		//System.out.println("getNeighbouringBlocksToDeque()");
 		//Block redstoneSample = Blocks.redstone_ore;
 		for(int x = worldX-1; x <= worldX+1; x++)
@@ -175,9 +180,8 @@ public class ToolMattock extends ItemSpade implements IItemName {
         		{
         			BlockPos pos = new BlockPos(x,y,z);
         			//if (!(x == worldX && y == worldY && z == worldZ) && gameWorld_.blockExists(x, y, z))
-        			
-        			
-        			if (!(gameWorld_.getBlockState(pos).getBlock().getUnlocalizedName() != Blocks.air.getUnlocalizedName()))	
+        			//AnimalsDropBones.LOG.debug("Block " + gameWorld_.getBlockState(pos).getBlock().getUnlocalizedName() + " is air? " + (gameWorld_.getBlockState(pos).getBlock().getUnlocalizedName() != Blocks.air.getUnlocalizedName()));
+        			if ( gameWorld_.getBlockState(pos).getBlock().getUnlocalizedName() != Blocks.air.getUnlocalizedName() )	
         			{
         				Block neighbour = gameWorld_.getBlockState(pos).getBlock();
         		        IBlockState neighbourState = gameWorld_.getBlockState(pos);

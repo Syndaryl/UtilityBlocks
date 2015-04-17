@@ -97,8 +97,10 @@ public class ItemManager {
 	 */
 	private static ItemModelMesher registerWithMesher(IItemName item, int metadata) {
 		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
-	    AnimalsDropBones.LOG.warn("item ModelResourceLocation: Where the hell are my models?: "  + item.getName().replaceAll("item.", "") );
-	    mesher.register((Item)item, metadata, new ModelResourceLocation(((IItemName)item).getName().replaceAll("item.", "")));
+		String name = AnimalsDropBones.MODID + ":" + item.getName(metadata);
+		
+	    AnimalsDropBones.LOG.warn("SYNDARYL: item ModelResourceLocation: Where the hell are my models?: "  + name );
+	    mesher.register((Item)item, metadata, new ModelResourceLocation(name));
 		   
 		return mesher;
 	}
