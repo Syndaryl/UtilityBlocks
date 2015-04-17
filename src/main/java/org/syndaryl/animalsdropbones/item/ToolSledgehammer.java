@@ -38,7 +38,7 @@ public class ToolSledgehammer extends ItemPickaxe implements IItemName {
 		super(material);
 		String materialName = NamespaceManager.capitalizeWord(material.toString()) ;
 		name = materialName +"_Sledgehammer";
-		setUnlocalizedName(NamespaceManager.getLocalized( getName()));
+		setUnlocalizedName( getName() );
 		
         this.setMaxDamage(material.getMaxUses()*4);
 

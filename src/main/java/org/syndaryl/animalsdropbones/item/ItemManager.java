@@ -6,6 +6,7 @@ package org.syndaryl.animalsdropbones.item;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemModelMesher;
+import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -101,7 +102,11 @@ public class ItemManager {
 		
 	    AnimalsDropBones.LOG.warn("SYNDARYL: item ModelResourceLocation: Where the hell are my models?: "  + name );
 	    mesher.register((Item)item, metadata, new ModelResourceLocation(name));
-		   
+		if ( metadata != 0)
+		{
+			ModelBakery.addVariantName((Item)item, name);
+
+		}
 		return mesher;
 	}
 	
