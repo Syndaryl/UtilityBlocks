@@ -17,13 +17,17 @@ item.ADB_Food_potato_juice.name=Potato Juice
 item.ADB_Food_sugar_water.name=Sugar Water
 item.ADB_Food_sushi.name=Sushi
 
-ADB_Food_apple_juice.name=Apple Juice
-ADB_Food_apple_pie.name=Apple Pie
-ADB_Food_eggnog.name=Eggnog
-ADB_Food_energy_drink.name=Energy Drink
-ADB_Food_golden_carrot.name=Golden Carrot
-ADB_Food_potato_juice.name=Potato Juice
-ADB_Food_sugar_water.name=Sugar Water
-ADB_Food_sushi.name=Sushi
+item.Gold_Sledgehammer.name=Gold Sledgehammer
+item.Emerald_Sledgehammer.name=Diamond Sledgehammer
+item.Iron_Sledgehammer.name=Iron Sledgehammer
+item.Stone_Sledgehammer.name=Stone Sledgehammer
+item.Wood_Sledgehammer.name=Wood Sledgehammer
+item.Gold_Mattock.name=Gold Mattock
+item.Emerald_Mattock.name=Diamond Mattock
+item.Iron_Mattock.name=Iron Mattock
+item.Stone_Mattock.name=Stone Mattock
+item.Wood_Mattock.name=Wood Mattock
+
+item.Tool_Handle.name=Tool Handle
 
 itemGroup.animalsdropbones.name=Syndaryl's Animals Drop Bones

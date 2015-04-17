@@ -16,6 +16,8 @@ import org.syndaryl.animalsdropbones.NamespaceManager;
 
 
 
+
+
 //import cpw.mods.fml.relauncher.Side;
 //import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -39,7 +41,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
-public class ToolSledgehammer extends ItemPickaxe {
+public class ToolSledgehammer extends ItemPickaxe implements IItemName {
     static Random r = new Random();
     private final String name = "Sledgehammer"; 
     
@@ -189,8 +191,28 @@ public class ToolSledgehammer extends ItemPickaxe {
         }
 	}
 
+	/* (non-Javadoc)
+	 * @see org.syndaryl.animalsdropbones.item.IItemName#getName()
+	 */
+    @Override
 	public String getName()
 	{
 		return name;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.syndaryl.animalsdropbones.item.IItemName#getName(net.minecraft.item.ItemStack)
+	 */
+	@Override
+	public String getName(ItemStack stack){
+        return this.getName(stack.getItemDamage());
+	}
+
+	/* (non-Javadoc)
+	 * @see org.syndaryl.animalsdropbones.item.IItemName#getName(int)
+	 */
+	@Override
+	public String getName(int meta){
+	    return this.getName();
 	}
 }

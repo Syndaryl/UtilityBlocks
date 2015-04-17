@@ -20,7 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @author syndaryl
  *
  */
-public class ItemMetadataFood extends ItemFood {
+public class ItemMetadataFood extends ItemFood implements IItemName {
 
 	private int[] hungerValues;
 	private float[] saturationModifiers;
@@ -75,14 +75,26 @@ public class ItemMetadataFood extends ItemFood {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.syndaryl.animalsdropbones.item.IItemName#getName()
+	 */
+	@Override
 	public String getName()
 	{
 		return name;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.syndaryl.animalsdropbones.item.IItemName#getName(net.minecraft.item.ItemStack)
+	 */
+	@Override
 	public String getName(ItemStack stack){
         return this.getName(stack.getItemDamage());
 	}
+	/* (non-Javadoc)
+	 * @see org.syndaryl.animalsdropbones.item.IItemName#getName(int)
+	 */
+	@Override
 	public String getName(int meta){
 	    if (meta < names.length)
 	        return this.getName() + "_" + names[meta];

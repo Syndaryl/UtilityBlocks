@@ -17,7 +17,7 @@ public class NamespaceManager {
     }
 	public static String getLocalized(String key)
     {
-    	return NamespaceManager.GetModName() + ":" + key;
+    	return NamespaceManager.GetModNameLC() + ":" + key;
     }
 
 

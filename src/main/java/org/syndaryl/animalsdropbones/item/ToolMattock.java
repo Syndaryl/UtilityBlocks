@@ -15,6 +15,9 @@ import org.syndaryl.animalsdropbones.NamespaceManager;
 
 
 
+
+
+
 //import cpw.mods.fml.relauncher.Side;
 //import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -38,7 +41,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @author syndaryl
  *
  */
-public class ToolMattock extends ItemSpade {
+public class ToolMattock extends ItemSpade implements IItemName {
     static Random r = new Random();
     private final String name = "Mattock"; 
 
@@ -189,10 +192,30 @@ public class ToolMattock extends ItemSpade {
         	}
         }
 	}
-    
 
+	/* (non-Javadoc)
+	 * @see org.syndaryl.animalsdropbones.item.IItemName#getName()
+	 */
+    @Override
 	public String getName()
 	{
 		return name;
 	}
+
+	/* (non-Javadoc)
+	 * @see org.syndaryl.animalsdropbones.item.IItemName#getName(net.minecraft.item.ItemStack)
+	 */
+	@Override
+	public String getName(ItemStack stack){
+        return this.getName(stack.getItemDamage());
+	}
+
+	/* (non-Javadoc)
+	 * @see org.syndaryl.animalsdropbones.item.IItemName#getName(int)
+	 */
+	@Override
+	public String getName(int meta){
+	    return this.getName();
+	}
+	
 }

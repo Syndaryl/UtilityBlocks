@@ -8,7 +8,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemModelMesher;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
+import net.minecraft.item.ItemTool;
 
 import org.syndaryl.animalsdropbones.AnimalsDropBones;
 
@@ -20,6 +22,10 @@ public class ItemManager {
 	public static ItemMetadataFood foods;
 	public static ToolMattock mattockWood;
 	public static ToolSledgehammer sledgehammerWood;
+	public static ToolMattock mattockStone;
+	public static ToolSledgehammer sledgehammerStone;
+	public static ToolMattock mattockIron;
+	public static ToolSledgehammer sledgehammerIron;
 	
 	private final static int NAME = 0;
 	private final static int HUNGER = 1;
@@ -56,6 +62,10 @@ public class ItemManager {
 		
 		mattockWood = (ToolMattock) new ToolMattock(ToolMaterial.WOOD);
 		sledgehammerWood = (ToolSledgehammer) new ToolSledgehammer(ToolMaterial.WOOD);
+		mattockStone = (ToolMattock) new ToolMattock(ToolMaterial.STONE);
+		sledgehammerStone = (ToolSledgehammer) new ToolSledgehammer(ToolMaterial.STONE);
+		mattockIron = (ToolMattock) new ToolMattock(ToolMaterial.IRON);
+		sledgehammerIron = (ToolSledgehammer) new ToolSledgehammer(ToolMaterial.IRON);
 		
 	}
 	public static void registerItems() {
@@ -68,17 +78,29 @@ public class ItemManager {
 	}
 
 	public static void graphicRegistry() {
-		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
+		registerWithMesher(mattockWood, 0);
+		registerWithMesher(sledgehammerWood, 0);
+		registerWithMesher(mattockStone, 0);
+		registerWithMesher(sledgehammerStone, 0);
+		registerWithMesher(mattockIron, 0);
+		registerWithMesher(sledgehammerIron, 0);
+	    
 	    for (int i = 0; i < foodData.length; i ++) {
-			String name = AnimalsDropBones.MODID + ":" + ((ItemMetadataFood) foods).getUnlocalizedName(i).replaceAll("item.", "");
-	    	mesher.register(foods, i, new ModelResourceLocation(name, "inventory") );
-	    	AnimalsDropBones.LOG.warn("MetaFood item ModelResourceLocation " + i + ": "  + name + "\n" );
-    		System.out.println("MetaFood item ModelResourceLocation " + i + ": "  + name + "\n");
+			registerWithMesher(foods, i);
 	    }
-	    
-	    mesher.register(mattockWood, 0, new ModelResourceLocation(mattockWood.getUnlocalizedName().replaceAll("item.", "")));
-	    mesher.register(sledgehammerWood, 0, new ModelResourceLocation(sledgehammerWood.getUnlocalizedName().replaceAll("item.", "")));
-	    
+
+    	 
+	}
+	/**
+	 * @param mattockWood2 
+	 * @return
+	 */
+	private static ItemModelMesher registerWithMesher(IItemName item, int metadata) {
+		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
+	    AnimalsDropBones.LOG.warn("item ModelResourceLocation: Where the hell are my models?: "  + item.getName().replaceAll("item.", "") );
+	    mesher.register((Item)item, metadata, new ModelResourceLocation(((IItemName)item).getName().replaceAll("item.", "")));
+		   
+		return mesher;
 	}
 	
 	private static String[] getStringFromList(String[][] list, int item)
