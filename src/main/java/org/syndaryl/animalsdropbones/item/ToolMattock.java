@@ -56,7 +56,7 @@ public class ToolMattock extends ItemSpade {
         this.efficiencyOnProperMaterial = material.getEfficiencyOnProperMaterial()/4;
         
 
-		GameRegistry.registerItem(this, materialName +"_Sledgehammer");
+		GameRegistry.registerItem(this, materialName +"_Mattock");
 	}
 	//@SideOnly(Side.CLIENT)
 	//	public void registerIcons(IIconRegister register)
