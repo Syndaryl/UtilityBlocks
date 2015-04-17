@@ -1,0 +1,16 @@
+[
+{
+  "modid": "animalsdropbones",
+  "name": "Animals Drop Bones",
+  "description": "Animals drop bones (and leather). Also some random blocks.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "none",
+  "updateUrl": "",
+  "authorList": ["Syndaryl"],
+  "credits": "Thanks to Vazkii for making ChickenShed open source; it helped me figure out how to add to drop lists.",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

@@ -1,0 +1,29 @@
+tile.GravelCompressed.name=Compressed Gravel Block
+tile.CobblestoneCompressed.name=Compressed Cobblestone Block
+tile.StoneCompressed.name=Compressed Stone Block
+tile.DirtCompressed.name=Compressed Dirt Block
+tile.SandCompressed.name=Compressed Sand Block
+tile.BoneCompressed.name=Compressed Bone Block
+tile.CharcoalCompressed.name=Compressed Charcoal Block
+tile.SugarcaneCompressed.name=Sugarcane Bale
+
+
+item.ADB_Food_apple_juice.name=Apple Juice
+item.ADB_Food_apple_pie.name=Apple Pie
+item.ADB_Food_eggnog.name=Eggnog
+item.ADB_Food_energy_drink.name=Energy Drink
+item.ADB_Food_golden_carrot.name=Golden Carrot
+item.ADB_Food_potato_juice.name=Potato Juice
+item.ADB_Food_sugar_water.name=Sugar Water
+item.ADB_Food_sushi.name=Sushi
+
+ADB_Food_apple_juice.name=Apple Juice
+ADB_Food_apple_pie.name=Apple Pie
+ADB_Food_eggnog.name=Eggnog
+ADB_Food_energy_drink.name=Energy Drink
+ADB_Food_golden_carrot.name=Golden Carrot
+ADB_Food_potato_juice.name=Potato Juice
+ADB_Food_sugar_water.name=Sugar Water
+ADB_Food_sushi.name=Sushi
+
+itemGroup.animalsdropbones.name=Syndaryl's Animals Drop Bones
