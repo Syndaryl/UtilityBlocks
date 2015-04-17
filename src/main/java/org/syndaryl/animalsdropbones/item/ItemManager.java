@@ -3,10 +3,12 @@
  */
 package org.syndaryl.animalsdropbones.item;
 
+import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemModelMesher;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item.ToolMaterial;
 
 import org.syndaryl.animalsdropbones.AnimalsDropBones;
 
@@ -16,6 +18,9 @@ import org.syndaryl.animalsdropbones.AnimalsDropBones;
  */
 public class ItemManager {
 	public static ItemMetadataFood foods;
+	public static ToolMattock mattockWood;
+	public static ToolSledgehammer sledgehammerWood;
+	
 	private final static int NAME = 0;
 	private final static int HUNGER = 1;
 	private final static int SATIATION = 2;
@@ -48,6 +53,10 @@ public class ItemManager {
 		satiation = getFloatFromList(foodData, ItemManager.SATIATION);
 		
 		foods = (ItemMetadataFood) new ItemMetadataFood(hunger, satiation, names).setCreativeTab(CreativeTabs.tabFood);
+		
+		mattockWood = (ToolMattock) new ToolMattock(ToolMaterial.WOOD);
+		sledgehammerWood = (ToolSledgehammer) new ToolSledgehammer(ToolMaterial.WOOD);
+		
 	}
 	public static void registerItems() {
 		
@@ -66,6 +75,10 @@ public class ItemManager {
 	    	AnimalsDropBones.LOG.warn("MetaFood item ModelResourceLocation " + i + ": "  + name + "\n" );
     		System.out.println("MetaFood item ModelResourceLocation " + i + ": "  + name + "\n");
 	    }
+	    
+	    mesher.register(mattockWood, 0, new ModelResourceLocation(mattockWood.getUnlocalizedName().replaceAll("item.", "")));
+	    mesher.register(sledgehammerWood, 0, new ModelResourceLocation(sledgehammerWood.getUnlocalizedName().replaceAll("item.", "")));
+	    
 	}
 	
 	private static String[] getStringFromList(String[][] list, int item)
