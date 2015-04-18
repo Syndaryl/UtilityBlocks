@@ -6,6 +6,9 @@ package org.syndaryl.animalsdropbones.item;
 import java.util.List;
 
 
+
+import org.syndaryl.animalsdropbones.NamespaceManager;
+
 //import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -42,7 +45,7 @@ public class ItemMetadataFood extends ItemFood implements IItemName {
 		icons = new String[names.length];
 		icons = names.clone();
 		this.setHasSubtypes(true);
-		this.setUnlocalizedName("ADB_Food");
+		this.setUnlocalizedName(NamespaceManager.getUnLocalized(getName()));
 		
 		GameRegistry.registerItem(this, getName());
 	}
@@ -53,7 +56,10 @@ public class ItemMetadataFood extends ItemFood implements IItemName {
 	@Override
 	public int getHealAmount(ItemStack itemStack)
 	{
-		return hungerValues[itemStack.getItemDamage()];
+		int meta = itemStack.getMetadata();
+		if (meta < names.length)
+			return hungerValues[meta];
+		return 0;
 	}
 	/**
 	* @return The saturation modifier of the ItemStack
@@ -61,7 +67,10 @@ public class ItemMetadataFood extends ItemFood implements IItemName {
 	@Override
 	public float getSaturationModifier(ItemStack itemStack)
 	{
-		return saturationModifiers[itemStack.getItemDamage()];
+		int meta = itemStack.getMetadata();
+		if (meta < names.length)
+			return saturationModifiers[meta];
+		return 0.0F;
 	}
 	
 	@SuppressWarnings({"rawtypes", "unchecked"})
@@ -89,7 +98,7 @@ public class ItemMetadataFood extends ItemFood implements IItemName {
 	 */
 	@Override
 	public String getName(ItemStack stack){
-        return this.getName(stack.getItemDamage());
+        return this.getName(stack.getMetadata());
 	}
 	/* (non-Javadoc)
 	 * @see org.syndaryl.animalsdropbones.item.IItemName#getName(int)
@@ -103,7 +112,7 @@ public class ItemMetadataFood extends ItemFood implements IItemName {
 	
 	@Override
 	public String getUnlocalizedName(ItemStack stack){
-        return this.getUnlocalizedName(stack.getItemDamage());
+        return this.getUnlocalizedName(stack.getMetadata());
 	}
 
 	public String getIconFromDamage(int meta) {
@@ -115,7 +124,7 @@ public class ItemMetadataFood extends ItemFood implements IItemName {
 
 	public String getUnlocalizedName(int meta) {
 		if (meta < names.length)
-			return super.getUnlocalizedName() + "_" + this.names[meta];
-        return super.getUnlocalizedName() + "_" + this.getName();
+			return super.getUnlocalizedName() + "_" + this.getName(meta);
+        return super.getUnlocalizedName();
 	}
 }

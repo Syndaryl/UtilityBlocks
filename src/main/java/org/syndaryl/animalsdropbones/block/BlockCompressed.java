@@ -3,6 +3,7 @@ package org.syndaryl.animalsdropbones.block;
 import java.util.Random;
 
 import org.syndaryl.animalsdropbones.AnimalsDropBones;
+import org.syndaryl.animalsdropbones.NamespaceManager;
 import org.syndaryl.animalsdropbones.handler.FurnaceFuelHandler;
 
 import net.minecraft.block.Block;
@@ -29,9 +30,9 @@ public class BlockCompressed extends Block  {
     	this.setCreativeTab(CreativeTabs.tabBlock);
 		  this.stepSound = soundType;
 		  this.name = blockName;
-		  this.setUnlocalizedName(getName());
+		  setUnlocalizedName(NamespaceManager.getUnLocalized(getName()));
 		  //this.setBlockTextureName(NamespaceManager.GetModNameLC()+":"+blockName);
-		  GameRegistry.registerBlock(this, name);
+		  GameRegistry.registerBlock(this, getName());
 		  this.setHardness(hardness);
 		  this.isFuel = false;
 	}

@@ -19,6 +19,10 @@ public class NamespaceManager {
     {
     	return NamespaceManager.GetModNameLC() + ":" + key;
     }
+	public static String getUnLocalized(String key)
+    {
+    	return NamespaceManager.GetModNameLC() + "_" + key;
+    }
 
 
 	/**

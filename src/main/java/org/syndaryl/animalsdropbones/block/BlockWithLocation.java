@@ -1,8 +1,8 @@
-package org.syndaryl.animalsdropbones.item;
+package org.syndaryl.animalsdropbones.block;
 
 import net.minecraft.block.Block;
 
-class BlockWithLocation {
+public class BlockWithLocation {
 	public BlockWithLocation(Block sourceBlock, int worldX, int worldY, int worldZ) {
 		b = sourceBlock;
 		x = worldX;

@@ -7,6 +7,8 @@ import java.util.Random;
 
 import org.syndaryl.animalsdropbones.AnimalsDropBones;
 import org.syndaryl.animalsdropbones.NamespaceManager;
+import org.syndaryl.animalsdropbones.block.BlockWithLocation;
+
 //import cpw.mods.fml.relauncher.Side;
 //import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -38,14 +40,14 @@ public class ToolSledgehammer extends ItemPickaxe implements IItemName {
 		super(material);
 		String materialName = NamespaceManager.capitalizeWord(material.toString()) ;
 		name = materialName +"_Sledgehammer";
-		setUnlocalizedName( getName() );
+		setUnlocalizedName( NamespaceManager.getUnLocalized(getName()) );
 		
         this.setMaxDamage(material.getMaxUses()*4);
 
         this.efficiencyOnProperMaterial = material.getEfficiencyOnProperMaterial()/4;
         
 
-		GameRegistry.registerItem(this, materialName +"_Sledgehammer");
+		GameRegistry.registerItem(this, getName());
 	}
 
 	//@SideOnly(Side.CLIENT)

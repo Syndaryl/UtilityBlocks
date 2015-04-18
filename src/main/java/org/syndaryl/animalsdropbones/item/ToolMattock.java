@@ -11,6 +11,8 @@ import java.util.Random;
 import org.syndaryl.animalsdropbones.NamespaceManager;
 
 
+import org.syndaryl.animalsdropbones.block.BlockWithLocation;
+
 //import cpw.mods.fml.relauncher.Side;
 //import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -45,14 +47,14 @@ public class ToolMattock extends ItemSpade implements IItemName {
 		super(material);
 		String materialName = NamespaceManager.capitalizeWord(material.toString()) ;
 		name = materialName +"_Mattock";
-		setUnlocalizedName(NamespaceManager.getLocalized(getName()));
+		setUnlocalizedName(NamespaceManager.getUnLocalized(getName()));
 		
         this.setMaxDamage(material.getMaxUses()*4);
 
         this.efficiencyOnProperMaterial = material.getEfficiencyOnProperMaterial()/4;
         
 
-		GameRegistry.registerItem(this, materialName +"_Mattock");
+		GameRegistry.registerItem(this, getName());
 	}
 	//@SideOnly(Side.CLIENT)
 	//	public void registerIcons(IIconRegister register)
@@ -137,19 +139,12 @@ public class ToolMattock extends ItemSpade implements IItemName {
 
     public void breakBlock(World gameWorld_,
 			BlockWithLocation blockXYZ, EntityLivingBase player) {
-	    //AnimalsDropBones.LOG.debug("SYNDARYL: breakBlock" );
-		
-		//System.out.println(String.format("breakBlock() dropping at %d %d %d", blockXYZ.x, blockXYZ.y, blockXYZ.z));
         int fortune = EnchantmentHelper.getFortuneModifier(player);
-        
         boolean dropItems = true;
         BlockPos pos = new BlockPos(blockXYZ.x, blockXYZ.y, blockXYZ.z);
         int metadata =  blockXYZ.metadata;// gameWorld_.getBlockMetadata(pos);
         int xpDrop = blockXYZ.b.getExpDrop(gameWorld_, pos, fortune);
-		//blockXYZ.b.breakBlock(gameWorld_, blockXYZ.x, blockXYZ.y, blockXYZ.z, blockXYZ.b, fortune);
-        //gameWorld_.func_147480_a(blockXYZ.x, blockXYZ.y, blockXYZ.z, dropItems );
         gameWorld_.destroyBlock(pos, dropItems);
-        //gameWorld_.func_147480_a(pos, dropItems );
 		blockXYZ.b.dropXpOnBlockBreak(gameWorld_, pos, r.nextBoolean()? xpDrop:0);
 	}
 
@@ -169,9 +164,6 @@ public class ToolMattock extends ItemSpade implements IItemName {
         IBlockState coreState = gameWorld_.getBlockState( new BlockPos(worldX, worldY, worldZ));
         int coreData = blockStruck.getMetaFromState(coreState);
 		String blockName = blockStruck.getLocalizedName();
-	    ////AnimalsDropBones.LOG.debug("SYNDARYL: getNeighbouringBlocksToDeque" );
-		//System.out.println("getNeighbouringBlocksToDeque()");
-		//Block redstoneSample = Blocks.redstone_ore;
 		for(int x = worldX-1; x <= worldX+1; x++)
         {
         	for(int y = worldY-1; y<= worldY+1; y++)
@@ -179,8 +171,6 @@ public class ToolMattock extends ItemSpade implements IItemName {
         		for(int z = worldZ-1; z<=worldZ+1; z++)
         		{
         			BlockPos pos = new BlockPos(x,y,z);
-        			//if (!(x == worldX && y == worldY && z == worldZ) && gameWorld_.blockExists(x, y, z))
-        			//AnimalsDropBones.LOG.debug("Block " + gameWorld_.getBlockState(pos).getBlock().getUnlocalizedName() + " is air? " + (gameWorld_.getBlockState(pos).getBlock().getUnlocalizedName() != Blocks.air.getUnlocalizedName()));
         			if ( gameWorld_.getBlockState(pos).getBlock().getUnlocalizedName() != Blocks.air.getUnlocalizedName() )	
         			{
         				Block neighbour = gameWorld_.getBlockState(pos).getBlock();
