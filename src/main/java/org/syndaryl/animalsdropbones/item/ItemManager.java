@@ -36,10 +36,12 @@ public class ItemManager {
 		{"apple_juice",       "1",     "0.5"  },
 		{"apple_pie",         "5",     "2"    },
 		{"eggnog",            "2",     "1"    },
-		{"energy_drink",      "1",     "0.5"  },
+		{"energy_drink",      "2",     "0.5"  },
 		//{"golden_carrot",     "4",     "2"    },
-		{"potato_juice",      "1",     "0.5"  },
+		{"potato_juice",      "2",     "0.75"  },
+		{"carrot_juice",      "2",     "1"  },
 		{"sugar_water",       "1",     "0.5"  },
+		{"sugar_cube",        "1",     "0.5"  },
 		{"sushi",             "3",     "1"    }
 	};
 	
@@ -98,15 +100,16 @@ public class ItemManager {
 	 */
 	private static ItemModelMesher registerWithMesher(IItemName item, int metadata) {
 		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
-		String name = AnimalsDropBones.MODID + ":" + item.getName(metadata);
+		String name = item.getName(metadata);
 		
 	    AnimalsDropBones.LOG.warn("SYNDARYL: item ModelResourceLocation: Where the hell are my models?: "  + name );
 	    mesher.register((Item)item, metadata, new ModelResourceLocation(name));
-		if ( metadata != 0)
-		{
-			ModelBakery.addVariantName((Item)item, name);
-
-		}
+	    // I'm using a different model for each metadata so I don't need this. I think.
+		//		if ( metadata != 0)
+		//		{
+		//			ModelBakery.addVariantName((Item)item, AnimalsDropBones.MODID + ":" + name);
+		//
+		//		}
 		return mesher;
 	}
 	

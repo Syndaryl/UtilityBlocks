@@ -1,7 +1,7 @@
 {
 	"parent": "builtin/generated",
 	"textures": {
-		"layer0": "animalsdropbones:items/ItemMetadataFood"
+		"layer0": "animalsdropbones:items/ADB_Food_carrot_juice"
 	},
 	"display": {
 		"thirdperson": {
