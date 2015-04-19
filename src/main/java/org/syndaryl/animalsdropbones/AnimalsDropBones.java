@@ -1,13 +1,9 @@
 package org.syndaryl.animalsdropbones;
 
-import java.util.logging.Logger;
-
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.passive.EntityPig;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;

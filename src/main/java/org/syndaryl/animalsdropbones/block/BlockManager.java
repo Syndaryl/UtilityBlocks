@@ -1,19 +1,17 @@
 package org.syndaryl.animalsdropbones.block;
 
 import java.util.LinkedList;
-import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.Block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemModelMesher;
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.block.Block.SoundType;
 //import cpw.mods.fml.common.registry.GameRegistry;
 //import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -66,6 +64,7 @@ public class BlockManager {
 		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
 		for (int i = 0; i < BlockManager.COMPRESSEDBLOCKS.size(); i++)
 		{
+			AnimalsDropBones.LOG.warn("SYNDARYL: meshing block "  + BlockManager.BlockSpecifications[i][1] );
 			mesher.register(
 					Item.getItemFromBlock(BlockManager.COMPRESSEDBLOCKS.get(i)), 0, new ModelResourceLocation(
 							AnimalsDropBones.MODID + ":" + ((BlockCompressed) BlockManager.COMPRESSEDBLOCKS.get(i)).getName(), "inventory"
@@ -114,33 +113,4 @@ public class BlockManager {
 			"###", 
 			'#', inputStack  });
 	}
-
-	private static String[] getStringFromList(String[][] list, int item)
-	{
-		String[] names = new String[list.length];
-		for(int i = 0; i < list.length; i++)
-		{
-			names[i] = list[i][item];
-		}
-		return names;
-		
-	}
-	
-	private static float[] getFloatFromList(String[][] list, int item) {
-		float[] names = new float[list.length];
-		for(int i = 0; i < list.length; i++)
-		{
-			names[i] = Float.parseFloat( list[i][item]);
-		}
-		return names;
-	}
-	private static int[] getIntFromList(String[][] list, int item) {
-		int[] names = new int[list.length];
-		for(int i = 0; i < list.length; i++)
-		{
-			names[i] = (int) Float.parseFloat( list[i][item]);
-		}
-		return names;
-	}
-
 }

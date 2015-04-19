@@ -2,17 +2,15 @@ package org.syndaryl.animalsdropbones.handler;
 
 import java.util.HashMap;
 
-import org.apache.commons.lang3.tuple.Pair;
-import org.syndaryl.animalsdropbones.AnimalsDropBones;
-import org.syndaryl.animalsdropbones.block.BlockManager;
-
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.IFuelHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import org.apache.commons.lang3.tuple.Pair;
+import org.syndaryl.animalsdropbones.AnimalsDropBones;
 
 public class FurnaceFuelHandler implements IFuelHandler {
 

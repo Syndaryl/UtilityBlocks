@@ -3,15 +3,12 @@
  */
 package org.syndaryl.animalsdropbones.item;
 
-import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemModelMesher;
-import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
-import net.minecraft.item.ItemTool;
 
 import org.syndaryl.animalsdropbones.AnimalsDropBones;
 
@@ -105,10 +102,10 @@ public class ItemManager {
 	 */
 	private static ItemModelMesher registerWithMesher(IItemName item, int metadata) {
 		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
-		String name = AnimalsDropBones.MODID + ":" + item.getName(metadata);
+		String name = AnimalsDropBones.MODID + ":" + ((Item) item).getUnlocalizedName().substring(5);
 		
-	    AnimalsDropBones.LOG.warn("SYNDARYL: item ModelResourceLocation: Where the hell are my models?: "  + AnimalsDropBones.MODID + ":" +((Item) item).getUnlocalizedName().substring(5) );
-	    mesher.register((Item)item, metadata, new ModelResourceLocation( AnimalsDropBones.MODID + ":" +((Item) item).getUnlocalizedName().substring(5) ));
+	    AnimalsDropBones.LOG.warn("SYNDARYL: item ModelResourceLocation: Where the hell are my models?: "  + name );
+	    mesher.register((Item)item, metadata, new ModelResourceLocation( name ));
 	    // I'm using a different model for each metadata so I don't need this. I think.
 		//		if ( metadata != 0)
 		//		{

@@ -4,35 +4,21 @@ import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
-
-import org.syndaryl.animalsdropbones.AnimalsDropBones;
-import org.syndaryl.animalsdropbones.NamespaceManager;
-import org.syndaryl.animalsdropbones.block.BlockWithLocation;
-
-
-//import cpw.mods.fml.relauncher.Side;
-//import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockQuartz;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
-//import net.minecraft.entity.item.EntityItem;
-//import net.minecraft.entity.player.EntityPlayer;
-//import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
-//import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import org.syndaryl.animalsdropbones.NamespaceManager;
+import org.syndaryl.animalsdropbones.block.BlockWithLocation;
 
 public class ToolSledgehammer extends ItemPickaxe implements IItemName {
     static Random r = new Random();
@@ -120,7 +106,7 @@ public class ToolSledgehammer extends ItemPickaxe implements IItemName {
         
         boolean dropItems = true;
         BlockPos pos = new BlockPos(blockXYZ.x, blockXYZ.y, blockXYZ.z);
-        int metadata =  blockXYZ.metadata;// gameWorld_.getBlockMetadata(pos);
+        //int metadata =  blockXYZ.metadata;// gameWorld_.getBlockMetadata(pos);
         int xpDrop = blockXYZ.b.getExpDrop(gameWorld_, pos, fortune);
         gameWorld_.destroyBlock(pos, dropItems);
 		blockXYZ.b.dropXpOnBlockBreak(gameWorld_, pos, r.nextBoolean()? xpDrop:0);
