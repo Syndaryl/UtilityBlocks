@@ -11,6 +11,8 @@ import java.util.List;
 
 
 
+
+
 import org.syndaryl.animalsdropbones.AnimalsDropBones;
 import org.syndaryl.animalsdropbones.NamespaceManager;
 
@@ -18,12 +20,18 @@ import org.syndaryl.animalsdropbones.NamespaceManager;
 
 
 
+
+
 //import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.StatList;
+import net.minecraft.world.World;
 //import net.minecraft.util.IIcon;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -99,6 +107,24 @@ public class ItemMetadataFood extends ItemFood implements IItemName {
 		if (meta < getMaxMetadata())
 	    	return EnumAction.valueOf(this.actions[stack.getItemDamage()]);
 	    return EnumAction.EAT;
+    }
+	
+	@Override
+    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityPlayer playerIn)
+    {
+		if (stack.getItem().getItemUseAction(stack) == EnumAction.DRINK )
+		{
+			ItemStack bottle = new ItemStack(Items.glass_bottle, 1);
+			playerIn.inventory.addItemStackToInventory(bottle);
+		}
+        return super.onItemUseFinish(stack, worldIn, playerIn);
+        
+        /* --stack.stackSize;
+        playerIn.getFoodStats().addStats(this, stack);
+        worldIn.playSoundAtEntity(playerIn, "random.burp", 0.5F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
+        this.onFoodEaten(stack, worldIn, playerIn);
+        playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]); 
+        return stack; */
     }
 	
 	@SuppressWarnings({"rawtypes", "unchecked"})
