@@ -39,8 +39,8 @@ public class BlockManager {
 		{Material.rock, 	"animalsdropbones_stone_compressed",      	Block.soundTypeStone, 	2.2F, 11.0F, 	false,	new ItemStack(Blocks.stone,1),		0},
 		{Material.ground, 	"animalsdropbones_dirt_compressed",       	Block.soundTypeGravel, 	0.5F, 2.0F, 	false,	new ItemStack(Blocks.dirt,1,0),		0},
 		{Material.sand, 	"animalsdropbones_sand_compressed",       	Block.soundTypeSand, 	0.5F, 2.0F, 	false,	new ItemStack(Blocks.sand,1,0),		0},
-		{Material.coral, 	"animalsdropbones_charcoal_compressed",   	Block.soundTypePiston, 	0.8F, 5.0F, 	false,	new ItemStack(Items.bone,1,0),		0},
-		{Material.coral, 	"animalsdropbones_bone_compressed",       	Block.soundTypePiston, 	0.7F, 4.0F, 	true,	new ItemStack(Items.coal,1,1),  	16000.0F},
+		{Material.coral, 	"animalsdropbones_charcoal_compressed",   	Block.soundTypePiston, 	0.8F, 5.0F, 	true,	new ItemStack(Items.coal,1,1),  	16000.0F},
+		{Material.coral, 	"animalsdropbones_bone_compressed",       	Block.soundTypePiston, 	0.7F, 4.0F, 	false,	new ItemStack(Items.bone,1,0),		0},
 		{Material.wood, 	"animalsdropbones_sugarcane_compressed",   	Block.soundTypeGrass, 	0.4F, 2.0F, 	true,	new ItemStack(Items.reeds,1,0), 	8000.0F }
 		};
 

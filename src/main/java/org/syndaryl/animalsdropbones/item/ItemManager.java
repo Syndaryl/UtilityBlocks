@@ -7,10 +7,18 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemModelMesher;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import org.syndaryl.animalsdropbones.AnimalsDropBones;
+import org.syndaryl.animalsdropbones.block.BlockManager;
 
 /**
  * @author syndaryl
@@ -24,22 +32,26 @@ public class ItemManager {
 	public static ToolSledgehammer sledgehammerStone;
 	public static ToolMattock mattockIron;
 	public static ToolSledgehammer sledgehammerIron;
+	public static ToolMattock mattockDiamond;
+	private static ToolSledgehammer sledgehammerDiamond;
+	public static ToolHandle handle;
 	
 	private final static int NAME = 0;
 	private final static int HUNGER = 1;
 	private final static int SATIATION = 2;
+	private static final int ACTIONS = 3;
 	
-	private static String[][] foodData = new String[][]{
-		{"apple_juice",       "1",     "0.5"  },
-		{"apple_pie",         "5",     "2"    },
-		{"eggnog",            "2",     "1"    },
-		{"energy_drink",      "2",     "0.5"  },
-		//{"golden_carrot",     "4",     "2"    },
-		{"potato_juice",      "2",     "0.75"  },
-		{"carrot_juice",      "2",     "1"  },
-		{"sugar_water",       "1",     "0.5"  },
-		{"sugar_cube",        "1",     "0.5"  },
-		{"sushi",             "3",     "1"    }
+	private static Object[][] foodData = new Object[][]{
+		{"apple_juice",       "1",     "0.5", 	"DRINK"},	
+		{"apple_pie",         "5",     "2", 	"EAT" },	
+		{"eggnog",            "2",     "1", 	"DRINK" },	
+		{"energy_drink",      "2",     "0.5", 	"DRINK" },	
+		{"potato_juice",      "2",     "0.75", 	"DRINK" },	
+		{"carrot_juice",      "2",     "1", 	"DRINK" },	
+		{"sugar_water",       "1",     "0.5", 	"DRINK" },	
+		{"sugar_cube",        "1",     "0.5", 	"EAT" },	
+		{"sushi",             "5",     "4", 	"EAT" },	
+
 	};
 	
 	public ItemManager() {
@@ -47,18 +59,20 @@ public class ItemManager {
 	}
 	public static void mainRegistry() {
 		initialiseItems();
-		registerItems();
+		registerOreDict();
 		addCraftingRecipies();
 	}
 	public static void initialiseItems () {
 		String[] names;
 		int[] hunger;
 		float[] satiation;
+		String[] actions;
 		names = getStringFromList(foodData, ItemManager.NAME);
 		hunger = (int[]) getIntFromList(foodData, ItemManager.HUNGER);
 		satiation = getFloatFromList(foodData, ItemManager.SATIATION);
+		actions = getStringFromList(foodData, ItemManager.ACTIONS);
 		
-		foods = (ItemMetadataFood) new ItemMetadataFood(hunger, satiation, names).setCreativeTab(CreativeTabs.tabFood);
+		foods = (ItemMetadataFood) new ItemMetadataFood(hunger, satiation, names, actions);
 		
 		mattockWood = (ToolMattock) new ToolMattock(ToolMaterial.WOOD);
 		sledgehammerWood = (ToolSledgehammer) new ToolSledgehammer(ToolMaterial.WOOD);
@@ -66,29 +80,103 @@ public class ItemManager {
 		sledgehammerStone = (ToolSledgehammer) new ToolSledgehammer(ToolMaterial.STONE);
 		mattockIron = (ToolMattock) new ToolMattock(ToolMaterial.IRON);
 		sledgehammerIron = (ToolSledgehammer) new ToolSledgehammer(ToolMaterial.IRON);
+		mattockDiamond = (ToolMattock) new ToolMattock(ToolMaterial.EMERALD);
+		sledgehammerDiamond = (ToolSledgehammer) new ToolSledgehammer(ToolMaterial.EMERALD);
+		
+		handle = (ToolHandle) new ToolHandle();
 		
 	}
-	public static void registerItems() {
+	public static void registerOreDict() {
+
+
+    	OreDictionary.registerOre("toolHandle", new ItemStack(handle,1));
 		
 	}
 	
 	public static void addCraftingRecipies() {
-		// TODO Auto-generated method stub
+//		Object[][] recipies = getRecepieListFromList(foodData, ItemManager.RECIPIES);
+//		for (int i = 0; i < foods.getMaxMetadata(); i++)
+//		{
+//			// Shaped Recipe
+//			registerShapedRecipie( foods, i,  recipies[i]);
+//		}
+		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 0),	new Object[]{'A','B', 'A', new ItemStack( Items.apple), 'B', new ItemStack( Items.glass_bottle)});
+		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 1),	new Object[]{"ASA","WWW", 'A', new ItemStack( Items.apple), 'W', new ItemStack( Items.wheat), 'S', new ItemStack(Items.sugar)});
+		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 2),	new Object[]{'A','M','B', 'A', new ItemStack( Items.egg), 'B', new ItemStack( Items.milk_bucket), 'B', new ItemStack( Items.glass_bottle)});
+		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 3),	new Object[]{'A','B', 'A', new ItemStack( Items.apple), 'B', new ItemStack( Items.glass_bottle)});
+		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 4),	new Object[]{'P','B', 'P', new ItemStack( Items.potato), 'B', new ItemStack( Items.glass_bottle)});
+		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 5),	new Object[]{'C','B', 'C', new ItemStack( Items.carrot), 'B', new ItemStack( Items.glass_bottle)});
+		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 6),	new Object[]{'S','B', 'S', new ItemStack(foods, 1, 7), 'B', new ItemStack( Items.glass_bottle)});
+		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 7),	new Object[]{"SS","SS", 'S', new ItemStack(Items.sugar)});
+		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 8),	new Object[]{"F","L", 'A', new ItemStack( Items.fish), 'W', new ItemStack( Blocks.leaves )});
 		
+        
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(handle,1), 
+        		"s  ",
+        		" s ",
+        		"  s",
+        		's', "stickWood"
+        		)
+        );
+
+        
+        makeMattockRecepie(new ItemStack(mattockWood,1), "logWood", "toolHandle");
+        makeMattockRecepie(new ItemStack(mattockStone,1), "stone", "toolHandle");
+        makeMattockRecepie(new ItemStack(mattockIron,1), "ingotIron", "toolHandle");
+        makeMattockRecepie(new ItemStack(mattockDiamond,1), "gemDiamond", "toolHandle");
+        
+        makeHammerRecepie(new ItemStack(sledgehammerWood,1), "logWood", "toolHandle");
+        makeHammerRecepie(new ItemStack(sledgehammerStone,1), "stone", "toolHandle");
+        makeHammerRecepie(new ItemStack(sledgehammerIron,1), "ingotIron", "toolHandle");
+        makeHammerRecepie(new ItemStack(sledgehammerDiamond,1), "gemDiamond", "toolHandle");
+        
 	}
 
+	private static void makeMattockRecepie(ItemStack mattockStack,
+			String headMaterial, String handleMaterial) {
+        GameRegistry.addRecipe(new ShapedOreRecipe(mattockStack, 
+        		"iii",
+        		" s ",
+        		" s ",
+        		'i', headMaterial, 's', handleMaterial
+        		)
+        );
+		
+	}
+	private static void makeHammerRecepie(ItemStack sledgeHammerStack,
+			String headMaterial, String handleMaterial) {
+        GameRegistry.addRecipe(new ShapedOreRecipe(sledgeHammerStack, 
+        		"iii",
+        		"iii",
+        		" s ",
+        		'i', headMaterial, 's', handleMaterial
+        		)
+        );
+		
+	}
+	private static void registerShapedRecipie(ItemMetadataFood item, int meta,
+			Object...recipie) {
+		ItemStack outputItem = new ItemStack(item, 1, meta);
+		GameRegistry.addShapedRecipe(outputItem, recipie);
+	}
+	/* private static void registerShapedRecipie(ItemStack outputItem, Object[] recipie) {
+		GameRegistry.addRecipe(outputItem, recipie);
+	} */
 	public static void graphicRegistry() {
 		registerWithMesher(mattockWood, 0);
 		registerWithMesher(sledgehammerWood, 0);
 		registerWithMesher(mattockStone, 0);
-		//registerWithMesher(sledgehammerStone, 0);
+		registerWithMesher(sledgehammerStone, 0);
 		registerWithMesher(mattockIron, 0);
 		registerWithMesher(sledgehammerIron, 0);
+		registerWithMesher(handle, 0);
 		
+		/*
 		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
 		String name = AnimalsDropBones.MODID + ":" + sledgehammerStone.getName();
 		AnimalsDropBones.LOG.warn("SYNDARYL: item " + name);
-		mesher.register(sledgehammerStone, 0, new ModelResourceLocation(name));
+		mesher.register(sledgehammerStone, 0, new ModelResourceLocation(name, "inventory")); 
+		*/
 		
 	    
 	    for (int i = 0; i < foodData.length; i ++) {
@@ -107,7 +195,7 @@ public class ItemManager {
 		String name = AnimalsDropBones.MODID + ":" + item.getName(metadata);
 		
 	    AnimalsDropBones.LOG.warn("SYNDARYL: item ModelResourceLocation: Where the hell are my models?: "  + name );
-	    mesher.register((Item)item, metadata, new ModelResourceLocation( name ));
+	    mesher.register((Item)item, metadata, new ModelResourceLocation( name, "inventory" ));
 	    // I'm using a different model for each metadata so I don't need this. I think.
 		//		if ( metadata != 0)
 		//		{
@@ -117,32 +205,41 @@ public class ItemManager {
 		return mesher;
 	}
 	
-	private static String[] getStringFromList(String[][] list, int item)
+	private static String[] getStringFromList(Object[][] list, int item)
 	{
 		String[] names = new String[list.length];
 		for(int i = 0; i < list.length; i++)
 		{
-			names[i] = list[i][item];
+			names[i] = (String) list[i][item];
 		}
 		return names;
 		
 	}
 	
-	private static float[] getFloatFromList(String[][] list, int item) {
+	private static float[] getFloatFromList(Object[][] list, int item) {
 		float[] names = new float[list.length];
 		for(int i = 0; i < list.length; i++)
 		{
-			names[i] = Float.parseFloat( list[i][item]);
+			names[i] = Float.parseFloat( (String) list[i][item]);
 		}
 		return names;
 	}
-	private static int[] getIntFromList(String[][] list, int item) {
+	private static int[] getIntFromList(Object[][] list, int item) {
 		int[] names = new int[list.length];
 		for(int i = 0; i < list.length; i++)
 		{
-			names[i] = (int) Float.parseFloat( list[i][item]);
+			names[i] = (int) Float.parseFloat( (String) list[i][item]);
 		}
 		return names;
 	}
-
+	
+	private static Object[][] getRecepieListFromList(Object[][] list, int item)
+	{
+		Object[][] objects = new Object[list.length][];
+		for(int i = 0; i < list.length; i++)
+		{
+			objects[i] = (Object[]) list[i][item];
+		}
+		return objects;
+	}
 }

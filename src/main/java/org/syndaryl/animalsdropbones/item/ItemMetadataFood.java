@@ -7,10 +7,20 @@ import java.util.List;
 
 
 
+
+
+
+
+import org.syndaryl.animalsdropbones.AnimalsDropBones;
 import org.syndaryl.animalsdropbones.NamespaceManager;
+
+
+
+
 
 //import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -29,27 +39,30 @@ public class ItemMetadataFood extends ItemFood implements IItemName {
 	private float[] saturationModifiers;
 	private String[] names;
 	private final String  name = NamespaceManager.GetModNameLC() + "_food";
-	private String[] icons;
-//	private IIcon[] icons;
+	private String[] actions;
+	//private String[] icons;
+	//	private IIcon[] icons;
 	/**
 	 * @param hungerValues
 	 * @param saturationModifiers
+	 * @param actions 
 	 */
-	public ItemMetadataFood(int[] hungerValues, float[] saturationModifiers, String[] names)
+	public ItemMetadataFood(int[] hungerValues, float[] saturationModifiers, String[] names, String[] actions)
 	{
 		super(0, 0f, false);
 		this.hungerValues = hungerValues;
 		this.saturationModifiers = saturationModifiers;
 		this.names = names;
-//		icons = new IIcon[names.length];
-		icons = new String[names.length];
-		icons = names.clone();
+		this.actions = actions;
+		//icons = names.clone();
+		
 		this.setHasSubtypes(true);
 		this.setUnlocalizedName(getName());
 		this.setCreativeTab(CreativeTabs.tabFood);
 		
 		GameRegistry.registerItem(this, getName());
 	}
+	
 
 	/**
 	* @return The hunger value of the ItemStack
@@ -58,8 +71,11 @@ public class ItemMetadataFood extends ItemFood implements IItemName {
 	public int getHealAmount(ItemStack itemStack)
 	{
 		int meta = itemStack.getItemDamage();
-		if (meta < names.length)
+		AnimalsDropBones.LOG.info("SYNDARYL: heal amount Item"+itemStack.getDisplayName() + " meta " + meta + " getMaxMetadata() " + getMaxMetadata());
+		if (meta < getMaxMetadata())
 			return hungerValues[meta];
+		
+		AnimalsDropBones.LOG.warn("SYNDARYL: heal amount fell through to 0!");
 		return 0;
 	}
 	/**
@@ -69,17 +85,28 @@ public class ItemMetadataFood extends ItemFood implements IItemName {
 	public float getSaturationModifier(ItemStack itemStack)
 	{
 		int meta = itemStack.getItemDamage();
-		if (meta < names.length)
+		AnimalsDropBones.LOG.info("SYNDARYL: saturation amount Item"+itemStack.getDisplayName() + " meta " + meta + " getMaxMetadata() " + getMaxMetadata());
+		if (meta < getMaxMetadata())
 			return saturationModifiers[meta];
+		AnimalsDropBones.LOG.warn("SYNDARYL: saturation amount fell through to 0!");
 		return 0.0F;
 	}
+	
+	@Override
+    public EnumAction getItemUseAction(ItemStack stack)
+    {
+	    int meta = stack.getItemDamage();
+		if (meta < getMaxMetadata())
+	    	return EnumAction.valueOf(this.actions[stack.getItemDamage()]);
+	    return EnumAction.EAT;
+    }
 	
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs creativeTabs, List subItems)
 	{
-		for (int meta = 0; meta < Math.min(hungerValues.length, saturationModifiers.length); meta++)
+		for (int meta = 0; meta < getMaxMetadata(); meta++)
 		{
 			subItems.add(new ItemStack(item, 1, meta));
 		}
@@ -106,7 +133,7 @@ public class ItemMetadataFood extends ItemFood implements IItemName {
 	 */
 	@Override
 	public String getName(int meta){
-	    if (meta < names.length)
+	    if (meta < getMaxMetadata())
 	        return this.getName() + "_" + names[meta];
 	    return this.getName();
 	}
@@ -116,16 +143,20 @@ public class ItemMetadataFood extends ItemFood implements IItemName {
         return this.getUnlocalizedName(stack.getMetadata());
 	}
 
-	public String getIconFromDamage(int meta) {
+	/* public String getIconFromDamage(int meta) {
 	    if (meta > icons.length)
 	        meta = 0;
 
-	    return this.icons[meta];
-	}
+	    return AnimalsDropBones.MODID + ":" + this.icons[meta];
+	} */
 
 	public String getUnlocalizedName(int meta) {
-		if (meta < names.length)
+		if (meta < getMaxMetadata())
 			return "item." + this.getName(meta);
         return super.getUnlocalizedName();
+	}
+
+	public int getMaxMetadata() {
+		return Math.min(names.length, Math.min(hungerValues.length, saturationModifiers.length));
 	}
 }

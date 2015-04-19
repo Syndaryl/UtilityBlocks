@@ -15,9 +15,8 @@ public class ConfigurationHandler {
 	public static boolean pigsDropLeather;
 	public static boolean horsesDropLeather;
 	public static boolean enableBlockCompresion;
-	//	public static boolean chicksDropFeathers;
-	//	public static boolean forceFeatherDrop;
-	//	public static int dropFreq;
+
+	public static boolean enableFood;
 	
 	public static void setConfig(File configFile) {
 		config = new Configuration(configFile);
@@ -72,6 +71,15 @@ public class ConfigurationHandler {
 				"Is block compression enabled?"
 				);
 		enableBlockCompresion = currProp.getBoolean(true);
+		propOrder.add(currProp.getName());
+		
+		currProp = config.get(
+				"Items",
+				"enableFood",
+				true,
+				"Are the new food items enabled?"
+				);
+		enableFood = currProp.getBoolean(true);
 		propOrder.add(currProp.getName());
 
 		//currProp = config.get(
