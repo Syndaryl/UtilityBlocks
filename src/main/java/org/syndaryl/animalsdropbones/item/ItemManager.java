@@ -97,12 +97,13 @@ public class ItemManager {
     	 
 	}
 	/**
-	 * @param mattockWood2 
+	 * @param item 
+	 * @param metadata 
 	 * @return
 	 */
 	private static ItemModelMesher registerWithMesher(IItemName item, int metadata) {
 		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
-		String name = AnimalsDropBones.MODID + ":" + ((Item) item).getUnlocalizedName().substring(5);
+		String name = AnimalsDropBones.MODID + ":" + item.getName(metadata);
 		
 	    AnimalsDropBones.LOG.warn("SYNDARYL: item ModelResourceLocation: Where the hell are my models?: "  + name );
 	    mesher.register((Item)item, metadata, new ModelResourceLocation( name ));

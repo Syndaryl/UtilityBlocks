@@ -1,7 +1,5 @@
 @echo off
 call gradlew build
-ECHO
-ECHO ---------------------------------
-ECHO
-ECHO "JAR is in Build\Libs directory"
+FOR /F "delims=" %%I IN ('DIR D:\Games\Forge_Eclipse_workspace\AnimalsDropBones\build\libs /B /O:-D') DO call XCOPY /L D:\Games\Forge_Eclipse_workspace\AnimalsDropBones\build\libs\%%I D:\Games\.minecraft\mods\1.8& GOTO :EXIT
+:EXIT
 pause

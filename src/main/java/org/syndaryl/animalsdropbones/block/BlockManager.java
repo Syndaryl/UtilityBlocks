@@ -64,10 +64,11 @@ public class BlockManager {
 		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
 		for (int i = 0; i < BlockManager.COMPRESSEDBLOCKS.size(); i++)
 		{
-			AnimalsDropBones.LOG.warn("SYNDARYL: meshing block "  + BlockManager.BlockSpecifications[i][1] );
+			String name = AnimalsDropBones.MODID + ":" + ((BlockCompressed) BlockManager.COMPRESSEDBLOCKS.get(i)).getName();
+			AnimalsDropBones.LOG.warn("SYNDARYL: meshing block "  + name );
 			mesher.register(
 					Item.getItemFromBlock(BlockManager.COMPRESSEDBLOCKS.get(i)), 0, new ModelResourceLocation(
-							AnimalsDropBones.MODID + ":" + ((BlockCompressed) BlockManager.COMPRESSEDBLOCKS.get(i)).getName(), "inventory"
+							name, "inventory"
 							)
 					);
 		}
