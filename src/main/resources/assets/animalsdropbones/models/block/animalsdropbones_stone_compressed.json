@@ -1,0 +1,6 @@
+{
+	"parent": "block/cube_all",
+	"textures": {
+		"all": "animalsdropbones:blocks/animalsdropbones_stone_compressed"
+	}
+}

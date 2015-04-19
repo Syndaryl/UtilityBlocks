@@ -1,35 +1,35 @@
-tile.animalsdropbones_GravelCompressed.name=Compressed Gravel Block
-tile.animalsdropbones_CobblestoneCompressed.name=Compressed Cobblestone Block
-tile.animalsdropbones_StoneCompressed.name=Compressed Stone Block
-tile.animalsdropbones_DirtCompressed.name=Compressed Dirt Block
-tile.animalsdropbones_SandCompressed.name=Compressed Sand Block
-tile.animalsdropbones_BoneCompressed.name=Compressed Bone Block
-tile.animalsdropbones_CharcoalCompressed.name=Compressed Charcoal Block
-tile.animalsdropbones_SugarcaneCompressed.name=Sugarcane Bale
+tile.animalsdropbones_gravel_compressed.name=Compressed Gravel Block
+tile.animalsdropbones_cobblestone_compressed.name=Compressed Cobblestone Block
+tile.animalsdropbones_stone_compressed.name=Compressed Stone Block
+tile.animalsdropbones_dirt_compressed.name=Compressed Dirt Block
+tile.animalsdropbones_sand_compressed.name=Compressed Sand Block
+tile.animalsdropbones_bone_compressed.name=Compressed Bone Block
+tile.animalsdropbones_charcoal_compressed.name=Compressed Charcoal Block
+tile.animalsdropbones_sugarcane_compressed.name=Sugarcane Bale
 
 
-item.animalsdropbones_ADB_Food_apple_juice.name=Apple Juice
-item.animalsdropbones_ADB_Food_apple_pie.name=Apple Pie
-item.animalsdropbones_ADB_Food_carrot_juice.name=Carrot Juice
-item.animalsdropbones_ADB_Food_eggnog.name=Eggnog
-item.animalsdropbones_ADB_Food_energy_drink.name=Energy Drink
-item.animalsdropbones_ADB_Food_golden_carrot.name=Golden Carrot
-item.animalsdropbones_ADB_Food_potato_juice.name=Potato Juice
-item.animalsdropbones_ADB_Food_sugar_water.name=Sugar Water
-item.animalsdropbones_ADB_Food_sugar_cube.name=Sugar Cube
-item.animalsdropbones_ADB_Food_sushi.name=Sushi
+item.animalsdropbones_food_apple_juice.name=Apple Juice
+item.animalsdropbones_food_apple_pie.name=Apple Pie
+item.animalsdropbones_food_carrot_juice.name=Carrot Juice
+item.animalsdropbones_food_eggnog.name=Eggnog
+item.animalsdropbones_food_energy_drink.name=Energy Drink
+item.animalsdropbones_food_golden_carrot.name=Golden Carrot
+item.animalsdropbones_food_potato_juice.name=Potato Juice
+item.animalsdropbones_food_sugar_water.name=Sugar Water
+item.animalsdropbones_food_sugar_cube.name=Sugar Cube
+item.animalsdropbones_food_sushi.name=Sushi
 
-item.animalsdropbones_Gold_Sledgehammer.name=Gold Sledgehammer
-item.animalsdropbones_Emerald_Sledgehammer.name=Diamond Sledgehammer
-item.animalsdropbones_Iron_Sledgehammer.name=Iron Sledgehammer
-item.animalsdropbones_Stone_Sledgehammer.name=Stone Sledgehammer
-item.animalsdropbones_Wood_Sledgehammer.name=Wood Sledgehammer
-item.animalsdropbones_Gold_Mattock.name=Gold Mattock
-item.animalsdropbones_Emerald_Mattock.name=Diamond Mattock
-item.animalsdropbones_Iron_Mattock.name=Iron Mattock
-item.animalsdropbones_Stone_Mattock.name=Stone Mattock
-item.animalsdropbones_Wood_Mattock.name=Wood Mattock
+item.animalsdropbones_gold_sledgehammer.name=Gold Sledgehammer
+item.animalsdropbones_emerald_sledgehammer.name=Diamond Sledgehammer
+item.animalsdropbones_iron_sledgehammer.name=Iron Sledgehammer
+item.animalsdropbones_stone_sledgehammer.name=Stone Sledgehammer
+item.animalsdropbones_wood_sledgehammer.name=Wood Sledgehammer
+item.animalsdropbones_gold_mattock.name=Gold Mattock
+item.animalsdropbones_emerald_mattock.name=Diamond Mattock
+item.animalsdropbones_iron_mattock.name=Iron Mattock
+item.animalsdropbones_stone_mattock.name=Stone Mattock
+item.animalsdropbones_wood_mattock.name=Wood Mattock
 
-item.animalsdropbones_Tool_Handle.name=Tool Handle
+item.animalsdropbones_tool_handle.name=Tool Handle
 
 itemGroup.animalsdropbones.name=Syndaryl's Animals Drop Bones

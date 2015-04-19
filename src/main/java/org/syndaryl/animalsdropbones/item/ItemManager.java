@@ -84,14 +84,14 @@ public class ItemManager {
 		registerWithMesher(mattockWood, 0);
 		registerWithMesher(sledgehammerWood, 0);
 		registerWithMesher(mattockStone, 0);
-		
-		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
-		AnimalsDropBones.LOG.warn("SYNDARYL: item animalsdropbones:" + sledgehammerStone.getUnlocalizedName().substring(5));
-		mesher.register(sledgehammerStone, 0, new ModelResourceLocation("animalsdropbones:" + sledgehammerStone.getUnlocalizedName().substring(5)));
-		
 		//registerWithMesher(sledgehammerStone, 0);
 		registerWithMesher(mattockIron, 0);
 		registerWithMesher(sledgehammerIron, 0);
+		
+		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
+		AnimalsDropBones.LOG.warn("SYNDARYL: item animalsdropbones:" + sledgehammerStone.getName());
+		mesher.register(sledgehammerStone, 0, new ModelResourceLocation("animalsdropbones:" + sledgehammerStone.getName()));
+		
 	    
 	    for (int i = 0; i < foodData.length; i ++) {
 			registerWithMesher(foods, i);
@@ -107,8 +107,8 @@ public class ItemManager {
 		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
 		String name = AnimalsDropBones.MODID + ":" + item.getName(metadata);
 		
-	    AnimalsDropBones.LOG.warn("SYNDARYL: item ModelResourceLocation: Where the hell are my models?: "  + name );
-	    mesher.register((Item)item, metadata, new ModelResourceLocation(name));
+	    AnimalsDropBones.LOG.warn("SYNDARYL: item ModelResourceLocation: Where the hell are my models?: "  + AnimalsDropBones.MODID + ":" +((Item) item).getUnlocalizedName().substring(5) );
+	    mesher.register((Item)item, metadata, new ModelResourceLocation( AnimalsDropBones.MODID + ":" +((Item) item).getUnlocalizedName().substring(5) ));
 	    // I'm using a different model for each metadata so I don't need this. I think.
 		//		if ( metadata != 0)
 		//		{

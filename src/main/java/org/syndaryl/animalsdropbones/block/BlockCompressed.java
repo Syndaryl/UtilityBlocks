@@ -30,7 +30,7 @@ public class BlockCompressed extends Block  {
     	this.setCreativeTab(CreativeTabs.tabBlock);
 		  this.stepSound = soundType;
 		  this.name = blockName;
-		  setUnlocalizedName(NamespaceManager.getUnLocalized(getName()));
+		  setUnlocalizedName(getName());
 		  //this.setBlockTextureName(NamespaceManager.GetModNameLC()+":"+blockName);
 		  GameRegistry.registerBlock(this, getName());
 		  this.setHardness(hardness);

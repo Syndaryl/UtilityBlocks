@@ -36,19 +36,20 @@ public class BlockManager {
 	
 	private static final Object[][] BlockSpecifications =
 		new Object[][] {
-		{Material.ground, 	"GravelCompressed", 		Block.soundTypeGravel, 	0.6F, 3.0F, 	false,	new ItemStack(Blocks.gravel,1),		0},
-		{Material.rock, 	"CobblestoneCompressed", 	Block.soundTypePiston, 	2.0F, 10.0F, 	false,	new ItemStack(Blocks.cobblestone,1),		0},
-		{Material.rock, 	"StoneCompressed", 			Block.soundTypeStone, 	2.2F, 11.0F, 	false,	new ItemStack(Blocks.stone,1),		0},
-		{Material.ground, 	"DirtCompressed", 			Block.soundTypeGravel, 	0.5F, 2.0F, 	false,	new ItemStack(Blocks.dirt,1,0),		0},
-		{Material.sand, 	"SandCompressed", 			Block.soundTypeSand, 	0.5F, 2.0F, 	false,	new ItemStack(Blocks.sand,1,0),		0},
-		{Material.coral, 	"BoneCompressed", 			Block.soundTypePiston, 	0.8F, 5.0F, 	false,	new ItemStack(Items.bone,1,0),		0},
-		{Material.rock, 	"CharcoalCompressed", 		Block.soundTypePiston, 	0.7F, 4.0F, 	true,	new ItemStack(Items.coal,1,1),  	16000.0F},
-		{Material.wood, 	"SugarcaneCompressed", 		Block.soundTypeCloth, 	0.4F, 2.0F, 	true,	new ItemStack(Items.reeds,1,0), 	8000.0F }
+		{Material.ground, 	"animalsdropbones_gravel_compressed",     	Block.soundTypeGravel, 	0.6F, 3.0F, 	false,	new ItemStack(Blocks.gravel,1),		0},
+		{Material.rock, 	"animalsdropbones_cobblestone_compressed", 	Block.soundTypePiston, 	2.0F, 10.0F, 	false,	new ItemStack(Blocks.cobblestone,1),		0},
+		{Material.rock, 	"animalsdropbones_stone_compressed",      	Block.soundTypeStone, 	2.2F, 11.0F, 	false,	new ItemStack(Blocks.stone,1),		0},
+		{Material.ground, 	"animalsdropbones_dirt_compressed",       	Block.soundTypeGravel, 	0.5F, 2.0F, 	false,	new ItemStack(Blocks.dirt,1,0),		0},
+		{Material.sand, 	"animalsdropbones_sand_compressed",       	Block.soundTypeSand, 	0.5F, 2.0F, 	false,	new ItemStack(Blocks.sand,1,0),		0},
+		{Material.coral, 	"animalsdropbones_charcoal_compressed",   	Block.soundTypePiston, 	0.8F, 5.0F, 	false,	new ItemStack(Items.bone,1,0),		0},
+		{Material.coral, 	"animalsdropbones_bone_compressed",       	Block.soundTypePiston, 	0.7F, 4.0F, 	true,	new ItemStack(Items.coal,1,1),  	16000.0F},
+		{Material.wood, 	"animalsdropbones_sugarcane_compressed",   	Block.soundTypeGrass, 	0.4F, 2.0F, 	true,	new ItemStack(Items.reeds,1,0), 	8000.0F }
 		};
 
 	public static void initialiseBlock() {
 		for (int i = 0; i < BlockManager.BlockSpecifications.length; i++)
 		{
+			AnimalsDropBones.LOG.warn("SYNDARYL: building block "  + BlockManager.BlockSpecifications[i][1] );
 			BlockManager.COMPRESSEDBLOCKS.add(
 					new BlockCompressed(
 							(Material) BlockManager.BlockSpecifications[i][0], 

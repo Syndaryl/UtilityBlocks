@@ -36,13 +36,13 @@ import net.minecraftforge.common.ForgeHooks;
 
 public class ToolSledgehammer extends ItemPickaxe implements IItemName {
     static Random r = new Random();
-    private String name = "Sledgehammer"; 
+    private String name = "sledgehammer"; 
     
 	public ToolSledgehammer(ToolMaterial material) {
 		super(material);
-		String materialName = NamespaceManager.capitalizeWord(material.toString()) ;
-		name = materialName +"_Sledgehammer";
-		setUnlocalizedName( NamespaceManager.getUnLocalized(getName()) );
+		String materialName = material.toString().toLowerCase();// NamespaceManager.capitalizeWord(material.toString()) ;
+		name = NamespaceManager.GetModNameLC() + "_" + materialName +"_sledgehammer";
+		setUnlocalizedName( getName() );
 		this.setCreativeTab(CreativeTabs.tabTools);
         this.setMaxDamage(material.getMaxUses()*4);
 

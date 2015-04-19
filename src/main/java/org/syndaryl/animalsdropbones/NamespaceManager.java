@@ -21,7 +21,7 @@ public class NamespaceManager {
     }
 	public static String getUnLocalized(String key)
     {
-    	return NamespaceManager.GetModNameLC() + "_" + key;
+    	return NamespaceManager.GetModNameLC() + "_" + new String(key.toLowerCase());
     }
 
 

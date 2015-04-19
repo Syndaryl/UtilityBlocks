@@ -40,16 +40,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class ToolMattock extends ItemSpade implements IItemName {
     static Random r = new Random();
-    private String name = "Mattock"; 
+    private String name = "mattock"; 
 
 	/**
 	 * @param material
 	 */
 	public ToolMattock(ToolMaterial material) {
 		super(material);
-		String materialName = NamespaceManager.capitalizeWord(material.toString()) ;
-		name = materialName +"_Mattock";
-		setUnlocalizedName(NamespaceManager.getUnLocalized(getName()));
+		String materialName = material.toString().toLowerCase() ;
+		name = NamespaceManager.GetModNameLC() + "_" + materialName +"_mattock";
+		setUnlocalizedName(getName());
 		this.setCreativeTab(CreativeTabs.tabTools);
         this.setMaxDamage(material.getMaxUses()*4);
 

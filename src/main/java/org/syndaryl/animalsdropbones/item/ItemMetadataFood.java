@@ -28,7 +28,7 @@ public class ItemMetadataFood extends ItemFood implements IItemName {
 	private int[] hungerValues;
 	private float[] saturationModifiers;
 	private String[] names;
-	private final String  name = "ADB_Food";
+	private final String  name = NamespaceManager.GetModNameLC() + "_food";
 	private String[] icons;
 //	private IIcon[] icons;
 	/**
@@ -45,7 +45,7 @@ public class ItemMetadataFood extends ItemFood implements IItemName {
 		icons = new String[names.length];
 		icons = names.clone();
 		this.setHasSubtypes(true);
-		this.setUnlocalizedName(NamespaceManager.getUnLocalized(getName()));
+		this.setUnlocalizedName(getName());
 		this.setCreativeTab(CreativeTabs.tabFood);
 		
 		GameRegistry.registerItem(this, getName());
@@ -125,7 +125,7 @@ public class ItemMetadataFood extends ItemFood implements IItemName {
 
 	public String getUnlocalizedName(int meta) {
 		if (meta < names.length)
-			return NamespaceManager.getUnLocalized(this.getName(meta));
+			return "item." + this.getName(meta);
         return super.getUnlocalizedName();
 	}
 }
