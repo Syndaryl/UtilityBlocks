@@ -86,8 +86,9 @@ public class ItemManager {
 		registerWithMesher(sledgehammerIron, 0);
 		
 		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
-		AnimalsDropBones.LOG.warn("SYNDARYL: item animalsdropbones:" + sledgehammerStone.getName());
-		mesher.register(sledgehammerStone, 0, new ModelResourceLocation("animalsdropbones:" + sledgehammerStone.getName()));
+		String name = AnimalsDropBones.MODID + ":" + sledgehammerStone.getName();
+		AnimalsDropBones.LOG.warn("SYNDARYL: item " + name);
+		mesher.register(sledgehammerStone, 0, new ModelResourceLocation(name));
 		
 	    
 	    for (int i = 0; i < foodData.length; i ++) {

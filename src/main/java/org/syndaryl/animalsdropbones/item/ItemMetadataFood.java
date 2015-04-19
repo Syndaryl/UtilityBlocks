@@ -57,7 +57,7 @@ public class ItemMetadataFood extends ItemFood implements IItemName {
 	@Override
 	public int getHealAmount(ItemStack itemStack)
 	{
-		int meta = itemStack.getMetadata();
+		int meta = itemStack.getItemDamage();
 		if (meta < names.length)
 			return hungerValues[meta];
 		return 0;
@@ -68,7 +68,7 @@ public class ItemMetadataFood extends ItemFood implements IItemName {
 	@Override
 	public float getSaturationModifier(ItemStack itemStack)
 	{
-		int meta = itemStack.getMetadata();
+		int meta = itemStack.getItemDamage();
 		if (meta < names.length)
 			return saturationModifiers[meta];
 		return 0.0F;
@@ -99,7 +99,7 @@ public class ItemMetadataFood extends ItemFood implements IItemName {
 	 */
 	@Override
 	public String getName(ItemStack stack){
-        return this.getName(stack.getMetadata());
+        return this.getName(stack.getItemDamage());
 	}
 	/* (non-Javadoc)
 	 * @see org.syndaryl.animalsdropbones.item.IItemName#getName(int)

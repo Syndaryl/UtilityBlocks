@@ -43,11 +43,7 @@ public class FurnaceFuelHandler implements IFuelHandler {
     }
 	public void addFuel(Item item, int metadata, int value)
 	{
-		AnimalsDropBones.LOG.warn("SYNDARYL: Making Fuel! " + item.getUnlocalizedName() + "\n" );
-		System.out.print("SYNDARYL: Making Fuel! " + item.getUnlocalizedName() + "\n" );
-		AnimalsDropBones.LOG.warn("SYNDARYL: Coal fuel value in addFuel() " + GameRegistry.getFuelValue(new ItemStack(  Items.coal, 1) ) + "\n"  );
-		System.out.print("SYNDARYL: Coal fuel value in addFuel() " + GameRegistry.getFuelValue(new ItemStack(  Items.coal, 1) ) + "\n" );
-		
+		AnimalsDropBones.LOG.info("SYNDARYL: Making Fuel! " + item.getUnlocalizedName() + "\n" );
         fuelList.put(Pair.of(item, metadata), value);
 	}
 
