@@ -13,10 +13,12 @@ import org.syndaryl.animalsdropbones.NamespaceManager;
 
 import org.syndaryl.animalsdropbones.block.BlockWithLocation;
 
+
 //import cpw.mods.fml.relauncher.Side;
 //import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
@@ -48,7 +50,7 @@ public class ToolMattock extends ItemSpade implements IItemName {
 		String materialName = NamespaceManager.capitalizeWord(material.toString()) ;
 		name = materialName +"_Mattock";
 		setUnlocalizedName(NamespaceManager.getUnLocalized(getName()));
-		
+		this.setCreativeTab(CreativeTabs.tabTools);
         this.setMaxDamage(material.getMaxUses()*4);
 
         this.efficiencyOnProperMaterial = material.getEfficiencyOnProperMaterial()/4;
@@ -201,7 +203,7 @@ public class ToolMattock extends ItemSpade implements IItemName {
 	 */
 	@Override
 	public String getName(ItemStack stack){
-        return this.getName(stack.getItemDamage());
+	    return this.getName();
 	}
 
 	/* (non-Javadoc)

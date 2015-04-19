@@ -46,6 +46,7 @@ public class ItemMetadataFood extends ItemFood implements IItemName {
 		icons = names.clone();
 		this.setHasSubtypes(true);
 		this.setUnlocalizedName(NamespaceManager.getUnLocalized(getName()));
+		this.setCreativeTab(CreativeTabs.tabFood);
 		
 		GameRegistry.registerItem(this, getName());
 	}
@@ -124,7 +125,7 @@ public class ItemMetadataFood extends ItemFood implements IItemName {
 
 	public String getUnlocalizedName(int meta) {
 		if (meta < names.length)
-			return super.getUnlocalizedName() + "_" + this.getName(meta);
+			return NamespaceManager.getUnLocalized(this.getName(meta));
         return super.getUnlocalizedName();
 	}
 }

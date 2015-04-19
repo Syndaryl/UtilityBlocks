@@ -9,6 +9,7 @@ import org.syndaryl.animalsdropbones.AnimalsDropBones;
 import org.syndaryl.animalsdropbones.NamespaceManager;
 import org.syndaryl.animalsdropbones.block.BlockWithLocation;
 
+
 //import cpw.mods.fml.relauncher.Side;
 //import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -16,6 +17,7 @@ import net.minecraft.block.BlockQuartz;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -41,7 +43,7 @@ public class ToolSledgehammer extends ItemPickaxe implements IItemName {
 		String materialName = NamespaceManager.capitalizeWord(material.toString()) ;
 		name = materialName +"_Sledgehammer";
 		setUnlocalizedName( NamespaceManager.getUnLocalized(getName()) );
-		
+		this.setCreativeTab(CreativeTabs.tabTools);
         this.setMaxDamage(material.getMaxUses()*4);
 
         this.efficiencyOnProperMaterial = material.getEfficiencyOnProperMaterial()/4;
@@ -50,25 +52,14 @@ public class ToolSledgehammer extends ItemPickaxe implements IItemName {
 		GameRegistry.registerItem(this, getName());
 	}
 
-	//@SideOnly(Side.CLIENT)
-	//	public void registerIcons(IIconRegister register)
-	//	{
-	//		this.itemIcon = register.registerIcon(NamespaceManager.GetModName() +":" + this.toolMaterial.toString().toLowerCase() +"_sledgehammer");
-	//	}
-
-	//@SideOnly(Side.SERVER)
 	@Override
     public boolean onBlockDestroyed(ItemStack toolInstance, World gameWorld_, Block blockStruck, BlockPos pos, EntityLivingBase actor)
     {
-	    //AnimalsDropBones.LOG.debug("SYNDARYL: onBlockDestroyed: "  + toolInstance.getDisplayName() );
     	if(!gameWorld_.isRemote)
     	{
-    	    //AnimalsDropBones.LOG.debug("SYNDARYL: onBlockDestroyed: Not is remote" );
-			//System.out.println(String.format("onBlockDestroyed() nuking block at %d %d %d", worldX, worldY, worldZ));
 	        Deque<BlockWithLocation> blockDeck = new LinkedList<BlockWithLocation>();
 	        getNeighbouringBlocksToDeque(gameWorld_, blockStruck, pos.getX(), pos.getY(),
 					pos.getZ(), blockDeck);
-			//System.out.println(String.format("getNeighbouringBlocksToDeque(): returned deck of %d", blockDeck.size()));
 	        hitManyBlocks(toolInstance, gameWorld_, pos.getX(), pos.getY(),
 					pos.getZ(),
 					actor, blockDeck);
@@ -89,20 +80,11 @@ public class ToolSledgehammer extends ItemPickaxe implements IItemName {
     public void hitManyBlocks(ItemStack toolInstance, World gameWorld_,
 			int worldX, int worldY, int worldZ, EntityLivingBase actor,
 			Deque<BlockWithLocation> blockDeck) {
-		//System.out.println(String.format("hitManyBlocks(): Working with deck of %d", blockDeck.size()));
-		// Damage tool for each neighbour as well as for the originally struck block.
-		// then nuke the neighbours and drop items
-	    //AnimalsDropBones.LOG.debug("SYNDARYL: hitManyBlocks deck size: " + blockDeck.size() );
-	    
 	    
         for(Iterator<BlockWithLocation> iter = blockDeck.iterator(); iter.hasNext();)
         {
         	BlockWithLocation neighbourBlockContainer = iter.next();
-    		//System.out.println(String.format("checking block at %d %d %d", neighbourBlockContainer.x, neighbourBlockContainer.y, neighbourBlockContainer.z));
 
-    	    //AnimalsDropBones.LOG.debug("SYNDARYL: X; " + neighbourBlockContainer.x + ":" + worldX );
-    	    //AnimalsDropBones.LOG.debug("SYNDARYL: Y; " + neighbourBlockContainer.y + ":" + worldY );
-    	    //AnimalsDropBones.LOG.debug("SYNDARYL: Z; " + neighbourBlockContainer.z + ":" + worldZ );
             if (! (neighbourBlockContainer.x == worldX && neighbourBlockContainer.y == worldY && neighbourBlockContainer.z == worldZ)) // is not source block
             {
             	BlockPos pos = new BlockPos(worldX, worldY, worldZ);
@@ -133,19 +115,14 @@ public class ToolSledgehammer extends ItemPickaxe implements IItemName {
 
     public void breakBlock(World gameWorld_,
 			BlockWithLocation blockXYZ, EntityLivingBase player) {
-	    //AnimalsDropBones.LOG.debug("SYNDARYL: breakBlock" );
-		
-		//System.out.println(String.format("breakBlock() dropping at %d %d %d", blockXYZ.x, blockXYZ.y, blockXYZ.z));
+
         int fortune = EnchantmentHelper.getFortuneModifier(player);
         
         boolean dropItems = true;
         BlockPos pos = new BlockPos(blockXYZ.x, blockXYZ.y, blockXYZ.z);
         int metadata =  blockXYZ.metadata;// gameWorld_.getBlockMetadata(pos);
         int xpDrop = blockXYZ.b.getExpDrop(gameWorld_, pos, fortune);
-		//blockXYZ.b.breakBlock(gameWorld_, blockXYZ.x, blockXYZ.y, blockXYZ.z, blockXYZ.b, fortune);
-        //gameWorld_.func_147480_a(blockXYZ.x, blockXYZ.y, blockXYZ.z, dropItems );
         gameWorld_.destroyBlock(pos, dropItems);
-        //gameWorld_.func_147480_a(pos, dropItems );
 		blockXYZ.b.dropXpOnBlockBreak(gameWorld_, pos, r.nextBoolean()? xpDrop:0);
 	}
 
@@ -165,9 +142,6 @@ public class ToolSledgehammer extends ItemPickaxe implements IItemName {
         IBlockState coreState = gameWorld_.getBlockState( new BlockPos(worldX, worldY, worldZ));
         int coreData = blockStruck.getMetaFromState(coreState);
 		String blockName = blockStruck.getLocalizedName();
-	    ////AnimalsDropBones.LOG.debug("SYNDARYL: getNeighbouringBlocksToDeque" );
-		//System.out.println("getNeighbouringBlocksToDeque()");
-		//Block redstoneSample = Blocks.redstone_ore;
 		for(int x = worldX-1; x <= worldX+1; x++)
         {
         	for(int y = worldY-1; y<= worldY+1; y++)
@@ -175,8 +149,6 @@ public class ToolSledgehammer extends ItemPickaxe implements IItemName {
         		for(int z = worldZ-1; z<=worldZ+1; z++)
         		{
         			BlockPos pos = new BlockPos(x,y,z);
-        			//if (!(x == worldX && y == worldY && z == worldZ) && gameWorld_.blockExists(x, y, z))
-        			//AnimalsDropBones.LOG.debug("Block " + gameWorld_.getBlockState(pos).getBlock().getUnlocalizedName() + " is air? " + (gameWorld_.getBlockState(pos).getBlock().getUnlocalizedName() != Blocks.air.getUnlocalizedName()));
         			if ( gameWorld_.getBlockState(pos).getBlock().getUnlocalizedName() != Blocks.air.getUnlocalizedName() )	
         			{
         				Block neighbour = gameWorld_.getBlockState(pos).getBlock();
@@ -207,7 +179,7 @@ public class ToolSledgehammer extends ItemPickaxe implements IItemName {
 	 */
 	@Override
 	public String getName(ItemStack stack){
-        return this.getName(stack.getItemDamage());
+	    return this.getName();
 	}
 
 	/* (non-Javadoc)

@@ -84,7 +84,12 @@ public class ItemManager {
 		registerWithMesher(mattockWood, 0);
 		registerWithMesher(sledgehammerWood, 0);
 		registerWithMesher(mattockStone, 0);
-		registerWithMesher(sledgehammerStone, 0);
+		
+		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
+		AnimalsDropBones.LOG.warn("SYNDARYL: item animalsdropbones:" + sledgehammerStone.getUnlocalizedName().substring(5));
+		mesher.register(sledgehammerStone, 0, new ModelResourceLocation("animalsdropbones:" + sledgehammerStone.getUnlocalizedName().substring(5)));
+		
+		//registerWithMesher(sledgehammerStone, 0);
 		registerWithMesher(mattockIron, 0);
 		registerWithMesher(sledgehammerIron, 0);
 	    
