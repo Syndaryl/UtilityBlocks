@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 //import cpw.mods.fml.common.registry.GameRegistry;
 //import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 
 import org.syndaryl.animalsdropbones.AnimalsDropBones;
 import org.syndaryl.animalsdropbones.handler.FurnaceFuelHandler;
@@ -56,6 +57,14 @@ public class BlockManager {
 							(Float) BlockManager.BlockSpecifications[i][3] * 1.2F, 
 							(Float) BlockManager.BlockSpecifications[i][4])
 					);
+		}
+	}
+	
+	public static void registerOreDict() {
+
+		for (int i = 0; i < BlockManager.COMPRESSEDBLOCKS.size(); i++)
+		{
+			OreDictionary.registerOre(((BlockCompressed) BlockManager.COMPRESSEDBLOCKS.get(i)).getName(), new ItemStack(BlockManager.COMPRESSEDBLOCKS.get(i),1));
 		}
 	}
 	

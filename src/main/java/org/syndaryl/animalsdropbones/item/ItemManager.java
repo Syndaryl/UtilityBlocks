@@ -3,8 +3,10 @@
  */
 package org.syndaryl.animalsdropbones.item;
 
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemModelMesher;
+import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -57,11 +59,6 @@ public class ItemManager {
 	public ItemManager() {
 		// TODO Auto-generated constructor stub
 	}
-	public static void mainRegistry() {
-		initialiseItems();
-		registerOreDict();
-		addCraftingRecipies();
-	}
 	public static void initialiseItems () {
 		String[] names;
 		int[] hunger;
@@ -86,9 +83,22 @@ public class ItemManager {
 		handle = (ToolHandle) new ToolHandle();
 		
 	}
+
+	public static void variantRegistry() {
+	    ModelBakery.addVariantName(foods,  AnimalsDropBones.MODID + ":" + foods.getName(0),
+	    		AnimalsDropBones.MODID + ":" + foods.getName(1),
+	    		AnimalsDropBones.MODID + ":" + foods.getName(2),
+	    		AnimalsDropBones.MODID + ":" + foods.getName(3),
+	    		AnimalsDropBones.MODID + ":" + foods.getName(4),
+	    		AnimalsDropBones.MODID + ":" + foods.getName(5),
+	    		AnimalsDropBones.MODID + ":" + foods.getName(6),
+	    		AnimalsDropBones.MODID + ":" + foods.getName(7),
+	    		AnimalsDropBones.MODID + ":" + foods.getName(8)
+	    );
+	}
+	
+	
 	public static void registerOreDict() {
-
-
     	OreDictionary.registerOre("toolHandle", new ItemStack(handle,1));
 		
 	}
@@ -100,16 +110,17 @@ public class ItemManager {
 //			// Shaped Recipe
 //			registerShapedRecipie( foods, i,  recipies[i]);
 //		}
-		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 0),	new Object[]{'A','B', 'A', new ItemStack( Items.apple), 'B', new ItemStack( Items.glass_bottle)});
-		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 1),	new Object[]{"ASA","WWW", 'A', new ItemStack( Items.apple), 'W', new ItemStack( Items.wheat), 'S', new ItemStack(Items.sugar)});
-		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 2),	new Object[]{'A','M','B', 'A', new ItemStack( Items.egg), 'B', new ItemStack( Items.milk_bucket), 'B', new ItemStack( Items.glass_bottle)});
-		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 3),	new Object[]{'A','B', 'A', new ItemStack( Items.apple), 'B', new ItemStack( Items.glass_bottle)});
-		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 4),	new Object[]{'P','B', 'P', new ItemStack( Items.potato), 'B', new ItemStack( Items.glass_bottle)});
-		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 5),	new Object[]{'C','B', 'C', new ItemStack( Items.carrot), 'B', new ItemStack( Items.glass_bottle)});
-		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 6),	new Object[]{'S','B', 'S', new ItemStack(foods, 1, 7), 'B', new ItemStack( Items.glass_bottle)});
-		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 7),	new Object[]{"SS","SS", 'S', new ItemStack(Items.sugar)});
-		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 8),	new Object[]{"F","L", 'A', new ItemStack( Items.fish), 'W', new ItemStack( Blocks.leaves )});
-		
+		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 0),	new Object[]{"A","B", 		'A', new ItemStack( Items.apple), 'B', new ItemStack( Items.glass_bottle)});
+		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 1),	new Object[]{"ASA","WWW", 	'A', new ItemStack( Items.apple), 'W', new ItemStack( Items.wheat), 'S', new ItemStack(Items.sugar)});
+		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 1),	new Object[]{"   ", "ASA","WWW", 	'A', new ItemStack( Items.apple), 'W', new ItemStack( Items.wheat), 'S', new ItemStack(Items.sugar)});
+		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 2),	new Object[]{"A","M","B", 	'A', new ItemStack( Items.egg), 'M', new ItemStack( Items.milk_bucket), 'B', new ItemStack( Items.glass_bottle)});
+		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 3),	new Object[]{"A","B", 		'A', new ItemStack( Items.apple), 'B', new ItemStack( Items.glass_bottle)});
+		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 4),	new Object[]{"P","B", 		'P', new ItemStack( Items.potato), 'B', new ItemStack( Items.glass_bottle)});
+		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 5),	new Object[]{"C","B", 		'C', new ItemStack( Items.carrot), 'B', new ItemStack( Items.glass_bottle)});
+		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 6),	new Object[]{"S","B", 		'S', new ItemStack(foods, 1, 7), 'B', new ItemStack( Items.glass_bottle)});
+		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 7),	new Object[]{"SS","SS", 	'S', new ItemStack(Items.sugar)});
+		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 8),	new Object[]{"F","L", 		'A', new ItemStack( Items.fish, 1, 0), 'W', new ItemStack( Blocks.leaves )});		
+		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 8),	new Object[]{"F","L", 		'A', new ItemStack( Items.fish, 1, 1), 'W', new ItemStack( Blocks.leaves )});		
         
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(handle,1), 
         		"s  ",
@@ -170,15 +181,7 @@ public class ItemManager {
 		registerWithMesher(mattockIron, 0);
 		registerWithMesher(sledgehammerIron, 0);
 		registerWithMesher(handle, 0);
-		
-		/*
-		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
-		String name = AnimalsDropBones.MODID + ":" + sledgehammerStone.getName();
-		AnimalsDropBones.LOG.warn("SYNDARYL: item " + name);
-		mesher.register(sledgehammerStone, 0, new ModelResourceLocation(name, "inventory")); 
-		*/
-		
-	    
+			    
 	    for (int i = 0; i < foodData.length; i ++) {
 			registerWithMesher(foods, i);
 	    }
@@ -194,15 +197,10 @@ public class ItemManager {
 		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
 		String name = AnimalsDropBones.MODID + ":" + item.getName(metadata);
 		
-	    AnimalsDropBones.LOG.warn("SYNDARYL: item ModelResourceLocation: Where the hell are my models?: "  + name );
+	    //AnimalsDropBones.LOG.warn("SYNDARYL: item ModelResourceLocation: Where the hell are my models?: "  + name );
 	    mesher.register((Item)item, metadata, new ModelResourceLocation( name, "inventory" ));
-	    // I'm using a different model for each metadata so I don't need this. I think.
-		//		if ( metadata != 0)
-		//		{
-		//			ModelBakery.addVariantName((Item)item, name);
-		//
-		//		}
-		return mesher;
+
+	    return mesher;
 	}
 	
 	private static String[] getStringFromList(Object[][] list, int item)

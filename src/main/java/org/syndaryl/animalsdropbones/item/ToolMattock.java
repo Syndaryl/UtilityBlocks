@@ -13,6 +13,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
@@ -40,7 +41,7 @@ public class ToolMattock extends ItemSpade implements IItemName {
 		name = NamespaceManager.GetModNameLC() + "_" + materialName +"_mattock";
 		setUnlocalizedName(getName());
 		this.setCreativeTab(CreativeTabs.tabTools);
-        this.setMaxDamage(material.getMaxUses()*4);
+        this.setMaxDamage(material.getMaxUses()*6);
 
         this.efficiencyOnProperMaterial = material.getEfficiencyOnProperMaterial()/4;
         
@@ -116,6 +117,8 @@ public class ToolMattock extends ItemSpade implements IItemName {
                 }
                 // dumb thing to replace a proper "break block as if broken by player" method until otherwise found
             	breakBlock(gameWorld_, neighbourBlockContainer, actor);
+            	if (actor instanceof EntityPlayer)
+            		((EntityPlayer) actor).getFoodStats().addExhaustion(1.0F);
             }
         }
 	}

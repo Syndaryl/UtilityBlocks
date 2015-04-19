@@ -4,11 +4,13 @@ import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
@@ -30,7 +32,7 @@ public class ToolSledgehammer extends ItemPickaxe implements IItemName {
 		name = NamespaceManager.GetModNameLC() + "_" + materialName +"_sledgehammer";
 		setUnlocalizedName( getName() );
 		this.setCreativeTab(CreativeTabs.tabTools);
-        this.setMaxDamage(material.getMaxUses()*4);
+        this.setMaxDamage(material.getMaxUses()*6);
 
         this.efficiencyOnProperMaterial = material.getEfficiencyOnProperMaterial()/4;
         
@@ -87,6 +89,8 @@ public class ToolSledgehammer extends ItemPickaxe implements IItemName {
                 }
                 // dumb thing to replace a proper "break block as if broken by player" method until otherwise found
             	breakBlock(gameWorld_, neighbourBlockContainer, actor);
+            	if (actor instanceof EntityPlayer)
+            		((EntityPlayer) actor).getFoodStats().addExhaustion(1.0F);
             }
         }
 	}

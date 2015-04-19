@@ -4,6 +4,7 @@ package org.syndaryl.animalsdropbones.item;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ToolHandle extends Item implements IItemName {
 
@@ -12,6 +13,7 @@ public class ToolHandle extends Item implements IItemName {
 		// TODO Auto-generated constructor stub
 	    this.setCreativeTab(CreativeTabs.tabMisc);   // the item will appear on the Miscellaneous tab in creative
 		setUnlocalizedName(org.syndaryl.animalsdropbones.NamespaceManager.getLocalized( getName() ));
+		GameRegistry.registerItem(this, getName());
 	}
 
 	@Override

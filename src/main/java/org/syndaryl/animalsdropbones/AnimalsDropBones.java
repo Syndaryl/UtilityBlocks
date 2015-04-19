@@ -47,6 +47,14 @@ public class AnimalsDropBones {
 		ConfigurationHandler.setConfig(event.getSuggestedConfigurationFile());
 		BlockManager.initialiseBlock();
 		ItemManager.initialiseItems();
+		
+		BlockManager.registerOreDict();
+		ItemManager.registerOreDict();
+		
+		if(event.getSide() == Side.CLIENT)
+		{
+			ItemManager.variantRegistry();
+		}
 	}
 	
 	@Mod.EventHandler
