@@ -1,7 +1,7 @@
 {
 	"parent": "builtin/generated",
 	"textures": {
-		"layer0": "animalsdropbones:items/animalsdropbones_sack_carrot"
+		"layer0": "animalsdropbones:items/animalsdropbones_sack_carrots"
 	},
 	"display": {
 		"thirdperson": {

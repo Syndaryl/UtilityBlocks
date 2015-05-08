@@ -7,7 +7,6 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="744.09448819"
@@ -46,11 +45,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2"
-     inkscape:cx="96.078377"
-     inkscape:cy="539.3339"
+     inkscape:zoom="1"
+     inkscape:cx="-93.965939"
+     inkscape:cy="764.47031"
      inkscape:document-units="px"
-     inkscape:current-layer="CarrotSack"
+     inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1920"
      inkscape:window-height="1018"
@@ -65,7 +64,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -73,13 +72,6 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1">
-    <image
-       y="-145.55887"
-       x="203.83322"
-       id="image2993"
-       xlink:href="file:///D:/Games/Forge_Eclipse_workspace/AnimalsDropBones/src/main/resources/assets/animalsdropbones/textures/items/animalsdropbones_sack_base.png"
-       height="598"
-       width="444" />
     <g
        id="g2996"
        transform="translate(210.11173,224.25387)">
@@ -260,9 +252,9 @@
     <g
        transform="translate(18.014082,338.38271)"
        id="CarrotSack"
-       inkscape:export-filename="D:\Games\Forge_Eclipse_workspace\AnimalsDropBones\src\main\resources\assets\animalsdropbones\textures\items\animalsdropbones_sack_coco.png"
-       inkscape:export-xdpi="49.819584"
-       inkscape:export-ydpi="49.819584">
+       inkscape:export-filename="D:\Games\Forge_Eclipse_workspace\AnimalsDropBones\src\main\resources\assets\animalsdropbones\textures\items\animalsdropbones_sack_carrot.png"
+       inkscape:export-xdpi="48.642597"
+       inkscape:export-ydpi="48.642597">
       <g
          id="g4070-7"
          inkscape:export-filename="D:\Games\Forge_Eclipse_workspace\AnimalsDropBones\src\main\resources\assets\animalsdropbones\textures\items\sack_coco.png"
@@ -819,7 +811,7 @@
     <g
        transform="translate(10.943015,498.89595)"
        id="PotatoSack"
-       inkscape:export-filename="D:\Games\Forge_Eclipse_workspace\AnimalsDropBones\src\main\resources\assets\animalsdropbones\textures\items\animalsdropbones_sack_coco.png"
+       inkscape:export-filename="D:\Games\Forge_Eclipse_workspace\AnimalsDropBones\src\main\resources\assets\animalsdropbones\textures\items\animalsdropbones_sack_potato.png"
        inkscape:export-xdpi="49.819584"
        inkscape:export-ydpi="49.819584">
       <g
