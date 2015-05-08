@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -33,7 +34,7 @@ import org.syndaryl.animalsdropbones.item.ItemManager;
 public class AnimalsDropBones {
 	public static final String MODID   = "animalsdropbones";
 	public static final String NAME    = "Animals Drop Bones";
-	public static final String VERSION = "1.0.1";
+	public static final String VERSION = "1.0.7";
 	
 	public static Configuration config;
 	public static final FurnaceFuelHandler fuelHandler = new FurnaceFuelHandler();
@@ -66,8 +67,6 @@ public class AnimalsDropBones {
 		
 		
 		GameRegistry.registerFuelHandler(fuelHandler);
-		AnimalsDropBones.LOG.warn("SYNDARYL: Coal fuel value in init " + GameRegistry.getFuelValue(new ItemStack(  Items.coal, 1) ) + "\n");
-		System.out.print("SYNDARYL: Coal fuel value in init " + GameRegistry.getFuelValue(new ItemStack(  Items.coal, 1) ) + "\n" );
 		if (ConfigurationHandler.isEnabled)
 			MinecraftForge.EVENT_BUS.register(this);
 		
@@ -76,6 +75,11 @@ public class AnimalsDropBones {
 			BlockManager.graphicRegistry();
 			ItemManager.graphicRegistry();
 		}
+	}
+
+	@Mod.EventHandler
+	public void initPost(FMLPostInitializationEvent event) {
+	
 	}
 	
 	@SubscribeEvent

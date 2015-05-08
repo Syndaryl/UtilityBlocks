@@ -38,6 +38,7 @@ public class ItemManager {
 	public static ToolMattock mattockDiamond;
 	private static ToolSledgehammer sledgehammerDiamond;
 	public static ToolHandle handle;
+	public static ItemSack[] sacks;
 	
 	private final static int NAME = 0;
 	private final static int HUNGER = 1;
@@ -82,6 +83,13 @@ public class ItemManager {
 		sledgehammerDiamond = (ToolSledgehammer) new ToolSledgehammer(ToolMaterial.EMERALD);
 		handle = (ToolHandle) new ToolHandle();
 		
+		sacks = new ItemSack[] {
+				new ItemSack(),
+				new ItemSack( new ItemStack(Items.dye,1,3)),
+				new ItemSack(new ItemStack(Items.potato)),
+				new ItemSack(new ItemStack(Items.carrot))
+		};
+		
 	}
 
 	public static void variantRegistry() {
@@ -100,6 +108,7 @@ public class ItemManager {
 	
 	public static void registerOreDict() {
     	OreDictionary.registerOre("toolHandle", new ItemStack(handle,1));
+    	OreDictionary.registerOre("sack", new ItemStack(sacks[0],1));
 		
 	}
 	
@@ -111,6 +120,18 @@ public class ItemManager {
 //			registerShapedRecipie( foods, i,  recipies[i]);
 //		}
 		ItemStack waterbottle = new ItemStack( Items.potionitem, 1, 0);
+		AnimalsDropBones.LOG.warn("ADB: Making Sacks " + sacks[0]);
+		AnimalsDropBones.LOG.warn("ADB: Making Sacks " + sacks[1]);
+		AnimalsDropBones.LOG.warn("ADB: Making Sacks " + sacks[2]);
+		GameRegistry.addShapedRecipe(new ItemStack(sacks[1],1,0), new Object[]{ "ccc", "csc", "ccc", 	'c', new ItemStack(Items.dye,1,3), 's', new ItemStack(sacks[0],1)});
+		GameRegistry.addShapedRecipe(new ItemStack(sacks[2],1,0), new Object[]{ "ccc", "csc", "ccc", 	'c', new ItemStack(Items.potato), 's', new ItemStack(sacks[0],1)});
+		GameRegistry.addShapedRecipe(new ItemStack(sacks[0],1,0), new Object[]{ "w w", "w w", "www", 	'w', new ItemStack(Blocks.wool)});
+		GameRegistry.addShapedRecipe(new ItemStack(sacks[3],1,0), new Object[]{ "ccc", "csc", "ccc", 	'c', new ItemStack(Items.carrot), 's', new ItemStack(sacks[0],1)});
+		
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.dye,8,3), new ItemStack(sacks[1].setContainerItem(sacks[0])));
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.potato,8,3), new ItemStack(sacks[2].setContainerItem(sacks[0])));
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.carrot,8,3), new ItemStack(sacks[3].setContainerItem(sacks[0])));
+		
 		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 0),	new Object[]{"A","B", 				'A', new ItemStack( Items.apple), 'B', waterbottle});
 		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 1),	new Object[]{"ASA","WWW", 			'A', new ItemStack( Items.apple), 'W', new ItemStack( Items.wheat), 'S', new ItemStack(foods, 1, 7)});
 		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 1),	new Object[]{"   ", "ASA","WWW", 	'A', new ItemStack( Items.apple), 'W', new ItemStack( Items.wheat), 'S', new ItemStack(foods, 1, 7)});
@@ -131,6 +152,13 @@ public class ItemManager {
         		)
         );
 
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.wool,1), 
+        		"fff",
+        		"fff",
+        		"fff",
+        		'f', Items.feather
+        		)
+        );
         
         makeMattockRecepie(new ItemStack(mattockWood,1), "logWood", "toolHandle");
         makeMattockRecepie(new ItemStack(mattockStone,1), "stone", "toolHandle");
@@ -182,6 +210,10 @@ public class ItemManager {
 		registerWithMesher(mattockIron, 0);
 		registerWithMesher(sledgehammerIron, 0);
 		registerWithMesher(handle, 0);
+		for (ItemSack sack : sacks){
+				registerWithMesher(sack,0);
+		}
+	
 			    
 	    for (int i = 0; i < foodData.length; i ++) {
 			registerWithMesher(foods, i);

@@ -28,7 +28,7 @@ import org.syndaryl.animalsdropbones.block.BlockWithLocation;
  * @author syndaryl
  *
  */
-public class ToolMattock extends ItemSpade implements IItemName {
+public class ToolMattock extends ItemSpade implements IItemName, IToolBlockSmasher {
     static Random r = new Random();
     private String name = "mattock"; 
 
@@ -83,7 +83,8 @@ public class ToolMattock extends ItemSpade implements IItemName {
 	 * @param actor holding tool
 	 * @param blockDeck collection of blocks to hammer against
 	 */
-	
+
+	@Override
     public void hitManyBlocks(ItemStack toolInstance, World gameWorld_,
 			int worldX, int worldY, int worldZ, EntityLivingBase actor,
 			Deque<BlockWithLocation> blockDeck) {
@@ -131,6 +132,7 @@ public class ToolMattock extends ItemSpade implements IItemName {
 	 * @param blockXYZ
 	 */
 
+	@Override
     public void breakBlock(World gameWorld_,
 			BlockWithLocation blockXYZ, EntityLivingBase player) {
         int fortune = EnchantmentHelper.getFortuneModifier(player);
@@ -152,6 +154,7 @@ public class ToolMattock extends ItemSpade implements IItemName {
 	 * @param blockDeck deque object to add the found neighbours to
 	 */
 
+	@Override
     public void getNeighbouringBlocksToDeque(World gameWorld_,
 			Block blockStruck, int worldX, int worldY, int worldZ,
 			Deque<BlockWithLocation> blockDeck) {

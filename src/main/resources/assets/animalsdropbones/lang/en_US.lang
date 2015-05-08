@@ -32,4 +32,9 @@ item.animalsdropbones_wood_mattock.name=Wood Mattock
 
 item.animalsdropbones_tool_handle.name=Tool Handle
 
+item.animalsdropbones_sack.name=Sack
+item.animalsdropbones_sack_carrot.name=Sack of Carrots
+item.animalsdropbones_sack_potato.name=Sack of Potatoes
+item.animalsdropbones_sack_dyePowder_brown.name=Sack of Cocoa Beans
+
 itemGroup.animalsdropbones.name=Syndaryl's Animals Drop Bones
