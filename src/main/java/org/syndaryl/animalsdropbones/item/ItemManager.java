@@ -129,8 +129,8 @@ public class ItemManager {
 		GameRegistry.addShapedRecipe(new ItemStack(sacks[3],1,0), new Object[]{ "ccc", "csc", "ccc", 	'c', new ItemStack(Items.carrot), 's', new ItemStack(sacks[0],1)});
 		
 		GameRegistry.addShapelessRecipe(new ItemStack(Items.dye,8,3), new ItemStack(sacks[1].setContainerItem(sacks[0])));
-		GameRegistry.addShapelessRecipe(new ItemStack(Items.potato,8,1), new ItemStack(sacks[2].setContainerItem(sacks[0])));
-		GameRegistry.addShapelessRecipe(new ItemStack(Items.carrot,8,1), new ItemStack(sacks[3].setContainerItem(sacks[0])));
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.potato,8), new ItemStack(sacks[2].setContainerItem(sacks[0])));
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.carrot,8), new ItemStack(sacks[3].setContainerItem(sacks[0])));
 		
 		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 0),	new Object[]{"A","B", 				'A', new ItemStack( Items.apple), 'B', waterbottle});
 		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 1),	new Object[]{"ASA","WWW", 			'A', new ItemStack( Items.apple), 'W', new ItemStack( Items.wheat), 'S', new ItemStack(foods, 1, 7)});
