@@ -18,6 +18,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.syndaryl.animalsdropbones.AnimalsDropBones;
+import org.syndaryl.animalsdropbones.NamespaceManager;
 import org.syndaryl.animalsdropbones.handler.FurnaceFuelHandler;
 
 public class BlockManager {
@@ -64,7 +65,14 @@ public class BlockManager {
 
 		for (int i = 0; i < BlockManager.COMPRESSEDBLOCKS.size(); i++)
 		{
-			OreDictionary.registerOre(((BlockCompressed) BlockManager.COMPRESSEDBLOCKS.get(i)).getName(), new ItemStack(BlockManager.COMPRESSEDBLOCKS.get(i),1));
+			OreDictionary.registerOre(
+					(
+						(BlockCompressed) BlockManager.COMPRESSEDBLOCKS.get(i)).getName()
+						.replaceFirst(NamespaceManager.GetModNameLC() + "_", "")
+						.replaceFirst("(^.+)_(compressed)", "blockCompressed$1"), 
+						new ItemStack(BlockManager.COMPRESSEDBLOCKS.get(i),1
+					)
+			);
 		}
 	}
 	

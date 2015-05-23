@@ -113,19 +113,44 @@ public class ItemManager {
 	}
 	
 	public static void addCraftingRecipies() {
-//		Object[][] recipies = getRecepieListFromList(foodData, ItemManager.RECIPIES);
-//		for (int i = 0; i < foods.getMaxMetadata(); i++)
-//		{
-//			// Shaped Recipe
-//			registerShapedRecipie( foods, i,  recipies[i]);
-//		}
+		addRecipiesForCustomItems();
+
+        addRecipiesForVanillaItems();
+        
+	}
+	/**
+	 * 
+	 */
+	private static void addRecipiesForVanillaItems() {
+		AnimalsDropBones.LOG.info( "SYNDARYL: generating vanilla recipies");
+//		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.feather,1), 
+//        		"rl",
+//        		"rl",
+//        		"rl",
+//        		'r', new ItemStack(Blocks.reeds), 'l', new ItemStack( Blocks.leaves )
+//        		)
+//        );
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.wool,1), 
+        		"fff",
+        		"fff",
+        		"fff",
+        		'f', Items.feather
+        		)
+        );
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.feather,1), 
+        		"rw",
+        		'r', new ItemStack(Blocks.reeds), 'w', new ItemStack(Blocks.wool)
+        		)
+        );
+	}
+	/**
+	 * 
+	 */
+	private static void addRecipiesForCustomItems() {
 		ItemStack waterbottle = new ItemStack( Items.potionitem, 1, 0);
-		AnimalsDropBones.LOG.warn("ADB: Making Sacks " + sacks[0]);
-		AnimalsDropBones.LOG.warn("ADB: Making Sacks " + sacks[1]);
-		AnimalsDropBones.LOG.warn("ADB: Making Sacks " + sacks[2]);
 		GameRegistry.addShapedRecipe(new ItemStack(sacks[1],1,0), new Object[]{ "ccc", "csc", "ccc", 	'c', new ItemStack(Items.dye,1,3), 's', new ItemStack(sacks[0],1)});
 		GameRegistry.addShapedRecipe(new ItemStack(sacks[2],1,0), new Object[]{ "ccc", "csc", "ccc", 	'c', new ItemStack(Items.potato), 's', new ItemStack(sacks[0],1)});
-		GameRegistry.addShapedRecipe(new ItemStack(sacks[0],1,0), new Object[]{ "w w", "w w", "www", 	'w', new ItemStack(Blocks.wool)});
+		GameRegistry.addShapedRecipe(new ItemStack(sacks[0],4,0), new Object[]{ "w w", "w w", "www", 	'w', new ItemStack(Blocks.wool)});
 		GameRegistry.addShapedRecipe(new ItemStack(sacks[3],1,0), new Object[]{ "ccc", "csc", "ccc", 	'c', new ItemStack(Items.carrot), 's', new ItemStack(sacks[0],1)});
 		
 		GameRegistry.addShapelessRecipe(new ItemStack(Items.dye,8,3), new ItemStack(sacks[1].setContainerItem(sacks[0])));
@@ -143,23 +168,7 @@ public class ItemManager {
 		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 7),	new Object[]{"SS","SS", 			'S', new ItemStack(Items.sugar)});
 		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 8),	new Object[]{"F","L", 				'F', new ItemStack( Items.fish, 1, 0), 'L', new ItemStack( Blocks.leaves )});		
 		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 8),	new Object[]{"F","L", 				'F', new ItemStack( Items.fish, 1, 1), 'L', new ItemStack( Blocks.leaves )});		
-        
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(handle,1), 
-        		"s  ",
-        		" s ",
-        		"  s",
-        		's', "stickWood"
-        		)
-        );
 
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.wool,1), 
-        		"fff",
-        		"fff",
-        		"fff",
-        		'f', Items.feather
-        		)
-        );
-        
         makeMattockRecepie(new ItemStack(mattockWood,1), "logWood", "toolHandle");
         makeMattockRecepie(new ItemStack(mattockStone,1), "stone", "toolHandle");
         makeMattockRecepie(new ItemStack(mattockIron,1), "ingotIron", "toolHandle");
@@ -170,6 +179,13 @@ public class ItemManager {
         makeHammerRecepie(new ItemStack(sledgehammerIron,1), "ingotIron", "toolHandle");
         makeHammerRecepie(new ItemStack(sledgehammerDiamond,1), "gemDiamond", "toolHandle");
         
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(handle,1), 
+        		"s  ",
+        		" s ",
+        		"  s",
+        		's', "stickWood"
+        		)
+        );
 	}
 
 	private static void makeMattockRecepie(ItemStack mattockStack,
@@ -209,6 +225,8 @@ public class ItemManager {
 		registerWithMesher(sledgehammerStone, 0);
 		registerWithMesher(mattockIron, 0);
 		registerWithMesher(sledgehammerIron, 0);
+		registerWithMesher(mattockDiamond, 0);
+		registerWithMesher(sledgehammerDiamond, 0);
 		registerWithMesher(handle, 0);
 		for (ItemSack sack : sacks){
 				registerWithMesher(sack,0);

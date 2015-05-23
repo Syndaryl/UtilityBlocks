@@ -1,5 +1,10 @@
 package org.syndaryl.animalsdropbones;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.passive.EntityPig;
@@ -18,7 +23,13 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.oredict.OreDictionary;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.simple.SimpleLogger;
+import org.apache.logging.log4j.util.PropertiesUtil;
+import org.apache.logging.log4j.message.StringFormatterMessageFactory;
 import org.syndaryl.animalsdropbones.block.BlockManager;
 import org.syndaryl.animalsdropbones.handler.ConfigurationHandler;
 import org.syndaryl.animalsdropbones.handler.FurnaceFuelHandler;
@@ -34,11 +45,15 @@ import org.syndaryl.animalsdropbones.item.ItemManager;
 public class AnimalsDropBones {
 	public static final String MODID   = "animalsdropbones";
 	public static final String NAME    = "Animals Drop Bones";
-	public static final String VERSION = "1.0.7";
+	public static final String VERSION = "1.0.8";
 	
 	public static Configuration config;
 	public static final FurnaceFuelHandler fuelHandler = new FurnaceFuelHandler();
-	public static final org.apache.logging.log4j.Logger LOG = FMLLog.getLogger(); 
+	public static final SimpleLogger LOG = new SimpleLogger(
+			"SyndarylLog", Level.INFO, false, false, true, false, "yyyy/mm/dd hh:mm:ss", 
+			new StringFormatterMessageFactory(), new PropertiesUtil(""), null
+			);
+//	public static final Logger LOG = FMLLog.getLogger(); 
 	@Mod.Instance(MODID)
 	public static AnimalsDropBones instance;
 	
@@ -46,6 +61,13 @@ public class AnimalsDropBones {
 	public void initPre(FMLPreInitializationEvent event) {
 		// Initiating configuration
 		ConfigurationHandler.setConfig(event.getSuggestedConfigurationFile());
+		try {
+			LOG.setStream(new PrintStream("logs/syndaryl.log"));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		BlockManager.initialiseBlock();
 		ItemManager.initialiseItems();
 		
@@ -79,7 +101,12 @@ public class AnimalsDropBones {
 
 	@Mod.EventHandler
 	public void initPost(FMLPostInitializationEvent event) {
-	
+
+		AnimalsDropBones.LOG.info("       OreDict contains " + OreDictionary.getOreNames().length + " names");
+		for(String name : OreDictionary.getOreNames())
+		{
+			AnimalsDropBones.LOG.info("SYNDARYL OREDICT: '" + name + "'");
+		}
 	}
 	
 	@SubscribeEvent
