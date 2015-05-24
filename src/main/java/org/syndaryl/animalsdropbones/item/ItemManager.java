@@ -4,24 +4,21 @@
 package org.syndaryl.animalsdropbones.item;
 
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemModelMesher;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
-import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import org.syndaryl.animalsdropbones.AnimalsDropBones;
-import org.syndaryl.animalsdropbones.block.BlockManager;
 
 /**
  * @author syndaryl
@@ -122,26 +119,52 @@ public class ItemManager {
 	 * 
 	 */
 	private static void addRecipiesForVanillaItems() {
-		AnimalsDropBones.LOG.info( "SYNDARYL: generating vanilla recipies");
-//		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.feather,1), 
+		AnimalsDropBones.LOG.info( "SYNDARYL: generating vanilla convenience recipies");
+		GameRegistry.addShapedRecipe(new ItemStack(Items.feather,1), 
+        		"rl",
+        		"rl",
+        		"rl",
+        		'r', new ItemStack(Blocks.reeds), 'l', new ItemStack( Blocks.leaves )
+        );
+//		GameRegistry.addRecipe(new ItemStack(Items.feather,1), 
+//		new Object[]{
 //        		"rl",
 //        		"rl",
 //        		"rl",
-//        		'r', new ItemStack(Blocks.reeds), 'l', new ItemStack( Blocks.leaves )
-//        		)
+//        		'r', new ItemStack(Blocks.reeds), 'l', "treeLeaves"
+//		}
 //        );
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.wool,1), 
+		GameRegistry.addShapedRecipe(new ItemStack(Blocks.wool,1), 
+			new Object[]{
         		"fff",
         		"fff",
         		"fff",
         		'f', Items.feather
-        		)
+			}
         );
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.feather,1), 
+		GameRegistry.addShapedRecipe(new ItemStack(Items.feather,9), 
+			new Object[]{
         		"rw",
         		'r', new ItemStack(Blocks.reeds), 'w', new ItemStack(Blocks.wool)
-        		)
+			}
         );
+//		GameRegistry.addRecipe(new ItemStack(Items.stick,1),
+//				new Object[]{
+//				"s",
+//				"s",
+//				"s", 
+//				's', "treeSapling"
+//			}
+//		);
+		//GameRegistry.addShapedRecipe(new ItemStack(Blocks.sand,4), "s", 's', "sandstone");
+
+		GameRegistry.addShapedRecipe(new ItemStack(Items.iron_ingot,1),
+			new Object[]{
+				"bb",
+				"bb", 
+				'b', Blocks.iron_bars
+			}
+		);
 	}
 	/**
 	 * 
@@ -210,6 +233,7 @@ public class ItemManager {
         );
 		
 	}
+	@SuppressWarnings("unused")
 	private static void registerShapedRecipie(ItemMetadataFood item, int meta,
 			Object...recipie) {
 		ItemStack outputItem = new ItemStack(item, 1, meta);
@@ -281,7 +305,8 @@ public class ItemManager {
 		}
 		return names;
 	}
-	
+
+	@SuppressWarnings("unused")
 	private static Object[][] getRecepieListFromList(Object[][] list, int item)
 	{
 		Object[][] objects = new Object[list.length][];
