@@ -72,18 +72,18 @@ public class BlockManager {
 	
 	public static void registerOreDict() {
 
-//		for (int i = 0; i < BlockManager.COMPRESSEDBLOCKS.size(); i++)
-//		{
-//			String name = BlockManager.COMPRESSEDBLOCKS.get(i).getName()
-//			.replaceFirst(NamespaceManager.GetModNameLC() + "_", "")
-//			.replaceFirst("(^.+)_(compressed)", "blockCompressed$1"); 
-//			GameRegistry.registerBlock(BlockManager.COMPRESSEDBLOCKS.get(i), BlockManager.COMPRESSEDBLOCKS.get(i).getName());
-//			OreDictionary.registerOre(name, 
-//				new ItemStack(
-//						BlockManager.COMPRESSEDBLOCKS.get(i),1
-//					)
-//			);
-//		}
+		for (int i = 0; i < BlockManager.COMPRESSEDBLOCKS.size(); i++)
+		{
+			String name = BlockManager.COMPRESSEDBLOCKS.get(i).getName()
+			.replaceFirst(NamespaceManager.GetModNameLC() + "_", "")
+			.replaceFirst("(^.+)_(compressed)", "blockCompressed$1"); 
+			GameRegistry.registerBlock(BlockManager.COMPRESSEDBLOCKS.get(i), BlockManager.COMPRESSEDBLOCKS.get(i).getName());
+			OreDictionary.registerOre(name, 
+				new ItemStack(
+						BlockManager.COMPRESSEDBLOCKS.get(i),1
+					)
+			);
+		}
 	}
 	
 	public static void graphicRegistry()
