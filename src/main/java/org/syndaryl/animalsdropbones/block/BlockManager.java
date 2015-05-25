@@ -4,9 +4,6 @@ import java.util.LinkedList;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Block.SoundType;
-import net.minecraft.block.BlockDynamicLiquid;
-import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.BlockStaticLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemModelMesher;
@@ -31,12 +28,6 @@ public class BlockManager {
 		
 	}
 	public static void mainRegistry() {
-        //registerBlock(8, "flowing_water", (new BlockDynamicLiquid(Material.water)).setHardness(100.0F).setLightOpacity(3).setUnlocalizedName("water").disableStats());
-        //registerBlock(9, "water", (new BlockStaticLiquid(Material.water)).setHardness(100.0F).setLightOpacity(3).setUnlocalizedName("water").disableStats());
-        //registerBlock(10, "flowing_lava", (new BlockDynamicLiquid(Material.lava)).setHardness(100.0F).setLightLevel(1.0F).setUnlocalizedName("lava").disableStats());
-        //registerBlock(11, "lava", (new BlockStaticLiquid(Material.lava)).setHardness(100.0F).setLightLevel(1.0F).setUnlocalizedName("lava").disableStats());
-
-		
 		initialiseBlock();
 		addCraftingRecipies();
 	}
@@ -58,7 +49,7 @@ public class BlockManager {
 	public static void initialiseBlock() {
 		for (int i = 0; i < BlockManager.BlockSpecifications.length; i++)
 		{
-			AnimalsDropBones.LOG.info("SYNDARYL: building block "  + BlockManager.BlockSpecifications[i][1] );
+			AnimalsDropBones.LOG.warn("SYNDARYL: building block "  + BlockManager.BlockSpecifications[i][1] );
 			BlockManager.COMPRESSEDBLOCKS.add(
 					new BlockCompressed(
 							(Material) BlockManager.BlockSpecifications[i][0], 
@@ -74,13 +65,12 @@ public class BlockManager {
 
 		for (int i = 0; i < BlockManager.COMPRESSEDBLOCKS.size(); i++)
 		{
-			String name = BlockManager.COMPRESSEDBLOCKS.get(i).getName()
-			.replaceFirst(NamespaceManager.GetModNameLC() + "_", "")
-			.replaceFirst("(^.+)_(compressed)", "blockCompressed$1"); 
-			GameRegistry.registerBlock(BlockManager.COMPRESSEDBLOCKS.get(i), BlockManager.COMPRESSEDBLOCKS.get(i).getName());
-			OreDictionary.registerOre(name, 
-				new ItemStack(
-						BlockManager.COMPRESSEDBLOCKS.get(i),1
+			OreDictionary.registerOre(
+					(
+						(BlockCompressed) BlockManager.COMPRESSEDBLOCKS.get(i)).getName()
+						.replaceFirst(NamespaceManager.GetModNameLC() + "_", "")
+						.replaceFirst("(^.+)_(compressed)", "blockCompressed$1"), 
+						new ItemStack(BlockManager.COMPRESSEDBLOCKS.get(i),1
 					)
 			);
 		}
@@ -92,7 +82,7 @@ public class BlockManager {
 		for (int i = 0; i < BlockManager.COMPRESSEDBLOCKS.size(); i++)
 		{
 			String name = AnimalsDropBones.MODID + ":" + ((BlockCompressed) BlockManager.COMPRESSEDBLOCKS.get(i)).getName();
-			AnimalsDropBones.LOG.info("SYNDARYL: meshing block "  + name );
+			AnimalsDropBones.LOG.warn("SYNDARYL: meshing block "  + name );
 			mesher.register(
 					Item.getItemFromBlock(BlockManager.COMPRESSEDBLOCKS.get(i)), 0, new ModelResourceLocation(
 							name, "inventory"
@@ -101,6 +91,8 @@ public class BlockManager {
 		}
 	}
 
+
+	
 	public static void addFuels(FurnaceFuelHandler fuelhandler) {
 		for (int i = 0; i < BlockManager.COMPRESSEDBLOCKS.size(); i++)
 		{
