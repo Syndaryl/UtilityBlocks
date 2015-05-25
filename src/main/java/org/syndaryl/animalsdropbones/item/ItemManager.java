@@ -156,8 +156,16 @@ public class ItemManager {
 //				's', "treeSapling"
 //			}
 //		);
-		//GameRegistry.addShapedRecipe(new ItemStack(Blocks.sand,4), "s", 's', "sandstone");
+		GameRegistry.addShapedRecipe(new ItemStack(Blocks.sand,4), "s", 's', new ItemStack(Blocks.sandstone));
 
+		GameRegistry.addShapedRecipe(new ItemStack(Blocks.grass,1),
+			new Object[]{
+				"sss",
+				"sds",
+				"sss", 
+				's', new ItemStack(Items.wheat_seeds), 'd', new ItemStack(Blocks.dirt)
+			}
+		);
 		GameRegistry.addShapedRecipe(new ItemStack(Items.iron_ingot,1),
 			new Object[]{
 				"bb",

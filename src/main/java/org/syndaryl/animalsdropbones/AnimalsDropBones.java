@@ -72,7 +72,7 @@ public class AnimalsDropBones {
 		ItemManager.initialiseItems();
 		
 		//BlockManager.registerOreDict();
-		//ItemManager.registerOreDict();
+		ItemManager.registerOreDict();
 		
 		if(event.getSide() == Side.CLIENT)
 		{
