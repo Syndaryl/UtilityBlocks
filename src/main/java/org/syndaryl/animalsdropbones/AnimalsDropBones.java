@@ -45,7 +45,7 @@ import org.syndaryl.animalsdropbones.item.ItemManager;
 public class AnimalsDropBones {
 	public static final String MODID   = "animalsdropbones";
 	public static final String NAME    = "Animals Drop Bones";
-	public static final String VERSION = "1.0.9";
+	public static final String VERSION = "1.0.8";
 	
 	public static Configuration config;
 	public static final FurnaceFuelHandler fuelHandler = new FurnaceFuelHandler();
@@ -71,8 +71,8 @@ public class AnimalsDropBones {
 		BlockManager.initialiseBlock();
 		ItemManager.initialiseItems();
 		
-		//BlockManager.registerOreDict();
-		//ItemManager.registerOreDict();
+		BlockManager.registerOreDict();
+		ItemManager.registerOreDict();
 		
 		if(event.getSide() == Side.CLIENT)
 		{
