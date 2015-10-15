@@ -15,8 +15,13 @@ public class ConfigurationHandler {
 	public static boolean pigsDropLeather;
 	public static boolean horsesDropLeather;
 	public static boolean enableBlockCompresion;
+	
+	public static double smasherDurabilityMultiplier; 
+	public static double smasherEfficiencyMultiplier; 
 
 	public static boolean enableFood;
+
+	public static boolean enableObsidianTools;
 	
 	public static void setConfig(File configFile) {
 		config = new Configuration(configFile);
@@ -80,6 +85,39 @@ public class ConfigurationHandler {
 				"Are the new food items enabled?"
 				);
 		enableFood = currProp.getBoolean(true);
+		propOrder.add(currProp.getName());
+
+		
+		currProp = config.get(
+				"Tools",
+				"enableObsidianTools",
+				true,
+				"Are the new obsidian tools and armor enabled?"
+				);
+		enableObsidianTools = currProp.getBoolean(true);
+		propOrder.add(currProp.getName());
+		
+		currProp = config.get(
+				"Tools",
+				"smasherDurabilityMultiplier",
+				6.0F,
+				"Durability multiplier for smashers, relative to normal tools. Default is 6.0",
+				// Value range: 0+
+				0, Float.MAX_VALUE
+				);
+		smasherDurabilityMultiplier = currProp.getDouble(6.0F);
+		propOrder.add(currProp.getName());
+		
+		//smasherEfficiencyMultiplier
+		currProp = config.get(
+				"Tools",
+				"smasherEfficiencyMultiplier",
+				0.25F,
+				"Durability multiplier for smashers, relative to normal tools. Default is 0.25",
+				// Value range: 0+
+				0, Float.MAX_VALUE
+				);
+		smasherEfficiencyMultiplier = currProp.getDouble(0.25F);
 		propOrder.add(currProp.getName());
 
 		//currProp = config.get(
