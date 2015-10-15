@@ -19,16 +19,53 @@ item.animalsdropbones_food_sugar_water.name=Sugar Water
 item.animalsdropbones_food_sugar_cube.name=Sugar Cube
 item.animalsdropbones_food_sushi.name=Sushi
 
+item.animalsdropbones_obsidian_sledgehammer.name=Obsidian Sledgehammer
 item.animalsdropbones_gold_sledgehammer.name=Gold Sledgehammer
 item.animalsdropbones_emerald_sledgehammer.name=Diamond Sledgehammer
 item.animalsdropbones_iron_sledgehammer.name=Iron Sledgehammer
 item.animalsdropbones_stone_sledgehammer.name=Stone Sledgehammer
 item.animalsdropbones_wood_sledgehammer.name=Wood Sledgehammer
+
+item.animalsdropbones_obsidian_mattock.name=Obsidian Mattock
 item.animalsdropbones_gold_mattock.name=Gold Mattock
 item.animalsdropbones_emerald_mattock.name=Diamond Mattock
 item.animalsdropbones_iron_mattock.name=Iron Mattock
 item.animalsdropbones_stone_mattock.name=Stone Mattock
 item.animalsdropbones_wood_mattock.name=Wood Mattock
+
+item.animalsdropbones_adamantine_sledgehammer.name=Adamantine Sledgehammer
+item.animalsdropbones_aquarium_sledgehammer.name=Aquarium Sledgehammer
+item.animalsdropbones_brass_sledgehammer.name=Brass Sledgehammer
+item.animalsdropbones_bronze_sledgehammer.name=Bronze Sledgehammer
+item.animalsdropbones_coldiron_sledgehammer.name=Cold Iron Sledgehammer
+item.animalsdropbones_copper_sledgehammer.name=Copper Sledgehammer
+item.animalsdropbones_electrum_sledgehammer.name=Electrum Sledgehammer
+item.animalsdropbones_invar_sledgehammer.name=Invar Sledgehammer
+item.animalsdropbones_lead_sledgehammer.name=Lead Sledgehammer
+item.animalsdropbones_mithril_sledgehammer.name=Mithril Sledgehammer
+item.animalsdropbones_nickel_sledgehammer.name=Nickel Sledgehammer
+item.animalsdropbones_silver_sledgehammer.name=Silver Sledgehammer
+item.animalsdropbones_starsteel_sledgehammer.name=Starsteel Sledgehammer
+item.animalsdropbones_steel_sledgehammer.name=Steel Sledgehammer
+item.animalsdropbones_tin_sledgehammer.name=Tin Sledgehammer
+item.animalsdropbones_zinc_sledgehammer.name=Zinc Sledgehammer
+
+item.animalsdropbones_adamantine_mattock.name=Adamantine Mattock
+item.animalsdropbones_aquarium_mattock.name=Aquarium Mattock
+item.animalsdropbones_brass_mattock.name=Brass Mattock
+item.animalsdropbones_bronze_mattock.name=Bronze Mattock
+item.animalsdropbones_coldiron_mattock.name=Cold Iron Mattock
+item.animalsdropbones_copper_mattock.name=Copper Mattock
+item.animalsdropbones_electrum_mattock.name=Electrum Mattock
+item.animalsdropbones_invar_mattock.name=Invar Mattock
+item.animalsdropbones_lead_mattock.name=Lead Mattock
+item.animalsdropbones_mithril_mattock.name=Mithril Mattock
+item.animalsdropbones_nickel_mattock.name=Nickel Mattock
+item.animalsdropbones_silver_mattock.name=Silver Mattock
+item.animalsdropbones_starsteel_mattock.name=Starsteel Mattock
+item.animalsdropbones_steel_mattock.name=Steel Mattock
+item.animalsdropbones_tin_mattock.name=Tin Mattock
+item.animalsdropbones_zinc_mattock.name=Zinc Mattock
 
 item.animalsdropbones_tool_handle.name=Tool Handle
 
