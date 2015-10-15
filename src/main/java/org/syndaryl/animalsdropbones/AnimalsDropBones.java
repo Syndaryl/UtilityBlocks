@@ -16,6 +16,7 @@ import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -33,6 +34,7 @@ import org.apache.logging.log4j.message.StringFormatterMessageFactory;
 import org.syndaryl.animalsdropbones.block.BlockManager;
 import org.syndaryl.animalsdropbones.handler.ConfigurationHandler;
 import org.syndaryl.animalsdropbones.handler.FurnaceFuelHandler;
+import org.syndaryl.animalsdropbones.handler.MaterialHandler;
 import org.syndaryl.animalsdropbones.item.ItemManager;
 
 @Mod(
@@ -40,7 +42,9 @@ import org.syndaryl.animalsdropbones.item.ItemManager;
 		name       = AnimalsDropBones.NAME,
 		version    = AnimalsDropBones.VERSION,
 		
-		guiFactory = "org.syndaryl.animalsdropbones.handler.GUIFactory"
+		guiFactory = "org.syndaryl.animalsdropbones.handler.GUIFactory", 
+		
+		dependencies = "required-after:basemetals"
 	)
 public class AnimalsDropBones {
 	public static final String MODID   = "animalsdropbones";
@@ -68,6 +72,8 @@ public class AnimalsDropBones {
 			e.printStackTrace();
 		}
 		
+		MaterialHandler.addAllMaterials();
+		
 		BlockManager.initialiseBlock();
 		ItemManager.initialiseItems();
 		
@@ -83,8 +89,8 @@ public class AnimalsDropBones {
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event) {
 		FMLCommonHandler.instance().bus().register(instance);
-		BlockManager.addCraftingRecipies();
 		BlockManager.addFuels(fuelHandler);
+		BlockManager.addCraftingRecipies();
 		ItemManager.addCraftingRecipies();
 		
 		
@@ -99,6 +105,7 @@ public class AnimalsDropBones {
 		}
 	}
 
+
 	@Mod.EventHandler
 	public void initPost(FMLPostInitializationEvent event) {
 
@@ -106,6 +113,17 @@ public class AnimalsDropBones {
 		for(String name : OreDictionary.getOreNames())
 		{
 			AnimalsDropBones.LOG.info("SYNDARYL OREDICT: '" + name + "'");
+		}
+		if (Loader.isModLoaded("basemetals"))
+		{
+			try {
+				ItemManager.addBaseMetalsItems();
+				AnimalsDropBones.LOG.info("SYNDARYL 'BaseMetals' mod is loaded! Making appropriate items.");
+			}
+			catch (Exception e)
+			{
+				AnimalsDropBones.LOG.info("SYNDARYL 'BaseMetals' mod not loaded!");
+			}
 		}
 	}
 	

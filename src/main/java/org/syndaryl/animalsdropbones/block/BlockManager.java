@@ -74,6 +74,23 @@ public class BlockManager {
 					)
 			);
 		}
+		
+		for (int i = 0; i < 16; i++)
+		{
+			try
+			{
+				OreDictionary.registerOre( "blockWool", new ItemStack(Blocks.wool,1, i) );
+			}
+			catch (Exception e)
+			{
+				AnimalsDropBones.LOG.error("Failed while trying to register blockWool with oredict!?");
+				AnimalsDropBones.LOG.error(e.getMessage());
+				AnimalsDropBones.LOG.error(e.getStackTrace());
+			}
+			finally{
+			
+			}
+		}
 	}
 	
 	public static void graphicRegistry()
