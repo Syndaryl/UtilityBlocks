@@ -1,30 +1,12 @@
 package org.syndaryl.animalsdropbones.handler;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.HashMap;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemModelMesher;
-import net.minecraft.client.resources.model.ModelBakery;
-import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.EnumAction;
-import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-
 import org.syndaryl.animalsdropbones.AnimalsDropBones;
-import org.syndaryl.animalsdropbones.block.BlockManager;
 import org.syndaryl.animalsdropbones.materials.ADBMaterial;
 
 public class MaterialHandler {
@@ -39,7 +21,7 @@ public class MaterialHandler {
 	}
 	
 	public static void addAllMaterials(){
-		ADBMaterial obsidianTool = MaterialHandler.addMaterial("obsidian", 12, 6, 8, 1); 
+		ADBMaterial obsidianTool = MaterialHandler.addMaterial("obsidian", 13, 6, 8, 5); 
 	}
 
 	public static ADBMaterial addMaterial(String name, double hardness, double strength, double magic, double rarity){
