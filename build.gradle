@@ -17,6 +17,12 @@ buildscript {
 
 apply plugin: 'forge'
 
+allprojects {
+    apply plugin: 'java'
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
+}
+
 // define the properties file
 ext.configFile = file "build.properties"
 
@@ -55,7 +61,14 @@ dependencies {
     // or you may define them like so..
     //compile "some.group:artifact:version:classifier"
     //compile "some.group:artifact:version"
-      
+    
+    compile files(
+	'BaseMetals-API-1.4.2.jar'
+	//,
+        //'lib/NEI/CodeChickenCore-1.8-1.0.5.34-dev.jar',
+        //'lib/NEI/NotEnoughItems-1.8-1.0.5.84-dev.jar'
+    )
+
     // real examples
     //compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
     //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
@@ -84,4 +97,41 @@ processResources
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
+}
+
+
+//task wrapper(type: Wrapper) {
+//    gradleVersion = '2.4'
+//}
+
+def commonManifest = {
+    //attributes 'FMLCorePlugin': 'biomesoplenty.common.asm.BOPLoadingPlugin'
+    //attributes 'FMLCorePluginContainsFMLMod': 'true'
+    //attributes 'ForceLoadAsMod': true
+    //attributes 'FMLAT': 'biomesoplenty_at.cfg'
+}
+
+jar {
+    //manifest commonManifest
+    from sourceSets.main.output
+    classifier = 'universal'
+}
+
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'deobf'
+}
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+tasks.build.dependsOn('sourceJar', 'deobfJar', 'jar')
+
+
+artifacts {
+    archives deobfJar
+    archives sourceJar
+    archives jar
 }
