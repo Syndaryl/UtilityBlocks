@@ -36,5 +36,7 @@ item.animalsdropbones_sack.name=Sack
 item.animalsdropbones_sack_carrots.name=Sack of Carrots
 item.animalsdropbones_sack_potato.name=Sack of Potatoes
 item.animalsdropbones_sack_dyePowder_brown.name=Sack of Cocoa Beans
+item.animalsdropbones_sack_seeds.name=Sack of Wheat Seeds
+item.animalsdropbones_sack_feather.name=Feather Pillow
 
 itemGroup.animalsdropbones.name=Syndaryl's Animals Drop Bones

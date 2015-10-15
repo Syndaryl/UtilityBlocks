@@ -1,5 +1,7 @@
 package org.syndaryl.animalsdropbones;
 
+import java.util.Locale;
+
 import net.minecraft.client.resources.I18n;
 
 public class NamespaceManager {
@@ -30,6 +32,6 @@ public class NamespaceManager {
 	 * @return Titlecased word
 	 */
 	public static String capitalizeWord(String word) {
-		return word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase();
+		return word.substring(0, 1).toUpperCase(Locale.ENGLISH) + word.substring(1).toLowerCase();
 	}
 }
