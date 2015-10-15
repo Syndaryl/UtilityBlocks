@@ -2,7 +2,9 @@
 .gradle/
 .project
 .settings/
+.externalToolBuilders/
 bin/
 build/
 eclipse/
 lib/
+libs/
