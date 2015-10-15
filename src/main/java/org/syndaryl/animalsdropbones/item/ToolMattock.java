@@ -120,7 +120,7 @@ public class ToolMattock extends ItemSpade implements IItemName, IToolBlockSmash
                 // dumb thing to replace a proper "break block as if broken by player" method until otherwise found
             	breakBlock(gameWorld_, neighbourBlockContainer, actor);
             	if (actor instanceof EntityPlayer)
-            		((EntityPlayer) actor).getFoodStats().addExhaustion(0.5F);
+            		((EntityPlayer) actor).getFoodStats().addExhaustion((float) ConfigurationHandler.smasherExhaustionPerBonusBlock);
             }
         }
 	}

@@ -89,7 +89,7 @@ public class ToolSledgehammer extends ItemPickaxe implements IItemName, IToolBlo
                 // dumb thing to replace a proper "break block as if broken by player" method until otherwise found
             	breakBlock(gameWorld_, neighbourBlockContainer, actor);
             	if (actor instanceof EntityPlayer)
-            		((EntityPlayer) actor).getFoodStats().addExhaustion(0.75F);
+            		((EntityPlayer) actor).getFoodStats().addExhaustion((float) (ConfigurationHandler.smasherExhaustionPerBonusBlock * 1.5));
             }
         }
 	}

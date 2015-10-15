@@ -22,6 +22,8 @@ public class ConfigurationHandler {
 	public static boolean enableFood;
 
 	public static boolean enableObsidianTools;
+
+	public static double smasherExhaustionPerBonusBlock;
 	
 	public static void setConfig(File configFile) {
 		config = new Configuration(configFile);
@@ -118,6 +120,17 @@ public class ConfigurationHandler {
 				0, Float.MAX_VALUE
 				);
 		smasherEfficiencyMultiplier = currProp.getDouble(0.25F);
+		propOrder.add(currProp.getName());
+		
+		currProp = config.get(
+				"Tools",
+				"smasherExhaustionPerBonusBlock",
+				0.5F,
+				"Extra exhaustion tax for each 'bonus' block broken by a smasher. default 0.5",
+				// Value range: 0+
+				0, Float.MAX_VALUE
+				);
+		smasherExhaustionPerBonusBlock = currProp.getDouble(0.5F);
 		propOrder.add(currProp.getName());
 
 		//currProp = config.get(
