@@ -21,6 +21,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import org.syndaryl.animalsdropbones.NamespaceManager;
 import org.syndaryl.animalsdropbones.block.BlockWithLocation;
+import org.syndaryl.animalsdropbones.handler.ConfigurationHandler;
 
 public class ToolSledgehammer extends ItemPickaxe implements IItemName, IToolBlockSmasher {
     static Random r = new Random();
@@ -32,9 +33,9 @@ public class ToolSledgehammer extends ItemPickaxe implements IItemName, IToolBlo
 		name = NamespaceManager.GetModNameLC() + "_" + materialName +"_sledgehammer";
 		setUnlocalizedName( getName() );
 		this.setCreativeTab(CreativeTabs.tabTools);
-        this.setMaxDamage(material.getMaxUses()*6);
+        this.setMaxDamage((int) (material.getMaxUses()* ConfigurationHandler.smasherDurabilityMultiplier));
 
-        this.efficiencyOnProperMaterial = material.getEfficiencyOnProperMaterial()/4;
+        this.efficiencyOnProperMaterial = (float) (material.getEfficiencyOnProperMaterial() * ConfigurationHandler.smasherEfficiencyMultiplier);
         
 
 		GameRegistry.registerItem(this, getName());
