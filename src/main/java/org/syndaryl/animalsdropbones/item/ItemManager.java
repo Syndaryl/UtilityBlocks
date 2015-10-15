@@ -292,11 +292,13 @@ public class ItemManager {
         );
 		
 	}
+	@SuppressWarnings("unused")
 	private static void registerShapedRecipie(ItemMetadataFood item, int meta,
 			Object...recipie) {
 		ItemStack outputItem = new ItemStack(item, 1, meta);
 		GameRegistry.addShapedRecipe(outputItem, recipie);
 	}
+	
 	/* private static void registerShapedRecipie(ItemStack outputItem, Object[] recipie) {
 		GameRegistry.addRecipe(outputItem, recipie);
 	} */
@@ -366,6 +368,7 @@ public class ItemManager {
 		return names;
 	}
 	
+	@SuppressWarnings("unused")
 	private static Object[][] getRecepieListFromList(Object[][] list, int item)
 	{
 		Object[][] objects = new Object[list.length][];
