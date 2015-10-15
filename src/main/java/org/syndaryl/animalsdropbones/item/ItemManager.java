@@ -4,24 +4,28 @@
 package org.syndaryl.animalsdropbones.item;
 
 
+import java.util.HashMap;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemModelMesher;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
-import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import org.syndaryl.animalsdropbones.AnimalsDropBones;
-import org.syndaryl.animalsdropbones.block.BlockManager;
+import org.syndaryl.animalsdropbones.handler.ConfigurationHandler;
+import org.syndaryl.animalsdropbones.handler.MaterialHandler;
+import org.syndaryl.animalsdropbones.materials.ADBMaterial;
+
+import cyano.basemetals.init.Materials;
+import cyano.basemetals.material.MetalMaterial;
 
 /**
  * @author syndaryl
@@ -29,14 +33,10 @@ import org.syndaryl.animalsdropbones.block.BlockManager;
  */
 public class ItemManager {
 	public static ItemMetadataFood foods;
-	public static ToolMattock mattockWood;
-	public static ToolSledgehammer sledgehammerWood;
-	public static ToolMattock mattockStone;
-	public static ToolSledgehammer sledgehammerStone;
-	public static ToolMattock mattockIron;
-	public static ToolSledgehammer sledgehammerIron;
-	public static ToolMattock mattockDiamond;
-	private static ToolSledgehammer sledgehammerDiamond;
+
+	public static HashMap<String, ToolMattock> Mattocks = new HashMap<String, ToolMattock>();
+	public static HashMap<String, ToolSledgehammer> Sledgehammers = new HashMap<String, ToolSledgehammer>();
+	
 	public static ToolHandle handle;
 	public static ItemSack[] sacks;
 	
@@ -61,6 +61,7 @@ public class ItemManager {
 	public ItemManager() {
 		// TODO Auto-generated constructor stub
 	}
+	
 	public static void initialiseItems () {
 		String[] names;
 		int[] hunger;
@@ -71,23 +72,63 @@ public class ItemManager {
 		satiation = getFloatFromList(foodData, ItemManager.SATIATION);
 		actions = getStringFromList(foodData, ItemManager.ACTIONS);
 		
+		//Object result = EnumHelper.addArmorMaterial(name, textureName, durability, reductionAmounts, enchantability);
+		ADBMaterial obsidianTool = MaterialHandler.addMaterial("obsidian", 12, 6, 8, 1); 
+		
 		foods = (ItemMetadataFood) new ItemMetadataFood(hunger, satiation, names, actions);
+		
+		ToolMattock 		mattockWood;
+		ToolSledgehammer 	sledgehammerWood;
+		ToolMattock 		mattockStone;
+		ToolSledgehammer 	sledgehammerStone;
+		ToolMattock 		mattockIron;
+		ToolSledgehammer 	sledgehammerIron;
+		ToolMattock 		mattockDiamond;
+		ToolSledgehammer 	sledgehammerDiamond;
+		
+		ToolMattock 		mattockObsidian;
+		ToolSledgehammer 	sledgehammerObsidian;
 		
 		mattockWood = (ToolMattock) new ToolMattock(ToolMaterial.WOOD);
 		sledgehammerWood = (ToolSledgehammer) new ToolSledgehammer(ToolMaterial.WOOD);
+		
 		mattockStone = (ToolMattock) new ToolMattock(ToolMaterial.STONE);
 		sledgehammerStone = (ToolSledgehammer) new ToolSledgehammer(ToolMaterial.STONE);
+		
 		mattockIron = (ToolMattock) new ToolMattock(ToolMaterial.IRON);
 		sledgehammerIron = (ToolSledgehammer) new ToolSledgehammer(ToolMaterial.IRON);
+		
 		mattockDiamond = (ToolMattock) new ToolMattock(ToolMaterial.EMERALD);
 		sledgehammerDiamond = (ToolSledgehammer) new ToolSledgehammer(ToolMaterial.EMERALD);
+		
+
+		Mattocks.put("mattockWood", mattockWood);
+		Mattocks.put("mattockStone", mattockStone);
+		Mattocks.put("mattockIron", mattockIron);
+		Mattocks.put("mattockDiamond", mattockDiamond);
+		
+		Sledgehammers.put("sledgehammerWood", sledgehammerWood);
+		Sledgehammers.put("sledgehammerStone", sledgehammerStone);
+		Sledgehammers.put("sledgehammerIron", sledgehammerIron);
+		Sledgehammers.put("sledgehammerDiamond", sledgehammerDiamond);
+
+		if (ConfigurationHandler.enableObsidianTools)
+		{
+			mattockObsidian = (ToolMattock) new ToolMattock(MaterialHandler.getToolMaterialFor(obsidianTool));
+			sledgehammerObsidian = (ToolSledgehammer) new ToolSledgehammer(MaterialHandler.getToolMaterialFor(obsidianTool));
+			Mattocks.put("mattockObsidian", mattockObsidian);
+			Sledgehammers.put("sledgehammerObsidian", sledgehammerObsidian);
+		}
+		
 		handle = (ToolHandle) new ToolHandle();
 		
 		sacks = new ItemSack[] {
 				new ItemSack(),
 				new ItemSack( new ItemStack(Items.dye,1,3)),
 				new ItemSack(new ItemStack(Items.potato)),
-				new ItemSack(new ItemStack(Items.carrot))
+				new ItemSack(new ItemStack(Items.carrot)),
+				new ItemSack(new ItemStack(Items.wheat_seeds)),
+				new ItemSack(new ItemStack(Items.feather))
 		};
 		
 	}
@@ -116,20 +157,52 @@ public class ItemManager {
 		addRecipiesForCustomItems();
 
         addRecipiesForVanillaItems();
-        
+	}
+
+
+	public static void addBaseMetalsItems() {
+		/* Create the versions for Base Metals */ 
+		for(MetalMaterial m : Materials.getAllMetals())
+		{
+			ToolMattock mattock =  new ToolMattock(Materials.getToolMaterialFor(m));
+			ToolSledgehammer sledgehammer =  new ToolSledgehammer(Materials.getToolMaterialFor(m));
+
+			Mattocks.put("mattock"+m.getCapitalizedName(), mattock);
+			Sledgehammers.put("sledgehammer"+m.getCapitalizedName(), sledgehammer);
+		}
 	}
 	/**
 	 * 
 	 */
 	private static void addRecipiesForVanillaItems() {
 		AnimalsDropBones.LOG.info( "SYNDARYL: generating vanilla recipies");
-//		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.feather,1), 
-//        		"rl",
-//        		"rl",
-//        		"rl",
-//        		'r', new ItemStack(Blocks.reeds), 'l', new ItemStack( Blocks.leaves )
-//        		)
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.feather,1), 
+        		"rl",
+        		"rl",
+        		"rl",
+        		'r', new ItemStack(Items.reeds), 'l', new ItemStack( Blocks.leaves )
+        		)
+        );
+//		GameRegistry.addShapedRecipe(new ItemStack(Items.feather,1), 
+//        		"rw",
+//        		'r', new ItemStack(Items.reeds,1), 'w', new ItemStack(Blocks.wool, 1)
 //        );
+		try{
+			GameRegistry.addShapedRecipe(new ItemStack(Items.feather,1), 
+	        		"rw",
+	        		'r', new ItemStack(Items.reeds,1), 'w', "blockWool"
+	        );
+		}
+		catch (Exception e)
+		{
+			AnimalsDropBones.LOG.error("Failed while trying to use blockWool from oredict!?");
+			AnimalsDropBones.LOG.error(e.getMessage());
+			AnimalsDropBones.LOG.error(e.getStackTrace());
+		}
+		finally
+		{
+		
+		}
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.wool,1), 
         		"fff",
         		"fff",
@@ -137,25 +210,32 @@ public class ItemManager {
         		'f', Items.feather
         		)
         );
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.feather,1), 
-        		"rw",
-        		'r', new ItemStack(Blocks.reeds), 'w', new ItemStack(Blocks.wool)
-        		)
-        );
+		GameRegistry.addShapelessRecipe(new ItemStack(Blocks.sand, 4), new ItemStack(Blocks.sandstone));
+		GameRegistry.addShapedRecipe(new ItemStack(Blocks.grass),
+				"sss",
+				"sds",
+				"sss",
+				's', Items.wheat_seeds,
+				'd', Item.getItemFromBlock(Blocks.dirt)
+				);
 	}
 	/**
 	 * 
 	 */
 	private static void addRecipiesForCustomItems() {
 		ItemStack waterbottle = new ItemStack( Items.potionitem, 1, 0);
+		GameRegistry.addShapedRecipe(new ItemStack(sacks[0],4,0), new Object[]{ "w w", "w w", "www", 	'w', new ItemStack(Blocks.wool)});
 		GameRegistry.addShapedRecipe(new ItemStack(sacks[1],1,0), new Object[]{ "ccc", "csc", "ccc", 	'c', new ItemStack(Items.dye,1,3), 's', new ItemStack(sacks[0],1)});
 		GameRegistry.addShapedRecipe(new ItemStack(sacks[2],1,0), new Object[]{ "ccc", "csc", "ccc", 	'c', new ItemStack(Items.potato), 's', new ItemStack(sacks[0],1)});
-		GameRegistry.addShapedRecipe(new ItemStack(sacks[0],4,0), new Object[]{ "w w", "w w", "www", 	'w', new ItemStack(Blocks.wool)});
 		GameRegistry.addShapedRecipe(new ItemStack(sacks[3],1,0), new Object[]{ "ccc", "csc", "ccc", 	'c', new ItemStack(Items.carrot), 's', new ItemStack(sacks[0],1)});
+		GameRegistry.addShapedRecipe(new ItemStack(sacks[4],1,0), new Object[]{ "ccc", "csc", "ccc", 	'c', new ItemStack(Items.wheat_seeds), 's', new ItemStack(sacks[0],1)});
+		GameRegistry.addShapedRecipe(new ItemStack(sacks[5],1,0), new Object[]{ "ccc", "csc", "ccc", 	'c', new ItemStack(Items.feather), 's', new ItemStack(sacks[0],1)});
 		
 		GameRegistry.addShapelessRecipe(new ItemStack(Items.dye,8,3), new ItemStack(sacks[1].setContainerItem(sacks[0])));
 		GameRegistry.addShapelessRecipe(new ItemStack(Items.potato,8), new ItemStack(sacks[2].setContainerItem(sacks[0])));
 		GameRegistry.addShapelessRecipe(new ItemStack(Items.carrot,8), new ItemStack(sacks[3].setContainerItem(sacks[0])));
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.wheat_seeds,8), new ItemStack(sacks[4].setContainerItem(sacks[0])));
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.feather,8), new ItemStack(sacks[4].setContainerItem(sacks[0])));
 		
 		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 0),	new Object[]{"A","B", 				'A', new ItemStack( Items.apple), 'B', waterbottle});
 		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 1),	new Object[]{"ASA","WWW", 			'A', new ItemStack( Items.apple), 'W', new ItemStack( Items.wheat), 'S', new ItemStack(foods, 1, 7)});
@@ -169,15 +249,17 @@ public class ItemManager {
 		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 8),	new Object[]{"F","L", 				'F', new ItemStack( Items.fish, 1, 0), 'L', new ItemStack( Blocks.leaves )});		
 		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 8),	new Object[]{"F","L", 				'F', new ItemStack( Items.fish, 1, 1), 'L', new ItemStack( Blocks.leaves )});		
 
-        makeMattockRecepie(new ItemStack(mattockWood,1), "logWood", "toolHandle");
-        makeMattockRecepie(new ItemStack(mattockStone,1), "stone", "toolHandle");
-        makeMattockRecepie(new ItemStack(mattockIron,1), "ingotIron", "toolHandle");
-        makeMattockRecepie(new ItemStack(mattockDiamond,1), "gemDiamond", "toolHandle");
+        makeMattockRecepie(new ItemStack(Mattocks.get("mattockWood"),1), "logWood", "toolHandle");
+        makeMattockRecepie(new ItemStack(Mattocks.get("mattockStone"),1), "stone", "toolHandle");
+        makeMattockRecepie(new ItemStack(Mattocks.get("mattockIron"),1), "ingotIron", "toolHandle");
+        makeMattockRecepie(new ItemStack(Mattocks.get("mattockDiamond"),1), "gemDiamond", "toolHandle");
+        makeMattockRecepie(new ItemStack(Mattocks.get("mattockObsidian"),1), "obsidian", "toolHandle");
         
-        makeHammerRecepie(new ItemStack(sledgehammerWood,1), "logWood", "toolHandle");
-        makeHammerRecepie(new ItemStack(sledgehammerStone,1), "stone", "toolHandle");
-        makeHammerRecepie(new ItemStack(sledgehammerIron,1), "ingotIron", "toolHandle");
-        makeHammerRecepie(new ItemStack(sledgehammerDiamond,1), "gemDiamond", "toolHandle");
+        makeHammerRecepie(new ItemStack(Sledgehammers.get("sledgehammerWood"),1), "logWood", "toolHandle");
+        makeHammerRecepie(new ItemStack(Sledgehammers.get("sledgehammerStone"),1), "stone", "toolHandle");
+        makeHammerRecepie(new ItemStack(Sledgehammers.get("sledgehammerIron"),1), "ingotIron", "toolHandle");
+        makeHammerRecepie(new ItemStack(Sledgehammers.get("sledgehammerDiamond"),1), "gemDiamond", "toolHandle");
+        makeMattockRecepie(new ItemStack(Sledgehammers.get("sledgehammerObsidian"),1), "obsidian", "toolHandle");
         
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(handle,1), 
         		"s  ",
@@ -219,14 +301,16 @@ public class ItemManager {
 		GameRegistry.addRecipe(outputItem, recipie);
 	} */
 	public static void graphicRegistry() {
-		registerWithMesher(mattockWood, 0);
-		registerWithMesher(sledgehammerWood, 0);
-		registerWithMesher(mattockStone, 0);
-		registerWithMesher(sledgehammerStone, 0);
-		registerWithMesher(mattockIron, 0);
-		registerWithMesher(sledgehammerIron, 0);
-		registerWithMesher(mattockDiamond, 0);
-		registerWithMesher(sledgehammerDiamond, 0);
+		for (ToolMattock m : Mattocks.values())
+		{
+			registerWithMesher(m, 0);
+		}
+		
+		for (ToolSledgehammer s : Sledgehammers.values())
+		{
+			registerWithMesher(s, 0);
+		}
+
 		registerWithMesher(handle, 0);
 		for (ItemSack sack : sacks){
 				registerWithMesher(sack,0);
