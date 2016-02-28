@@ -41,11 +41,12 @@ public class ItemManager {
 	
 	public static ToolHandle handle;
 	public static ItemSack[] sacks;
+	public static WandItemList wand;
 	
 	private final static int NAME = 0;
 	private final static int HUNGER = 1;
 	private final static int SATIATION = 2;
-	private static final int ACTIONS = 3;
+	private final static int ACTIONS = 3;
 	
 	private static Object[][] foodData = new Object[][]{
 		{"apple_juice",       "2",     "1", 	"DRINK"},	
@@ -123,6 +124,7 @@ public class ItemManager {
 		}
 		
 		handle = (ToolHandle) new ToolHandle();
+		wand = (WandItemList) new WandItemList();
 		
 		sacks = new ItemSack[] {
 				new ItemSack(),
@@ -135,23 +137,24 @@ public class ItemManager {
 		
 	}
 
-	@SuppressWarnings("deprecation")
 	public static void variantRegistry() {
-	    ModelBakery.addVariantName(foods,  UtilityBlocks.MODID + ":" + foods.getName(0),
-	    		UtilityBlocks.MODID + ":" + foods.getName(1),
-	    		UtilityBlocks.MODID + ":" + foods.getName(2),
-	    		UtilityBlocks.MODID + ":" + foods.getName(3),
-	    		UtilityBlocks.MODID + ":" + foods.getName(4),
-	    		UtilityBlocks.MODID + ":" + foods.getName(5),
-	    		UtilityBlocks.MODID + ":" + foods.getName(6),
-	    		UtilityBlocks.MODID + ":" + foods.getName(7),
-	    		UtilityBlocks.MODID + ":" + foods.getName(8)
-	    );
+	    ModelBakery.registerItemVariants(foods, 
+	    		new ModelResourceLocation(UtilityBlocks.MODID + ":" + foods.getName(0), "inventory"),
+	    		new ModelResourceLocation(UtilityBlocks.MODID + ":" + foods.getName(1), "inventory"),
+	    		new ModelResourceLocation(UtilityBlocks.MODID + ":" + foods.getName(2), "inventory"),
+	    		new ModelResourceLocation(UtilityBlocks.MODID + ":" + foods.getName(3), "inventory"),
+	    		new ModelResourceLocation(UtilityBlocks.MODID + ":" + foods.getName(4), "inventory"),
+	    		new ModelResourceLocation(UtilityBlocks.MODID + ":" + foods.getName(5), "inventory"),
+	    		new ModelResourceLocation(UtilityBlocks.MODID + ":" + foods.getName(6), "inventory"),
+	    		new ModelResourceLocation(UtilityBlocks.MODID + ":" + foods.getName(7), "inventory"),
+	    		new ModelResourceLocation(UtilityBlocks.MODID + ":" + foods.getName(8), "inventory")
+	    		);
 	}
 	
 	
 	public static void registerOreDict() {
     	OreDictionary.registerOre("toolHandle", new ItemStack(handle,1));
+    	OreDictionary.registerOre("wandMagic", new ItemStack(wand,1));
     	OreDictionary.registerOre("sack", new ItemStack(sacks[0],1));
 		
 	}
@@ -290,6 +293,13 @@ public class ItemManager {
         		's', "stickWood"
         		)
         );
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(wand,1), 
+        		"s  ",
+        		" s ",
+        		"  s",
+        		's', "toolHandle"
+        		)
+        );
 	}
 
 	public static void addRecipiesBaseMetalsItems() {
@@ -354,6 +364,8 @@ public class ItemManager {
 		}
 
 		registerWithMesher(handle, 0);
+		registerWithMesher(wand, 0);
+		
 		for (ItemSack sack : sacks){
 				registerWithMesher(sack,0);
 		}
@@ -380,7 +392,7 @@ public class ItemManager {
 		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
 		String name = UtilityBlocks.MODID + ":" + item.getName(metadata);
 		
-	    UtilityBlocks.LOG.warn("SYNDARYL: item ModelResourceLocation: Where the hell are my models?: "  + name );
+	    // UtilityBlocks.LOG.warn("SYNDARYL: item ModelResourceLocation: Where the hell are my models?: "  + name );
 	    mesher.register((Item)item, metadata, new ModelResourceLocation( name, "inventory" ));
 
 	    return mesher;
