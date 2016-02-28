@@ -9,6 +9,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.passive.EntityPig;
+import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
@@ -29,10 +30,10 @@ public class EventHandler {
 
 		int numberDropped;
 		
-		// all animals
-		if(event.entityLiving instanceof EntityAnimal && ConfigurationHandler.animalsDropBones)
+		// all animals except squid, because squid don't have bones dangit
+		if(event.entityLiving instanceof EntityAnimal && !( event.entityLiving instanceof EntitySquid)  && ConfigurationHandler.animalsDropBones)
 		{
-			numberDropped = event.entityLiving.worldObj.rand.nextInt(3)-1;
+			numberDropped = event.entityLiving.worldObj.rand.nextInt(4)-3;
 			if ( numberDropped > 0 )
 				event.entityLiving.entityDropItem(new ItemStack(Items.bone), numberDropped);
 		}
@@ -42,7 +43,7 @@ public class EventHandler {
 			(event.entityLiving instanceof EntityPig && ConfigurationHandler.pigsDropLeather) 
 				)
 		{
-			numberDropped = event.entityLiving.worldObj.rand.nextInt(4)-2;
+			numberDropped = event.entityLiving.worldObj.rand.nextInt(4)-3;
 			if ( numberDropped > 0 )
 				event.entityLiving.entityDropItem(new ItemStack(Items.leather), numberDropped);
 		}
@@ -50,7 +51,7 @@ public class EventHandler {
 			(event.entityLiving instanceof EntityHorse  && ConfigurationHandler.horsesDropLeather)
 			)
 		{
-			numberDropped = event.entityLiving.worldObj.rand.nextInt(4)-1;
+			numberDropped = event.entityLiving.worldObj.rand.nextInt(4)-3;
 			if ( numberDropped > 0 )
 				event.entityLiving.entityDropItem(new ItemStack(Items.leather), numberDropped);
 		}
