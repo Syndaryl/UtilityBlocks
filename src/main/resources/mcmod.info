@@ -1,14 +1,14 @@
 [
 {
-  "modid": "animalsdropbones",
-  "name": "Animals Drop Bones",
-  "description": "Animals drop bones (and leather). Also some random blocks.",
+  "modid": "utilityblocks",
+  "name": "Utility Blocks",
+  "description": "Compressed blocks; block breaking hammers and mattocks; modified animal drops.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "none",
   "updateUrl": "",
   "authorList": ["Syndaryl"],
-  "credits": "Thanks to Vazkii for making ChickenShed open source; it helped me figure out how to add to drop lists.",
+  "credits": "Thanks to Vazkii for making ChickenShed open source; it helped me figure out how to add to futz around with MC events.",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
