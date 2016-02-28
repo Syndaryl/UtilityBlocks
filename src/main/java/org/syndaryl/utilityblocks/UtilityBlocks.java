@@ -31,6 +31,7 @@ import org.syndaryl.utilityblocks.block.BlockManager;
 import org.syndaryl.utilityblocks.handler.ConfigurationHandler;
 import org.syndaryl.utilityblocks.handler.FurnaceFuelHandler;
 import org.syndaryl.utilityblocks.item.ItemManager;
+import org.syndaryl.utilityblocks.handler.EventHandler;
 
 @Mod(
 		modid      = UtilityBlocks.MODID,
@@ -114,6 +115,7 @@ public class UtilityBlocks {
 		GameRegistry.registerFuelHandler(fuelHandler);
 		if (ConfigurationHandler.isEnabled)
 			MinecraftForge.EVENT_BUS.register(this);
+		MinecraftForge.EVENT_BUS.register(EventHandler.getInstance());
 		
 		if(event.getSide() == Side.CLIENT)
 		{
@@ -151,41 +153,4 @@ public class UtilityBlocks {
 		}
 	}
 	
-	@SubscribeEvent
-	public void onLivingDrops(LivingDropsEvent event) {
-		//		boolean setFeather = false;
-		//		EntityChicken chicken;
-		
-		// Break checking
-		if (event.entity.worldObj.isRemote || !(event.entity instanceof EntityAnimal) )
-			return;
-
-		int numberDropped;
-		
-		// all animals
-		if(event.entityLiving instanceof EntityAnimal && ConfigurationHandler.animalsDropBones)
-		{
-			numberDropped = event.entityLiving.worldObj.rand.nextInt(3)-1;
-			if ( numberDropped > 0 )
-				event.entityLiving.entityDropItem(new ItemStack(Items.bone), numberDropped);
-		}
-		
-		// specific animals
-		if(
-			(event.entityLiving instanceof EntityPig && ConfigurationHandler.pigsDropLeather) 
-				)
-		{
-			numberDropped = event.entityLiving.worldObj.rand.nextInt(4)-2;
-			if ( numberDropped > 0 )
-				event.entityLiving.entityDropItem(new ItemStack(Items.leather), numberDropped);
-		}
-		if(
-			(event.entityLiving instanceof EntityHorse  && ConfigurationHandler.horsesDropLeather)
-			)
-		{
-			numberDropped = event.entityLiving.worldObj.rand.nextInt(4)-1;
-			if ( numberDropped > 0 )
-				event.entityLiving.entityDropItem(new ItemStack(Items.leather), numberDropped);
-		}
-	}
 }
