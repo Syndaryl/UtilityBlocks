@@ -18,7 +18,7 @@ public class FurnaceFuelHandler implements IFuelHandler {
 	
 	public FurnaceFuelHandler() {
 //		setFuelValues();
-		System.out.print("SYNDARYL: Coal fuel value in FurnaceFuelHandler() " + GameRegistry.getFuelValue(new ItemStack(  Items.coal, 1) ) + "\n" );
+		//System.out.print("SYNDARYL: Coal fuel value in FurnaceFuelHandler() " + GameRegistry.getFuelValue(new ItemStack(  Items.coal, 1) ) + "\n" );
 	}
 
 
