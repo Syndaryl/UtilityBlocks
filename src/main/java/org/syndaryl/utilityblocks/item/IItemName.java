@@ -1,4 +1,4 @@
-package org.syndaryl.animalsdropbones.item;
+package org.syndaryl.utilityblocks.item;
 
 import net.minecraft.item.ItemStack;
 

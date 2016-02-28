@@ -1,4 +1,4 @@
-package org.syndaryl.animalsdropbones.item;
+package org.syndaryl.utilityblocks.item;
 
 import java.util.Deque;
 
@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
-import org.syndaryl.animalsdropbones.block.BlockWithLocation;
+import org.syndaryl.utilityblocks.block.BlockWithLocation;
 
 public interface IToolBlockSmasher {
 

@@ -1,6 +1,6 @@
-package org.syndaryl.animalsdropbones.handler;
+package org.syndaryl.utilityblocks.handler;
 
-import org.syndaryl.animalsdropbones.AnimalsDropBones;
+import org.syndaryl.utilityblocks.UtilityBlocks;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.config.ConfigElement;
@@ -14,7 +14,7 @@ public class ConfigGUI extends GuiConfig {
 				//configElements
 				new ConfigElement(ConfigurationHandler.config.getCategory("general")).getChildElements(),
 				//modID
-				AnimalsDropBones.MODID,
+				UtilityBlocks.MODID,
 				//allRequireWorldRestart
 				false,
 				//allRequireMcRestart

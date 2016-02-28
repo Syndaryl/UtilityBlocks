@@ -1,4 +1,4 @@
-package org.syndaryl.animalsdropbones.block;
+package org.syndaryl.utilityblocks.block;
 
 import net.minecraft.block.Block;
 

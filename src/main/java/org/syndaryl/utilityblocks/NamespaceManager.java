@@ -1,11 +1,11 @@
-package org.syndaryl.animalsdropbones;
+package org.syndaryl.utilityblocks;
 
 import java.util.Locale;
 
 import net.minecraft.client.resources.I18n;
 
 public class NamespaceManager {
-	public static String modName = "AnimalsDropBones";
+	public static String modName = "UtilityBlocks";
 	
 	public static String GetModName(){
 		return new String(modName);

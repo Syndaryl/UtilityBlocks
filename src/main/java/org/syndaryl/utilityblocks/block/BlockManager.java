@@ -1,4 +1,4 @@
-package org.syndaryl.animalsdropbones.block;
+package org.syndaryl.utilityblocks.block;
 
 import java.util.LinkedList;
 
@@ -17,9 +17,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
-import org.syndaryl.animalsdropbones.AnimalsDropBones;
-import org.syndaryl.animalsdropbones.NamespaceManager;
-import org.syndaryl.animalsdropbones.handler.FurnaceFuelHandler;
+import org.syndaryl.utilityblocks.UtilityBlocks;
+import org.syndaryl.utilityblocks.NamespaceManager;
+import org.syndaryl.utilityblocks.handler.FurnaceFuelHandler;
 
 public class BlockManager {
 
@@ -36,20 +36,20 @@ public class BlockManager {
 	
 	private static final Object[][] BlockSpecifications =
 		new Object[][] {
-		{Material.ground, 	"animalsdropbones_gravel_compressed",     	Block.soundTypeGravel, 	0.6F, 3.0F, 	false,	new ItemStack(Blocks.gravel,1),		0},
-		{Material.rock, 	"animalsdropbones_cobblestone_compressed", 	Block.soundTypePiston, 	2.0F, 10.0F, 	false,	new ItemStack(Blocks.cobblestone,1),		0},
-		{Material.rock, 	"animalsdropbones_stone_compressed",      	Block.soundTypeStone, 	2.2F, 11.0F, 	false,	new ItemStack(Blocks.stone,1),		0},
-		{Material.ground, 	"animalsdropbones_dirt_compressed",       	Block.soundTypeGravel, 	0.5F, 2.0F, 	false,	new ItemStack(Blocks.dirt,1,0),		0},
-		{Material.sand, 	"animalsdropbones_sand_compressed",       	Block.soundTypeSand, 	0.5F, 2.0F, 	false,	new ItemStack(Blocks.sand,1,0),		0},
-		{Material.coral, 	"animalsdropbones_charcoal_compressed",   	Block.soundTypePiston, 	0.8F, 5.0F, 	true,	new ItemStack(Items.coal,1,1),  	16000.0F},
-		{Material.coral, 	"animalsdropbones_bone_compressed",       	Block.soundTypePiston, 	0.7F, 4.0F, 	false,	new ItemStack(Items.bone,1,0),		0},
-		{Material.wood, 	"animalsdropbones_sugarcane_compressed",   	Block.soundTypeGrass, 	0.4F, 2.0F, 	true,	new ItemStack(Items.reeds,1,0), 	8000.0F }
+		{Material.ground, 	"utilityblocks_gravel_compressed",     	Block.soundTypeGravel, 	0.6F, 3.0F, 	false,	new ItemStack(Blocks.gravel,1),		0},
+		{Material.rock, 	"utilityblocks_cobblestone_compressed", 	Block.soundTypePiston, 	2.0F, 10.0F, 	false,	new ItemStack(Blocks.cobblestone,1),		0},
+		{Material.rock, 	"utilityblocks_stone_compressed",      	Block.soundTypeStone, 	2.2F, 11.0F, 	false,	new ItemStack(Blocks.stone,1),		0},
+		{Material.ground, 	"utilityblocks_dirt_compressed",       	Block.soundTypeGravel, 	0.5F, 2.0F, 	false,	new ItemStack(Blocks.dirt,1,0),		0},
+		{Material.sand, 	"utilityblocks_sand_compressed",       	Block.soundTypeSand, 	0.5F, 2.0F, 	false,	new ItemStack(Blocks.sand,1,0),		0},
+		{Material.coral, 	"utilityblocks_charcoal_compressed",   	Block.soundTypePiston, 	0.8F, 5.0F, 	true,	new ItemStack(Items.coal,1,1),  	16000.0F},
+		{Material.coral, 	"utilityblocks_bone_compressed",       	Block.soundTypePiston, 	0.7F, 4.0F, 	false,	new ItemStack(Items.bone,1,0),		0},
+		{Material.wood, 	"utilityblocks_sugarcane_compressed",   	Block.soundTypeGrass, 	0.4F, 2.0F, 	true,	new ItemStack(Items.reeds,1,0), 	8000.0F }
 		};
 
 	public static void initialiseBlock() {
 		for (int i = 0; i < BlockManager.BlockSpecifications.length; i++)
 		{
-			AnimalsDropBones.LOG.warn("SYNDARYL: building block "  + BlockManager.BlockSpecifications[i][1] );
+			UtilityBlocks.LOG.warn("SYNDARYL: building block "  + BlockManager.BlockSpecifications[i][1] );
 			BlockManager.COMPRESSEDBLOCKS.add(
 					new BlockCompressed(
 							(Material) BlockManager.BlockSpecifications[i][0], 
@@ -83,9 +83,9 @@ public class BlockManager {
 			}
 			catch (Exception e)
 			{
-				AnimalsDropBones.LOG.error("Failed while trying to register blockWool with oredict!?");
-				AnimalsDropBones.LOG.error(e.getMessage());
-				AnimalsDropBones.LOG.error(e.getStackTrace());
+				UtilityBlocks.LOG.error("Failed while trying to register blockWool with oredict!?");
+				UtilityBlocks.LOG.error(e.getMessage());
+				UtilityBlocks.LOG.error(e.getStackTrace());
 			}
 			finally{
 			
@@ -98,8 +98,8 @@ public class BlockManager {
 		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
 		for (int i = 0; i < BlockManager.COMPRESSEDBLOCKS.size(); i++)
 		{
-			String name = AnimalsDropBones.MODID + ":" + ((BlockCompressed) BlockManager.COMPRESSEDBLOCKS.get(i)).getName();
-			AnimalsDropBones.LOG.warn("SYNDARYL: meshing block "  + name );
+			String name = UtilityBlocks.MODID + ":" + ((BlockCompressed) BlockManager.COMPRESSEDBLOCKS.get(i)).getName();
+			UtilityBlocks.LOG.warn("SYNDARYL: meshing block "  + name );
 			mesher.register(
 					Item.getItemFromBlock(BlockManager.COMPRESSEDBLOCKS.get(i)), 0, new ModelResourceLocation(
 							name, "inventory"

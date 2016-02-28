@@ -1,13 +1,13 @@
-package org.syndaryl.animalsdropbones.materials;
+package org.syndaryl.utilityblocks.materials;
 
 import java.util.Locale;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
-import org.syndaryl.animalsdropbones.NamespaceManager;
+import org.syndaryl.utilityblocks.NamespaceManager;
 
-public class ADBMaterial {
+public class UBMaterial {
 	/**
 	 * String used to identify items and blocks using this material
 	 */
@@ -39,7 +39,7 @@ public class ADBMaterial {
 
 	private ItemStack repairMaterial;
 
-	public ADBMaterial(String name, float hardness, float strength,
+	public UBMaterial(String name, float hardness, float strength,
 			float magic, int rarity, ItemStack repairMaterial) {
 		this.name = name;
 		
@@ -70,8 +70,8 @@ public class ADBMaterial {
 	@Override
 	public boolean equals(Object o){
 		if(o == this) return true;
-		if(o.hashCode() == this.hashCode() && o instanceof ADBMaterial){
-			ADBMaterial other = (ADBMaterial)o;
+		if(o.hashCode() == this.hashCode() && o instanceof UBMaterial){
+			UBMaterial other = (UBMaterial)o;
 			return this.name.equals(other.name); 
 		}
 		return false;

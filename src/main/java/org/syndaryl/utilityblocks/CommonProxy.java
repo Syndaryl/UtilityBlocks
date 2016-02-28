@@ -1,4 +1,4 @@
-package org.syndaryl.animalsdropbones;
+package org.syndaryl.utilityblocks;
 
 public class CommonProxy {
 

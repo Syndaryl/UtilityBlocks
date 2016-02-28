@@ -1,4 +1,4 @@
-package org.syndaryl.animalsdropbones.handler;
+package org.syndaryl.utilityblocks.handler;
 
 import java.util.Set;
 

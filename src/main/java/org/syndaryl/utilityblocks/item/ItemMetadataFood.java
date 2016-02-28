@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.syndaryl.animalsdropbones.item;
+package org.syndaryl.utilityblocks.item;
 
 import java.util.List;
 
@@ -13,8 +13,8 @@ import java.util.List;
 
 
 
-import org.syndaryl.animalsdropbones.AnimalsDropBones;
-import org.syndaryl.animalsdropbones.NamespaceManager;
+import org.syndaryl.utilityblocks.UtilityBlocks;
+import org.syndaryl.utilityblocks.NamespaceManager;
 
 
 
@@ -79,11 +79,11 @@ public class ItemMetadataFood extends ItemFood implements IItemName {
 	public int getHealAmount(ItemStack itemStack)
 	{
 		int meta = itemStack.getItemDamage();
-		AnimalsDropBones.LOG.info("SYNDARYL: heal amount Item"+itemStack.getDisplayName() + " meta " + meta + " getMaxMetadata() " + getMaxMetadata());
+		UtilityBlocks.LOG.info("SYNDARYL: heal amount Item"+itemStack.getDisplayName() + " meta " + meta + " getMaxMetadata() " + getMaxMetadata());
 		if (meta < getMaxMetadata())
 			return hungerValues[meta];
 		
-		AnimalsDropBones.LOG.warn("SYNDARYL: heal amount fell through to 0!");
+		UtilityBlocks.LOG.warn("SYNDARYL: heal amount fell through to 0!");
 		return 0;
 	}
 	/**
@@ -93,10 +93,10 @@ public class ItemMetadataFood extends ItemFood implements IItemName {
 	public float getSaturationModifier(ItemStack itemStack)
 	{
 		int meta = itemStack.getItemDamage();
-		AnimalsDropBones.LOG.info("SYNDARYL: saturation amount Item"+itemStack.getDisplayName() + " meta " + meta + " getMaxMetadata() " + getMaxMetadata());
+		UtilityBlocks.LOG.info("SYNDARYL: saturation amount Item"+itemStack.getDisplayName() + " meta " + meta + " getMaxMetadata() " + getMaxMetadata());
 		if (meta < getMaxMetadata())
 			return saturationModifiers[meta];
-		AnimalsDropBones.LOG.warn("SYNDARYL: saturation amount fell through to 0!");
+		UtilityBlocks.LOG.warn("SYNDARYL: saturation amount fell through to 0!");
 		return 0.0F;
 	}
 	
@@ -139,7 +139,7 @@ public class ItemMetadataFood extends ItemFood implements IItemName {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.syndaryl.animalsdropbones.item.IItemName#getName()
+	 * @see org.syndaryl.utilityblocks.item.IItemName#getName()
 	 */
 	@Override
 	public String getName()
@@ -148,14 +148,14 @@ public class ItemMetadataFood extends ItemFood implements IItemName {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.syndaryl.animalsdropbones.item.IItemName#getName(net.minecraft.item.ItemStack)
+	 * @see org.syndaryl.utilityblocks.item.IItemName#getName(net.minecraft.item.ItemStack)
 	 */
 	@Override
 	public String getName(ItemStack stack){
         return this.getName(stack.getItemDamage());
 	}
 	/* (non-Javadoc)
-	 * @see org.syndaryl.animalsdropbones.item.IItemName#getName(int)
+	 * @see org.syndaryl.utilityblocks.item.IItemName#getName(int)
 	 */
 	@Override
 	public String getName(int meta){
@@ -173,7 +173,7 @@ public class ItemMetadataFood extends ItemFood implements IItemName {
 	    if (meta > icons.length)
 	        meta = 0;
 
-	    return AnimalsDropBones.MODID + ":" + this.icons[meta];
+	    return UtilityBlocks.MODID + ":" + this.icons[meta];
 	} */
 
 	public String getUnlocalizedName(int meta) {

@@ -1,7 +1,7 @@
-package org.syndaryl.animalsdropbones.item;
+package org.syndaryl.utilityblocks.item;
 
 
-import org.syndaryl.animalsdropbones.NamespaceManager;
+import org.syndaryl.utilityblocks.NamespaceManager;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -15,7 +15,7 @@ public class ToolHandle extends Item implements IItemName {
 	public ToolHandle() {
 		// TODO Auto-generated constructor stub
 	    this.setCreativeTab(CreativeTabs.tabMisc);   // the item will appear on the Miscellaneous tab in creative
-		//setUnlocalizedName(org.syndaryl.animalsdropbones.NamespaceManager.getLocalized( getName() ));
+		//setUnlocalizedName(org.syndaryl.utilityblocks.NamespaceManager.getLocalized( getName() ));
 
 		setUnlocalizedName(getName());
 		
@@ -23,7 +23,7 @@ public class ToolHandle extends Item implements IItemName {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.syndaryl.animalsdropbones.item.IItemName#getName()
+	 * @see org.syndaryl.utilityblocks.item.IItemName#getName()
 	 */
     @Override
 	public String getName()

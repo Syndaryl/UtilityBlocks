@@ -1,4 +1,7 @@
-package org.syndaryl.animalsdropbones.item;
+/**
+ * 
+ */
+package org.syndaryl.utilityblocks.item;
 
 import java.util.Deque;
 import java.util.Iterator;
@@ -12,50 +15,63 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemPickaxe;
+import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-import org.syndaryl.animalsdropbones.NamespaceManager;
-import org.syndaryl.animalsdropbones.block.BlockWithLocation;
-import org.syndaryl.animalsdropbones.handler.ConfigurationHandler;
-
-public class ToolSledgehammer extends ItemPickaxe implements IItemName, IToolBlockSmasher {
+import org.syndaryl.utilityblocks.NamespaceManager;
+import org.syndaryl.utilityblocks.block.BlockWithLocation;
+import org.syndaryl.utilityblocks.handler.ConfigurationHandler;
+/**
+ * @author syndaryl
+ *
+ */
+public class ToolMattock extends ItemSpade implements IItemName, IToolBlockSmasher {
     static Random r = new Random();
-    private String name = "sledgehammer"; 
-    
-	public ToolSledgehammer(ToolMaterial material) {
+    private String name = "mattock"; 
+
+	/**
+	 * @param material
+	 */
+	public ToolMattock(ToolMaterial material) {
 		super(material);
-		String materialName = material.toString().toLowerCase();// NamespaceManager.capitalizeWord(material.toString()) ;
-		name = materialName +"_sledgehammer";
+		String materialName = material.toString().toLowerCase() ;
+		name = materialName +"_mattock";
 		if (! name.startsWith(NamespaceManager.GetModNameLC() + "_"))
 		{
 			name = NamespaceManager.GetModNameLC() + "_" + name;
 		}
-		setUnlocalizedName( getName() );
+		setUnlocalizedName(getName());
 		this.setCreativeTab(CreativeTabs.tabTools);
-        this.setMaxDamage((int) (material.getMaxUses() * ConfigurationHandler.smasherDurabilityMultiplier));
+        this.setMaxDamage((int) (material.getMaxUses()*ConfigurationHandler.smasherDurabilityMultiplier));
 
         this.efficiencyOnProperMaterial = (float) (material.getEfficiencyOnProperMaterial() * ConfigurationHandler.smasherEfficiencyMultiplier);
         
 
 		GameRegistry.registerItem(this, getName());
 	}
+	//@SideOnly(Side.CLIENT)
+	//	public void registerIcons(IIconRegister register)
+	//	{
+	//		this.itemIcon = register.registerIcon(NamespaceManager.GetModName() +":" + this.toolMaterial.toString().toLowerCase() +"_mattock");
+	//	}
 
-	/* (non-Javadoc)
-	 * @see org.syndaryl.animalsdropbones.item.IToolBlockSmasher#onBlockDestroyed(net.minecraft.item.ItemStack, net.minecraft.world.World, net.minecraft.block.Block, net.minecraft.util.BlockPos, net.minecraft.entity.EntityLivingBase)
-	 */
+	//@SideOnly(Side.SERVER)
 	@Override
     public boolean onBlockDestroyed(ItemStack toolInstance, World gameWorld_, Block blockStruck, BlockPos pos, EntityLivingBase actor)
     {
+	    //UtilityBlocks.LOG.debug("SYNDARYL: onBlockDestroyed: "  + toolInstance.getDisplayName() );
     	if(!gameWorld_.isRemote)
     	{
+    	    //UtilityBlocks.LOG.debug("SYNDARYL: onBlockDestroyed: Not is remote" );
+			//System.out.println(String.format("onBlockDestroyed() nuking block at %d %d %d", worldX, worldY, worldZ));
 	        Deque<BlockWithLocation> blockDeck = new LinkedList<BlockWithLocation>();
 	        getNeighbouringBlocksToDeque(gameWorld_, blockStruck, pos.getX(), pos.getY(),
 					pos.getZ(), blockDeck);
+			//System.out.println(String.format("getNeighbouringBlocksToDeque(): returned deck of %d", blockDeck.size()));
 	        hitManyBlocks(toolInstance, gameWorld_, pos.getX(), pos.getY(),
 					pos.getZ(),
 					actor, blockDeck);
@@ -63,19 +79,34 @@ public class ToolSledgehammer extends ItemPickaxe implements IItemName, IToolBlo
         return true;
     }
 
-	/* (non-Javadoc)
-	 * @see org.syndaryl.animalsdropbones.item.IToolBlockSmasher#hitManyBlocks(net.minecraft.item.ItemStack, net.minecraft.world.World, int, int, int, net.minecraft.entity.EntityLivingBase, java.util.Deque)
+	/**
+	 * @param toolInstance
+	 * @param gameWorld_ world object to search for blocks
+	 * @param worldX x coordinate of blockStruck
+	 * @param worldY y coordinate of blockStruck
+	 * @param worldZ z coordinate of blockStruck
+	 * @param actor holding tool
+	 * @param blockDeck collection of blocks to hammer against
 	 */
-	
-    @Override
-	public void hitManyBlocks(ItemStack toolInstance, World gameWorld_,
+
+	@Override
+    public void hitManyBlocks(ItemStack toolInstance, World gameWorld_,
 			int worldX, int worldY, int worldZ, EntityLivingBase actor,
 			Deque<BlockWithLocation> blockDeck) {
+		//System.out.println(String.format("hitManyBlocks(): Working with deck of %d", blockDeck.size()));
+		// Damage tool for each neighbour as well as for the originally struck block.
+		// then nuke the neighbours and drop items
+	    //UtilityBlocks.LOG.debug("SYNDARYL: hitManyBlocks deck size: " + blockDeck.size() );
+	    
 	    
         for(Iterator<BlockWithLocation> iter = blockDeck.iterator(); iter.hasNext();)
         {
         	BlockWithLocation neighbourBlockContainer = iter.next();
+    		//System.out.println(String.format("checking block at %d %d %d", neighbourBlockContainer.x, neighbourBlockContainer.y, neighbourBlockContainer.z));
 
+    	    //UtilityBlocks.LOG.debug("SYNDARYL: X; " + neighbourBlockContainer.x + ":" + worldX );
+    	    //UtilityBlocks.LOG.debug("SYNDARYL: Y; " + neighbourBlockContainer.y + ":" + worldY );
+    	    //UtilityBlocks.LOG.debug("SYNDARYL: Z; " + neighbourBlockContainer.z + ":" + worldZ );
             if (! (neighbourBlockContainer.x == worldX && neighbourBlockContainer.y == worldY && neighbourBlockContainer.z == worldZ)) // is not source block
             {
             	BlockPos pos = new BlockPos(worldX, worldY, worldZ);
@@ -93,21 +124,23 @@ public class ToolSledgehammer extends ItemPickaxe implements IItemName, IToolBlo
                 // dumb thing to replace a proper "break block as if broken by player" method until otherwise found
             	breakBlock(gameWorld_, neighbourBlockContainer, actor);
             	if (actor instanceof EntityPlayer)
-            		((EntityPlayer) actor).getFoodStats().addExhaustion((float) (ConfigurationHandler.smasherExhaustionPerBonusBlock * 1.5));
+            		((EntityPlayer) actor).getFoodStats().addExhaustion((float) ConfigurationHandler.smasherExhaustionPerBonusBlock);
             }
         }
 	}
 
-	/* (non-Javadoc)
-	 * @see org.syndaryl.animalsdropbones.item.IToolBlockSmasher#breakBlock(net.minecraft.world.World, org.syndaryl.animalsdropbones.block.BlockWithLocation, net.minecraft.entity.EntityLivingBase)
+	/**
+	 * dumb thing to replace a proper "break block" method until otherwise found
+	 * Tries to generate a proper item drop, spawn the appropriate item, and then get the block to commit suicide. 
+	 * 
+	 * @param gameWorld_
+	 * @param blockXYZ
 	 */
 
-    @Override
-	public void breakBlock(World gameWorld_,
+	@Override
+    public void breakBlock(World gameWorld_,
 			BlockWithLocation blockXYZ, EntityLivingBase player) {
-
         int fortune = EnchantmentHelper.getFortuneModifier(player);
-        
         boolean dropItems = true;
         BlockPos pos = new BlockPos(blockXYZ.x, blockXYZ.y, blockXYZ.z);
         //int metadata =  blockXYZ.metadata;// gameWorld_.getBlockMetadata(pos);
@@ -116,12 +149,18 @@ public class ToolSledgehammer extends ItemPickaxe implements IItemName, IToolBlo
 		blockXYZ.b.dropXpOnBlockBreak(gameWorld_, pos, r.nextBoolean()? xpDrop:0);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.syndaryl.animalsdropbones.item.IToolBlockSmasher#getNeighbouringBlocksToDeque(net.minecraft.world.World, net.minecraft.block.Block, int, int, int, java.util.Deque)
+	/**
+	 * Collects the neighbouring blocks which are of the same block type as the struck block into a deQue object.
+	 * @param gameWorld_ world object to search for neighbouring blocks
+	 * @param blockStruck reference block, should be at the centre of the block effect
+	 * @param worldX x coordinate of blockStruck
+	 * @param worldY y coordinate of blockStruck
+	 * @param worldZ z coordinate of blockStruck
+	 * @param blockDeck deque object to add the found neighbours to
 	 */
 
-    @Override
-	public void getNeighbouringBlocksToDeque(World gameWorld_,
+	@Override
+    public void getNeighbouringBlocksToDeque(World gameWorld_,
 			Block blockStruck, int worldX, int worldY, int worldZ,
 			Deque<BlockWithLocation> blockDeck) {
         IBlockState coreState = gameWorld_.getBlockState( new BlockPos(worldX, worldY, worldZ));
@@ -151,7 +190,7 @@ public class ToolSledgehammer extends ItemPickaxe implements IItemName, IToolBlo
 	}
 
 	/* (non-Javadoc)
-	 * @see org.syndaryl.animalsdropbones.item.IItemName#getName()
+	 * @see org.syndaryl.utilityblocks.item.IItemName#getName()
 	 */
     @Override
 	public String getName()
@@ -160,7 +199,7 @@ public class ToolSledgehammer extends ItemPickaxe implements IItemName, IToolBlo
 	}
 
 	/* (non-Javadoc)
-	 * @see org.syndaryl.animalsdropbones.item.IItemName#getName(net.minecraft.item.ItemStack)
+	 * @see org.syndaryl.utilityblocks.item.IItemName#getName(net.minecraft.item.ItemStack)
 	 */
 	@Override
 	public String getName(ItemStack stack){
@@ -168,10 +207,11 @@ public class ToolSledgehammer extends ItemPickaxe implements IItemName, IToolBlo
 	}
 
 	/* (non-Javadoc)
-	 * @see org.syndaryl.animalsdropbones.item.IItemName#getName(int)
+	 * @see org.syndaryl.utilityblocks.item.IItemName#getName(int)
 	 */
 	@Override
 	public String getName(int meta){
 	    return this.getName();
 	}
+	
 }

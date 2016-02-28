@@ -1,4 +1,4 @@
-package org.syndaryl.animalsdropbones.handler;
+package org.syndaryl.utilityblocks.handler;
 
 import java.util.HashMap;
 
@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.IFuelHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.syndaryl.animalsdropbones.AnimalsDropBones;
+import org.syndaryl.utilityblocks.UtilityBlocks;
 
 public class FurnaceFuelHandler implements IFuelHandler {
 
@@ -43,7 +43,7 @@ public class FurnaceFuelHandler implements IFuelHandler {
     }
 	public void addFuel(Item item, int metadata, int value)
 	{
-		AnimalsDropBones.LOG.info("SYNDARYL: Making Fuel! " + item.getUnlocalizedName() + "\n" );
+		UtilityBlocks.LOG.info("SYNDARYL: Making Fuel! " + item.getUnlocalizedName() + "\n" );
         fuelList.put(Pair.of(item, metadata), value);
 	}
 

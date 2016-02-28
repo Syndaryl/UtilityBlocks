@@ -1,4 +1,4 @@
-package org.syndaryl.animalsdropbones;
+package org.syndaryl.utilityblocks;
 
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
@@ -27,22 +27,22 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.message.StringFormatterMessageFactory;
 import org.apache.logging.log4j.simple.SimpleLogger;
 import org.apache.logging.log4j.util.PropertiesUtil;
-import org.syndaryl.animalsdropbones.block.BlockManager;
-import org.syndaryl.animalsdropbones.handler.ConfigurationHandler;
-import org.syndaryl.animalsdropbones.handler.FurnaceFuelHandler;
-import org.syndaryl.animalsdropbones.item.ItemManager;
+import org.syndaryl.utilityblocks.block.BlockManager;
+import org.syndaryl.utilityblocks.handler.ConfigurationHandler;
+import org.syndaryl.utilityblocks.handler.FurnaceFuelHandler;
+import org.syndaryl.utilityblocks.item.ItemManager;
 
 @Mod(
-		modid      = AnimalsDropBones.MODID,
-		name       = AnimalsDropBones.NAME,
-		version    = AnimalsDropBones.VERSION,
+		modid      = UtilityBlocks.MODID,
+		name       = UtilityBlocks.NAME,
+		version    = UtilityBlocks.VERSION,
 		
-		guiFactory = "org.syndaryl.animalsdropbones.handler.GUIFactory", 
+		guiFactory = "org.syndaryl.utilityblocks.handler.GUIFactory", 
 		
 		dependencies = "required-after:basemetals"
 	)
-public class AnimalsDropBones {
-	public static final String MODID   = "animalsdropbones";
+public class UtilityBlocks {
+	public static final String MODID   = "utilityblocks";
 	public static final String NAME    = "Animals Drop Bones";
 	public static final String VERSION = "1.0.8";
 	
@@ -54,7 +54,7 @@ public class AnimalsDropBones {
 			);
 //	public static final Logger LOG = FMLLog.getLogger(); 
 	@Mod.Instance(MODID)
-	public static AnimalsDropBones instance;
+	public static UtilityBlocks instance;
 	
 	@Mod.EventHandler
 	public void initPre(FMLPreInitializationEvent event) {
@@ -75,11 +75,11 @@ public class AnimalsDropBones {
 		{
 			try {
 				ItemManager.initialiseBaseMetalsItems();
-				AnimalsDropBones.LOG.info("SYNDARYL 'BaseMetals' mod is loaded! Making appropriate items.");
+				UtilityBlocks.LOG.info("SYNDARYL 'BaseMetals' mod is loaded! Making appropriate items.");
 			}
 			catch (Exception e)
 			{
-				AnimalsDropBones.LOG.info("SYNDARYL 'BaseMetals' mod not loaded!");
+				UtilityBlocks.LOG.info("SYNDARYL 'BaseMetals' mod not loaded!");
 			}
 		}
 		
@@ -102,11 +102,11 @@ public class AnimalsDropBones {
 		{
 			try {
 				ItemManager.addRecipiesBaseMetalsItems();
-				AnimalsDropBones.LOG.info("SYNDARYL 'BaseMetals' mod is loaded! Crafting items.");
+				UtilityBlocks.LOG.info("SYNDARYL 'BaseMetals' mod is loaded! Crafting items.");
 			}
 			catch (Exception e)
 			{
-				AnimalsDropBones.LOG.info("SYNDARYL 'BaseMetals' mod not loaded!");
+				UtilityBlocks.LOG.info("SYNDARYL 'BaseMetals' mod not loaded!");
 			}
 		}
 		
@@ -123,11 +123,11 @@ public class AnimalsDropBones {
 			{
 				try {
 					ItemManager.graphicRegistryBaseMetalsItems();
-					AnimalsDropBones.LOG.info("SYNDARYL 'BaseMetals' mod is loaded! Registering graphics for items.");
+					UtilityBlocks.LOG.info("SYNDARYL 'BaseMetals' mod is loaded! Registering graphics for items.");
 				}
 				catch (Exception e)
 				{
-					AnimalsDropBones.LOG.info("SYNDARYL 'BaseMetals' mod not loaded!");
+					UtilityBlocks.LOG.info("SYNDARYL 'BaseMetals' mod not loaded!");
 				}
 			}
 		}
@@ -137,10 +137,10 @@ public class AnimalsDropBones {
 	@Mod.EventHandler
 	public void initPost(FMLPostInitializationEvent event) {
 
-		AnimalsDropBones.LOG.info("       OreDict contains " + OreDictionary.getOreNames().length + " names");
+		UtilityBlocks.LOG.info("       OreDict contains " + OreDictionary.getOreNames().length + " names");
 		for(String name : OreDictionary.getOreNames())
 		{
-			AnimalsDropBones.LOG.info("SYNDARYL OREDICT: '" + name + "'");
+			UtilityBlocks.LOG.info("SYNDARYL OREDICT: '" + name + "'");
 		}
 	}
 	
@@ -173,7 +173,13 @@ public class AnimalsDropBones {
 		// specific animals
 		if(
 			(event.entityLiving instanceof EntityPig && ConfigurationHandler.pigsDropLeather) 
-			|| 
+				)
+		{
+			numberDropped = event.entityLiving.worldObj.rand.nextInt(4)-2;
+			if ( numberDropped > 0 )
+				event.entityLiving.entityDropItem(new ItemStack(Items.leather), numberDropped);
+		}
+		if(
 			(event.entityLiving instanceof EntityHorse  && ConfigurationHandler.horsesDropLeather)
 			)
 		{

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.syndaryl.animalsdropbones.item;
+package org.syndaryl.utilityblocks.item;
 
 
 import java.util.HashMap;
@@ -20,10 +20,10 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-import org.syndaryl.animalsdropbones.AnimalsDropBones;
-import org.syndaryl.animalsdropbones.handler.ConfigurationHandler;
-import org.syndaryl.animalsdropbones.handler.MaterialHandler;
-import org.syndaryl.animalsdropbones.materials.ADBMaterial;
+import org.syndaryl.utilityblocks.UtilityBlocks;
+import org.syndaryl.utilityblocks.handler.ConfigurationHandler;
+import org.syndaryl.utilityblocks.handler.MaterialHandler;
+import org.syndaryl.utilityblocks.materials.UBMaterial;
 
 import cyano.basemetals.init.Materials;
 import cyano.basemetals.material.MetalMaterial;
@@ -75,7 +75,7 @@ public class ItemManager {
 		actions = getStringFromList(foodData, ItemManager.ACTIONS);
 		
 		//Object result = EnumHelper.addArmorMaterial(name, textureName, durability, reductionAmounts, enchantability);
-		ADBMaterial obsidianTool = MaterialHandler.addMaterial("obsidian", 12, 6, 8, 1, new ItemStack(Blocks.obsidian)); 
+		UBMaterial obsidianTool = MaterialHandler.addMaterial("obsidian", 12, 6, 8, 1, new ItemStack(Blocks.obsidian)); 
 		
 		foods = (ItemMetadataFood) new ItemMetadataFood(hunger, satiation, names, actions);
 		
@@ -135,16 +135,17 @@ public class ItemManager {
 		
 	}
 
+	@SuppressWarnings("deprecation")
 	public static void variantRegistry() {
-	    ModelBakery.addVariantName(foods,  AnimalsDropBones.MODID + ":" + foods.getName(0),
-	    		AnimalsDropBones.MODID + ":" + foods.getName(1),
-	    		AnimalsDropBones.MODID + ":" + foods.getName(2),
-	    		AnimalsDropBones.MODID + ":" + foods.getName(3),
-	    		AnimalsDropBones.MODID + ":" + foods.getName(4),
-	    		AnimalsDropBones.MODID + ":" + foods.getName(5),
-	    		AnimalsDropBones.MODID + ":" + foods.getName(6),
-	    		AnimalsDropBones.MODID + ":" + foods.getName(7),
-	    		AnimalsDropBones.MODID + ":" + foods.getName(8)
+	    ModelBakery.addVariantName(foods,  UtilityBlocks.MODID + ":" + foods.getName(0),
+	    		UtilityBlocks.MODID + ":" + foods.getName(1),
+	    		UtilityBlocks.MODID + ":" + foods.getName(2),
+	    		UtilityBlocks.MODID + ":" + foods.getName(3),
+	    		UtilityBlocks.MODID + ":" + foods.getName(4),
+	    		UtilityBlocks.MODID + ":" + foods.getName(5),
+	    		UtilityBlocks.MODID + ":" + foods.getName(6),
+	    		UtilityBlocks.MODID + ":" + foods.getName(7),
+	    		UtilityBlocks.MODID + ":" + foods.getName(8)
 	    );
 	}
 	
@@ -175,7 +176,7 @@ public class ItemManager {
 					)
 				)
 			{
-				AnimalsDropBones.LOG.info("Creating tools for " + m.getName());
+				UtilityBlocks.LOG.info("Creating tools for " + m.getName());
 				ToolMattock mattock =  new ToolMattock(Materials.getToolMaterialFor(m));
 				ToolSledgehammer sledgehammer =  new ToolSledgehammer(Materials.getToolMaterialFor(m));
 	
@@ -191,7 +192,7 @@ public class ItemManager {
 	 * 
 	 */
 	private static void addRecipiesForVanillaItems() {
-		AnimalsDropBones.LOG.info( "SYNDARYL: generating vanilla recipies");
+		UtilityBlocks.LOG.info( "SYNDARYL: generating vanilla recipies");
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.feather,1), 
         		"rl",
         		"rl",
@@ -211,9 +212,9 @@ public class ItemManager {
 		}
 		catch (Exception e)
 		{
-			AnimalsDropBones.LOG.error("Failed while trying to use blockWool from oredict!?");
-			AnimalsDropBones.LOG.error(e.getMessage());
-			AnimalsDropBones.LOG.error(e.getStackTrace());
+			UtilityBlocks.LOG.error("Failed while trying to use blockWool from oredict!?");
+			UtilityBlocks.LOG.error(e.getMessage());
+			UtilityBlocks.LOG.error(e.getStackTrace());
 
 			GameRegistry.addShapedRecipe(new ItemStack(Items.feather,1), 
 	        		"rw",
@@ -348,7 +349,7 @@ public class ItemManager {
 		
 		for (ToolSledgehammer s : Sledgehammers.values())
 		{
-			AnimalsDropBones.LOG.warn("SYNDARYL: meshing "  + s.getName() );
+			UtilityBlocks.LOG.warn("SYNDARYL: meshing "  + s.getName() );
 			registerWithMesher(s, 0);
 		}
 
@@ -377,9 +378,9 @@ public class ItemManager {
 	 */
 	private static ItemModelMesher registerWithMesher(IItemName item, int metadata) {
 		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
-		String name = AnimalsDropBones.MODID + ":" + item.getName(metadata);
+		String name = UtilityBlocks.MODID + ":" + item.getName(metadata);
 		
-	    AnimalsDropBones.LOG.warn("SYNDARYL: item ModelResourceLocation: Where the hell are my models?: "  + name );
+	    UtilityBlocks.LOG.warn("SYNDARYL: item ModelResourceLocation: Where the hell are my models?: "  + name );
 	    mesher.register((Item)item, metadata, new ModelResourceLocation( name, "inventory" ));
 
 	    return mesher;

@@ -1,8 +1,8 @@
-package org.syndaryl.animalsdropbones.item;
+package org.syndaryl.utilityblocks.item;
 
 
-import org.syndaryl.animalsdropbones.AnimalsDropBones;
-import org.syndaryl.animalsdropbones.NamespaceManager;
+import org.syndaryl.utilityblocks.UtilityBlocks;
+import org.syndaryl.utilityblocks.NamespaceManager;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -19,7 +19,7 @@ public class ItemSack extends Item implements IItemName {
 	    this.setCreativeTab(CreativeTabs.tabMisc);   // the item will appear on the Miscellaneous tab in creative
 	    setContents(null);
 		setUnlocalizedName(getName());
-		AnimalsDropBones.LOG.warn("ADB: Making Generic Sacks: "+ getName());
+		UtilityBlocks.LOG.warn("UB: Making Generic Sacks: "+ getName());
 		
 		GameRegistry.registerItem(this, getName());
 	}
@@ -29,12 +29,12 @@ public class ItemSack extends Item implements IItemName {
 	    setContents(itemStack);
 		setUnlocalizedName(getName());
 		GameRegistry.registerItem(this, getName());
-		AnimalsDropBones.LOG.warn("ADB: Making " + itemStack.getItem().getUnlocalizedName() + " Sacks: "+ getName());
+		UtilityBlocks.LOG.warn("UB: Making " + itemStack.getItem().getUnlocalizedName() + " Sacks: "+ getName());
 	}
 
 
 	/* (non-Javadoc)
-	 * @see org.syndaryl.animalsdropbones.item.IItemName#getName()
+	 * @see org.syndaryl.utilityblocks.item.IItemName#getName()
 	 */
     @Override
 	public String getName()
