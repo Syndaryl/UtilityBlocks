@@ -1,0 +1,79 @@
+tile.utilityblocks_gravel_compressed.name=Compressed Gravel Block
+tile.utilityblocks_cobblestone_compressed.name=Compressed Cobblestone Block
+tile.utilityblocks_stone_compressed.name=Compressed Stone Block
+tile.utilityblocks_dirt_compressed.name=Compressed Dirt Block
+tile.utilityblocks_sand_compressed.name=Compressed Sand Block
+tile.utilityblocks_bone_compressed.name=Compressed Bone Block
+tile.utilityblocks_charcoal_compressed.name=Compressed Charcoal Block
+tile.utilityblocks_sugarcane_compressed.name=Sugarcane Bale
+
+
+item.utilityblocks_food_apple_juice.name=Apple Juice
+item.utilityblocks_food_apple_pie.name=Apple Pie
+item.utilityblocks_food_carrot_juice.name=Carrot Juice
+item.utilityblocks_food_eggnog.name=Eggnog
+item.utilityblocks_food_energy_drink.name=Energy Drink
+item.utilityblocks_food_golden_carrot.name=Golden Carrot
+item.utilityblocks_food_potato_juice.name=Potato Juice
+item.utilityblocks_food_sugar_water.name=Sugar Water
+item.utilityblocks_food_sugar_cube.name=Sugar Cube
+item.utilityblocks_food_sushi.name=Sushi
+
+item.utilityblocks_obsidian_sledgehammer.name=Obsidian Sledgehammer
+item.utilityblocks_gold_sledgehammer.name=Gold Sledgehammer
+item.utilityblocks_emerald_sledgehammer.name=Diamond Sledgehammer
+item.utilityblocks_iron_sledgehammer.name=Iron Sledgehammer
+item.utilityblocks_stone_sledgehammer.name=Stone Sledgehammer
+item.utilityblocks_wood_sledgehammer.name=Wood Sledgehammer
+
+item.utilityblocks_obsidian_mattock.name=Obsidian Mattock
+item.utilityblocks_gold_mattock.name=Gold Mattock
+item.utilityblocks_emerald_mattock.name=Diamond Mattock
+item.utilityblocks_iron_mattock.name=Iron Mattock
+item.utilityblocks_stone_mattock.name=Stone Mattock
+item.utilityblocks_wood_mattock.name=Wood Mattock
+
+item.utilityblocks_basemetals_adamantine_sledgehammer.name=Adamantine Sledgehammer
+item.utilityblocks_basemetals_aquarium_sledgehammer.name=Aquarium Sledgehammer
+item.utilityblocks_basemetals_brass_sledgehammer.name=Brass Sledgehammer
+item.utilityblocks_basemetals_bronze_sledgehammer.name=Bronze Sledgehammer
+item.utilityblocks_basemetals_coldiron_sledgehammer.name=Coldiron Sledgehammer
+item.utilityblocks_basemetals_copper_sledgehammer.name=Copper Sledgehammer
+item.utilityblocks_basemetals_electrum_sledgehammer.name=Electrum Sledgehammer
+item.utilityblocks_basemetals_invar_sledgehammer.name=Invar Sledgehammer
+item.utilityblocks_basemetals_lead_sledgehammer.name=Lead Sledgehammer
+item.utilityblocks_basemetals_mithril_sledgehammer.name=Mithril Sledgehammer
+item.utilityblocks_basemetals_nickel_sledgehammer.name=Nickel Sledgehammer
+item.utilityblocks_basemetals_silver_sledgehammer.name=Silver Sledgehammer
+item.utilityblocks_basemetals_starsteel_sledgehammer.name=Starsteel Sledgehammer
+item.utilityblocks_basemetals_steel_sledgehammer.name=Steel Sledgehammer
+item.utilityblocks_basemetals_tin_sledgehammer.name=Tin Sledgehammer
+item.utilityblocks_basemetals_zinc_sledgehammer.name=Zinc Sledgehammer
+
+item.utilityblocks_basemetals_adamantine_mattock.name=Adamantine Mattock
+item.utilityblocks_basemetals_aquarium_mattock.name=Aquarium Mattock
+item.utilityblocks_basemetals_brass_mattock.name=Brass Mattock
+item.utilityblocks_basemetals_bronze_mattock.name=Bronze Mattock
+item.utilityblocks_basemetals_coldiron_mattock.name=Coldiron Mattock
+item.utilityblocks_basemetals_copper_mattock.name=Copper Mattock
+item.utilityblocks_basemetals_electrum_mattock.name=Electrum Mattock
+item.utilityblocks_basemetals_invar_mattock.name=Invar Mattock
+item.utilityblocks_basemetals_lead_mattock.name=Lead Mattock
+item.utilityblocks_basemetals_mithril_mattock.name=Mithril Mattock
+item.utilityblocks_basemetals_nickel_mattock.name=Nickel Mattock
+item.utilityblocks_basemetals_silver_mattock.name=Silver Mattock
+item.utilityblocks_basemetals_starsteel_mattock.name=Starsteel Mattock
+item.utilityblocks_basemetals_steel_mattock.name=Steel Mattock
+item.utilityblocks_basemetals_tin_mattock.name=Tin Mattock
+item.utilityblocks_basemetals_zinc_mattock.name=Zinc Mattock
+
+item.utilityblocks_tool_handle.name=Tool Handle
+
+item.utilityblocks_sack.name=Sack
+item.utilityblocks_sack_carrots.name=Sack of Carrots
+item.utilityblocks_sack_potato.name=Sack of Potatoes
+item.utilityblocks_sack_dyePowder_brown.name=Sack of Cocoa Beans
+item.utilityblocks_sack_seeds.name=Sack of Wheat Seeds
+item.utilityblocks_sack_feather.name=Feather Pillow
+
+itemGroup.utilityblocks.name=Syndaryl's Utilities and Blocks
