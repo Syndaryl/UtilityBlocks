@@ -28,14 +28,14 @@ public class EventHandler {
 		if (event.entity.worldObj.isRemote || !(event.entity instanceof EntityAnimal) )
 			return;
 
-		int numberDropped;
+		int dropCheck;
 		
 		// all animals except squid, because squid don't have bones dangit
 		if(event.entityLiving instanceof EntityAnimal && !( event.entityLiving instanceof EntitySquid)  && ConfigurationHandler.animalsDropBones)
 		{
-			numberDropped = event.entityLiving.worldObj.rand.nextInt(4)-3;
-			if ( numberDropped > 0 )
-				event.entityLiving.entityDropItem(new ItemStack(Items.bone), numberDropped);
+			dropCheck = event.entityLiving.worldObj.rand.nextInt(ConfigurationHandler.boneFrequency);
+			if ( dropCheck > 0 )
+				event.entityLiving.entityDropItem(new ItemStack(Items.bone), 1);
 		}
 		
 		// specific animals
@@ -43,17 +43,17 @@ public class EventHandler {
 			(event.entityLiving instanceof EntityPig && ConfigurationHandler.pigsDropLeather) 
 				)
 		{
-			numberDropped = event.entityLiving.worldObj.rand.nextInt(4)-3;
-			if ( numberDropped > 0 )
-				event.entityLiving.entityDropItem(new ItemStack(Items.leather), numberDropped);
+			dropCheck = event.entityLiving.worldObj.rand.nextInt(ConfigurationHandler.pigsLeatherFrequency);
+			if ( dropCheck == 0 )
+				event.entityLiving.entityDropItem(new ItemStack(Items.leather), 1);
 		}
 		if(
 			(event.entityLiving instanceof EntityHorse  && ConfigurationHandler.horsesDropLeather)
 			)
 		{
-			numberDropped = event.entityLiving.worldObj.rand.nextInt(4)-3;
-			if ( numberDropped > 0 )
-				event.entityLiving.entityDropItem(new ItemStack(Items.leather), numberDropped);
+			dropCheck = event.entityLiving.worldObj.rand.nextInt(ConfigurationHandler.horseLeatherFrequency);
+			if ( dropCheck == 0 )
+				event.entityLiving.entityDropItem(new ItemStack(Items.leather), 1);
 		}
 	}
 

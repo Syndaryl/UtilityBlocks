@@ -13,7 +13,9 @@ public class ConfigurationHandler {
 	public static boolean isEnabled;
 	public static boolean animalsDropBones;
 	public static boolean pigsDropLeather;
+	public static int pigsLeatherFrequency;
 	public static boolean horsesDropLeather;
+	public static int horseLeatherFrequency;
 	public static boolean enableBlockCompresion;
 	
 	public static double smasherDurabilityMultiplier; 
@@ -24,6 +26,8 @@ public class ConfigurationHandler {
 	public static boolean enableObsidianTools;
 
 	public static double smasherExhaustionPerBonusBlock;
+
+	public static int boneFrequency;
 	
 	public static void setConfig(File configFile) {
 		config = new Configuration(configFile);
@@ -55,6 +59,15 @@ public class ConfigurationHandler {
 		
 		currProp = config.get(
 				"Drops",
+				"boneFrequency",
+				5,
+				"What is the rate of animal bone drops (drops 1 in X kills, so smaller numbers = more drops)"
+				);
+		boneFrequency = currProp.getInt(5);
+		propOrder.add(currProp.getName());
+		
+		currProp = config.get(
+				"Drops",
 				"pigsDropLeather",
 				true,
 				"Do pigs drop leather (as well as normal drops?)"
@@ -64,11 +77,29 @@ public class ConfigurationHandler {
 		
 		currProp = config.get(
 				"Drops",
+				"pigsLeatherFrequency",
+				5,
+				"What is the rate of Pig leather drops (drops 1 in X kills, so smaller numbers = more drops)"
+				);
+		pigsLeatherFrequency = currProp.getInt(5);
+		propOrder.add(currProp.getName());
+		
+		currProp = config.get(
+				"Drops",
 				"horsesDropLeather",
 				true,
 				"Do horses drop leather (as well as normal drops?)"
 				);
 		horsesDropLeather = currProp.getBoolean(true);
+		propOrder.add(currProp.getName());
+		
+		currProp = config.get(
+				"Drops",
+				"horseLeatherFrequency",
+				5,
+				"What is the rate of Horse leather drops (drops 1 in X kills, so smaller numbers = more drops)"
+				);
+		horseLeatherFrequency = currProp.getInt(5);
 		propOrder.add(currProp.getName());
 		
 		currProp = config.get(
@@ -125,28 +156,16 @@ public class ConfigurationHandler {
 		currProp = config.get(
 				"Tools",
 				"smasherExhaustionPerBonusBlock",
-				0.5F,
-				"Extra exhaustion tax for each 'bonus' block broken by a smasher. default 0.5",
+				0.25F,
+				"Extra exhaustion tax for each 'bonus' block broken by a smasher. default 0.25",
 				// Value range: 0+
 				0, Float.MAX_VALUE
 				);
-		smasherExhaustionPerBonusBlock = currProp.getDouble(0.5F);
+		smasherExhaustionPerBonusBlock = currProp.getDouble(0.25F);
 		propOrder.add(currProp.getName());
-
-		//currProp = config.get(
-		//		Configuration.CATEGORY_GENERAL,
-		//		"dropFrequency",
-		//		26000,
-		//		"How often will feathers be shed?\nDrop chance is 1/dropFrequency.",
-		//		// Value range: 6000+
-		//		6000, Integer.MAX_VALUE
-		//		);
-		//dropFreq = currProp.getInt(26000);
-		//propOrder.add(currProp.getName());
 		
 		// Order configurations
 		config.setCategoryPropertyOrder(Configuration.CATEGORY_GENERAL, propOrder);
-		config.setCategoryPropertyOrder("Drops", propOrder);
 		config.setCategoryPropertyOrder("Tools", propOrder);
 		config.setCategoryPropertyOrder("Items", propOrder);
 		config.setCategoryPropertyOrder("Blocks", propOrder);
