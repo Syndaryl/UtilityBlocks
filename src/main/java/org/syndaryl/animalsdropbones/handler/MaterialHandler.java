@@ -3,9 +3,12 @@ package org.syndaryl.animalsdropbones.handler;
 import java.util.Collection;
 import java.util.HashMap;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.EnumHelper;
+
 import org.syndaryl.animalsdropbones.AnimalsDropBones;
 import org.syndaryl.animalsdropbones.materials.ADBMaterial;
 
@@ -21,11 +24,12 @@ public class MaterialHandler {
 	}
 	
 	public static void addAllMaterials(){
-		ADBMaterial obsidianTool = MaterialHandler.addMaterial("obsidian", 13, 6, 8, 5); 
+		ADBMaterial obsidianTool = MaterialHandler.addMaterial("obsidian", 13, 6, 8, 5, new ItemStack(Blocks.obsidian)); 
+		
 	}
 
-	public static ADBMaterial addMaterial(String name, double hardness, double strength, double magic, double rarity){
-		ADBMaterial m = new ADBMaterial(name,(float)hardness,(float)strength,(float)magic,(int)(Math.max(50*rarity,1)));
+	public static ADBMaterial addMaterial(String name, double hardness, double strength, double magic, double rarity, ItemStack repairMaterial){
+		ADBMaterial m = new ADBMaterial(name,(float)hardness,(float)strength,(float)magic,(int)(Math.max(50*rarity,1)), repairMaterial);
 		registerMaterial(name, m);
 		return m;
 	}
@@ -51,6 +55,7 @@ public class MaterialHandler {
 			// uh-oh
 			AnimalsDropBones.LOG.error("Failed to create tool material enum for "+m);
 		}
+		tm.setRepairItem(m.getRepairMaterial());
 		toolMaterialMap.put(m, tm);
 		AnimalsDropBones.LOG.info("Created tool material enum "+tm);
 	}

@@ -1,10 +1,8 @@
 package org.syndaryl.animalsdropbones;
 
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.PrintStream;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.passive.EntityPig;
@@ -15,7 +13,6 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -27,14 +24,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.message.StringFormatterMessageFactory;
 import org.apache.logging.log4j.simple.SimpleLogger;
 import org.apache.logging.log4j.util.PropertiesUtil;
-import org.apache.logging.log4j.message.StringFormatterMessageFactory;
 import org.syndaryl.animalsdropbones.block.BlockManager;
 import org.syndaryl.animalsdropbones.handler.ConfigurationHandler;
 import org.syndaryl.animalsdropbones.handler.FurnaceFuelHandler;
-import org.syndaryl.animalsdropbones.handler.MaterialHandler;
 import org.syndaryl.animalsdropbones.item.ItemManager;
 
 @Mod(
@@ -72,10 +67,21 @@ public class AnimalsDropBones {
 			e.printStackTrace();
 		}
 		
-		MaterialHandler.addAllMaterials();
+		//MaterialHandler.addAllMaterials();
 		
 		BlockManager.initialiseBlock();
 		ItemManager.initialiseItems();
+		if (Loader.isModLoaded("basemetals"))
+		{
+			try {
+				ItemManager.initialiseBaseMetalsItems();
+				AnimalsDropBones.LOG.info("SYNDARYL 'BaseMetals' mod is loaded! Making appropriate items.");
+			}
+			catch (Exception e)
+			{
+				AnimalsDropBones.LOG.info("SYNDARYL 'BaseMetals' mod not loaded!");
+			}
+		}
 		
 		BlockManager.registerOreDict();
 		ItemManager.registerOreDict();
@@ -92,6 +98,17 @@ public class AnimalsDropBones {
 		BlockManager.addFuels(fuelHandler);
 		BlockManager.addCraftingRecipies();
 		ItemManager.addCraftingRecipies();
+		if (Loader.isModLoaded("basemetals"))
+		{
+			try {
+				ItemManager.addRecipiesBaseMetalsItems();
+				AnimalsDropBones.LOG.info("SYNDARYL 'BaseMetals' mod is loaded! Crafting items.");
+			}
+			catch (Exception e)
+			{
+				AnimalsDropBones.LOG.info("SYNDARYL 'BaseMetals' mod not loaded!");
+			}
+		}
 		
 		
 		GameRegistry.registerFuelHandler(fuelHandler);
@@ -102,6 +119,17 @@ public class AnimalsDropBones {
 		{
 			BlockManager.graphicRegistry();
 			ItemManager.graphicRegistry();
+			if (Loader.isModLoaded("basemetals"))
+			{
+				try {
+					ItemManager.graphicRegistryBaseMetalsItems();
+					AnimalsDropBones.LOG.info("SYNDARYL 'BaseMetals' mod is loaded! Registering graphics for items.");
+				}
+				catch (Exception e)
+				{
+					AnimalsDropBones.LOG.info("SYNDARYL 'BaseMetals' mod not loaded!");
+				}
+			}
 		}
 	}
 
@@ -113,17 +141,6 @@ public class AnimalsDropBones {
 		for(String name : OreDictionary.getOreNames())
 		{
 			AnimalsDropBones.LOG.info("SYNDARYL OREDICT: '" + name + "'");
-		}
-		if (Loader.isModLoaded("basemetals"))
-		{
-			try {
-				ItemManager.addBaseMetalsItems();
-				AnimalsDropBones.LOG.info("SYNDARYL 'BaseMetals' mod is loaded! Making appropriate items.");
-			}
-			catch (Exception e)
-			{
-				AnimalsDropBones.LOG.info("SYNDARYL 'BaseMetals' mod not loaded!");
-			}
 		}
 	}
 	

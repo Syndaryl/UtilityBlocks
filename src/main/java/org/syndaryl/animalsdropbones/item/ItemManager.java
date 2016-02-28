@@ -5,6 +5,7 @@ package org.syndaryl.animalsdropbones.item;
 
 
 import java.util.HashMap;
+import java.util.Locale;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemModelMesher;
@@ -36,6 +37,7 @@ public class ItemManager {
 
 	public static HashMap<String, ToolMattock> Mattocks = new HashMap<String, ToolMattock>();
 	public static HashMap<String, ToolSledgehammer> Sledgehammers = new HashMap<String, ToolSledgehammer>();
+	private static HashMap<IToolBlockSmasher, String> ToolToIngot = new HashMap<IToolBlockSmasher, String>();
 	
 	public static ToolHandle handle;
 	public static ItemSack[] sacks;
@@ -73,7 +75,7 @@ public class ItemManager {
 		actions = getStringFromList(foodData, ItemManager.ACTIONS);
 		
 		//Object result = EnumHelper.addArmorMaterial(name, textureName, durability, reductionAmounts, enchantability);
-		ADBMaterial obsidianTool = MaterialHandler.addMaterial("obsidian", 12, 6, 8, 1); 
+		ADBMaterial obsidianTool = MaterialHandler.addMaterial("obsidian", 12, 6, 8, 1, new ItemStack(Blocks.obsidian)); 
 		
 		foods = (ItemMetadataFood) new ItemMetadataFood(hunger, satiation, names, actions);
 		
@@ -159,16 +161,30 @@ public class ItemManager {
         addRecipiesForVanillaItems();
 	}
 
-
-	public static void addBaseMetalsItems() {
+	public static void initialiseBaseMetalsItems() {
 		/* Create the versions for Base Metals */ 
 		for(MetalMaterial m : Materials.getAllMetals())
 		{
-			ToolMattock mattock =  new ToolMattock(Materials.getToolMaterialFor(m));
-			ToolSledgehammer sledgehammer =  new ToolSledgehammer(Materials.getToolMaterialFor(m));
-
-			Mattocks.put("mattock"+m.getCapitalizedName(), mattock);
-			Sledgehammers.put("sledgehammer"+m.getCapitalizedName(), sledgehammer);
+			if ( ! ( // if none of the following are true - skip the vanilla materials
+					m.getName().toLowerCase(Locale.ENGLISH).equals("iron") ||
+					m.getName().toLowerCase(Locale.ENGLISH).equals("stone") ||
+					m.getName().toLowerCase(Locale.ENGLISH).equals("wood") ||
+					m.getName().toLowerCase(Locale.ENGLISH).equals("diamond") ||
+					m.getName().toLowerCase(Locale.ENGLISH).equals("gold") ||
+					m.getName().toLowerCase(Locale.ENGLISH).equals("obsidian")
+					)
+				)
+			{
+				AnimalsDropBones.LOG.info("Creating tools for " + m.getName());
+				ToolMattock mattock =  new ToolMattock(Materials.getToolMaterialFor(m));
+				ToolSledgehammer sledgehammer =  new ToolSledgehammer(Materials.getToolMaterialFor(m));
+	
+				Mattocks.put("mattock"+m.getCapitalizedName(), mattock);
+				Sledgehammers.put("sledgehammer"+m.getCapitalizedName(), sledgehammer);
+				
+				ToolToIngot.put(mattock, "ingot" + m.getCapitalizedName());
+				ToolToIngot.put(sledgehammer, "ingot" + m.getCapitalizedName());
+			}
 		}
 	}
 	/**
@@ -198,6 +214,11 @@ public class ItemManager {
 			AnimalsDropBones.LOG.error("Failed while trying to use blockWool from oredict!?");
 			AnimalsDropBones.LOG.error(e.getMessage());
 			AnimalsDropBones.LOG.error(e.getStackTrace());
+
+			GameRegistry.addShapedRecipe(new ItemStack(Items.feather,1), 
+	        		"rw",
+	        		'r', new ItemStack(Items.reeds,1), 'w', new ItemStack(Blocks.wool,1)
+	        );
 		}
 		finally
 		{
@@ -270,6 +291,23 @@ public class ItemManager {
         );
 	}
 
+	public static void addRecipiesBaseMetalsItems() {
+		for ( ToolMattock m : Mattocks.values() )
+		{
+			if (ToolToIngot.containsKey(m))
+			{
+				makeMattockRecepie(new ItemStack(m,1), ToolToIngot.get(m), "toolHandle");
+			}
+		}
+		for ( ToolSledgehammer s : Sledgehammers.values() )
+		{
+			if (ToolToIngot.containsKey(s))
+			{
+				makeHammerRecepie(new ItemStack(s,1), ToolToIngot.get(s), "toolHandle");
+			}
+		}
+	}
+
 	private static void makeMattockRecepie(ItemStack mattockStack,
 			String headMaterial, String handleMaterial) {
         GameRegistry.addRecipe(new ShapedOreRecipe(mattockStack, 
@@ -310,6 +348,7 @@ public class ItemManager {
 		
 		for (ToolSledgehammer s : Sledgehammers.values())
 		{
+			AnimalsDropBones.LOG.warn("SYNDARYL: meshing "  + s.getName() );
 			registerWithMesher(s, 0);
 		}
 
@@ -322,9 +361,15 @@ public class ItemManager {
 	    for (int i = 0; i < foodData.length; i ++) {
 			registerWithMesher(foods, i);
 	    }
-
-    	 
 	}
+
+
+	public static void graphicRegistryBaseMetalsItems() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
 	/**
 	 * @param item 
 	 * @param metadata 
@@ -334,7 +379,7 @@ public class ItemManager {
 		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
 		String name = AnimalsDropBones.MODID + ":" + item.getName(metadata);
 		
-	    //AnimalsDropBones.LOG.warn("SYNDARYL: item ModelResourceLocation: Where the hell are my models?: "  + name );
+	    AnimalsDropBones.LOG.warn("SYNDARYL: item ModelResourceLocation: Where the hell are my models?: "  + name );
 	    mesher.register((Item)item, metadata, new ModelResourceLocation( name, "inventory" ));
 
 	    return mesher;
@@ -368,7 +413,7 @@ public class ItemManager {
 		return names;
 	}
 	
-	@SuppressWarnings("unused")
+	@SuppressWarnings({ "unused"})
 	private static Object[][] getRecepieListFromList(Object[][] list, int item)
 	{
 		Object[][] objects = new Object[list.length][];

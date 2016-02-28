@@ -115,7 +115,7 @@ public class ConfigurationHandler {
 				"Tools",
 				"smasherEfficiencyMultiplier",
 				0.25F,
-				"Durability multiplier for smashers, relative to normal tools. Default is 0.25",
+				"Mining speed multiplier for smashers, relative to normal tools. Default is 0.25 (one quarter normal speed)",
 				// Value range: 0+
 				0, Float.MAX_VALUE
 				);
@@ -146,6 +146,11 @@ public class ConfigurationHandler {
 		
 		// Order configurations
 		config.setCategoryPropertyOrder(Configuration.CATEGORY_GENERAL, propOrder);
+		config.setCategoryPropertyOrder("Drops", propOrder);
+		config.setCategoryPropertyOrder("Tools", propOrder);
+		config.setCategoryPropertyOrder("Items", propOrder);
+		config.setCategoryPropertyOrder("Blocks", propOrder);
+		config.setCategoryPropertyOrder("Drops", propOrder);
 		
 		if (config.hasChanged()) {
 			config.save();

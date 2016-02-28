@@ -2,6 +2,9 @@ package org.syndaryl.animalsdropbones.materials;
 
 import java.util.Locale;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+
 import org.syndaryl.animalsdropbones.NamespaceManager;
 
 public class ADBMaterial {
@@ -34,8 +37,10 @@ public class ADBMaterial {
 	 */
 	private final int rarity;
 
+	private ItemStack repairMaterial;
+
 	public ADBMaterial(String name, float hardness, float strength,
-			float magic, int rarity) {
+			float magic, int rarity, ItemStack repairMaterial) {
 		this.name = name;
 		
 		titleName = NamespaceManager.capitalizeWord(name);
@@ -45,15 +50,14 @@ public class ADBMaterial {
 		this.strength = strength;
 		this.magic = magic;
 		this.rarity = rarity;
+		this.repairMaterial = repairMaterial;
 	}
 
 	public String getEnumName() {
-		// TODO Auto-generated method stub
 		return enumName;
 	}
 
 	public String getName() {
-		// TODO Auto-generated method stub
 		return titleName;
 	}
 	@Override public String toString(){
@@ -179,6 +183,15 @@ public class ADBMaterial {
 	 */
 	public int getLootSpawnWeight(){
 		return this.rarity;
+	}
+	/**
+	 * Returns the material used to repair this tool
+	 * @return an ItemStack
+	 */
+	public ItemStack getRepairMaterial(){
+		if (this.repairMaterial == null)
+			return new ItemStack(Blocks.bedrock);
+		return this.repairMaterial;
 	}
 
 }

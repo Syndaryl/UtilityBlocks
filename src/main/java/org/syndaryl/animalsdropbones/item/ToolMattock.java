@@ -39,7 +39,11 @@ public class ToolMattock extends ItemSpade implements IItemName, IToolBlockSmash
 	public ToolMattock(ToolMaterial material) {
 		super(material);
 		String materialName = material.toString().toLowerCase() ;
-		name = NamespaceManager.GetModNameLC() + "_" + materialName +"_mattock";
+		name = materialName +"_mattock";
+		if (! name.startsWith(NamespaceManager.GetModNameLC() + "_"))
+		{
+			name = NamespaceManager.GetModNameLC() + "_" + name;
+		}
 		setUnlocalizedName(getName());
 		this.setCreativeTab(CreativeTabs.tabTools);
         this.setMaxDamage((int) (material.getMaxUses()*ConfigurationHandler.smasherDurabilityMultiplier));

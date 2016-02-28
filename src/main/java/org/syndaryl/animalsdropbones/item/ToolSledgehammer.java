@@ -30,10 +30,14 @@ public class ToolSledgehammer extends ItemPickaxe implements IItemName, IToolBlo
 	public ToolSledgehammer(ToolMaterial material) {
 		super(material);
 		String materialName = material.toString().toLowerCase();// NamespaceManager.capitalizeWord(material.toString()) ;
-		name = NamespaceManager.GetModNameLC() + "_" + materialName +"_sledgehammer";
+		name = materialName +"_sledgehammer";
+		if (! name.startsWith(NamespaceManager.GetModNameLC() + "_"))
+		{
+			name = NamespaceManager.GetModNameLC() + "_" + name;
+		}
 		setUnlocalizedName( getName() );
 		this.setCreativeTab(CreativeTabs.tabTools);
-        this.setMaxDamage((int) (material.getMaxUses()* ConfigurationHandler.smasherDurabilityMultiplier));
+        this.setMaxDamage((int) (material.getMaxUses() * ConfigurationHandler.smasherDurabilityMultiplier));
 
         this.efficiencyOnProperMaterial = (float) (material.getEfficiencyOnProperMaterial() * ConfigurationHandler.smasherEfficiencyMultiplier);
         
