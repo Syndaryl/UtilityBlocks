@@ -3,6 +3,7 @@ tile.utilityblocks_cobblestone_compressed.name=Compressed Cobblestone Block
 tile.utilityblocks_stone_compressed.name=Compressed Stone Block
 tile.utilityblocks_dirt_compressed.name=Compressed Dirt Block
 tile.utilityblocks_sand_compressed.name=Compressed Sand Block
+tile.utilityblocks_sandstone_compressed.name=Compressed Sandstone Block
 tile.utilityblocks_bone_compressed.name=Compressed Bone Block
 tile.utilityblocks_charcoal_compressed.name=Compressed Charcoal Block
 tile.utilityblocks_sugarcane_compressed.name=Sugarcane Bale
@@ -17,7 +18,7 @@ item.utilityblocks_food_golden_carrot.name=Golden Carrot
 item.utilityblocks_food_potato_juice.name=Potato Juice
 item.utilityblocks_food_sugar_water.name=Sugar Water
 item.utilityblocks_food_sugar_cube.name=Sugar Cube
-item.utilityblocks_food_sushi.name=Sushi
+item.utilityblocks_food_sushi.name=Sushi Roll
 
 item.utilityblocks_obsidian_sledgehammer.name=Obsidian Sledgehammer
 item.utilityblocks_gold_sledgehammer.name=Gold Sledgehammer
@@ -77,4 +78,5 @@ item.utilityblocks_sack_dyePowder_brown.name=Sack of Cocoa Beans
 item.utilityblocks_sack_seeds.name=Sack of Wheat Seeds
 item.utilityblocks_sack_feather.name=Feather Pillow
 
+key.categories.utilityblocks=Utilities and Blocks Mod
 itemGroup.utilityblocks.name=Syndaryl's Utilities and Blocks
