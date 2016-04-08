@@ -37,7 +37,7 @@ public class ItemManager {
 
 	public static HashMap<String, ToolMattock> Mattocks = new HashMap<String, ToolMattock>();
 	public static HashMap<String, ToolSledgehammer> Sledgehammers = new HashMap<String, ToolSledgehammer>();
-	private static HashMap<IToolBlockSmasher, String> ToolToIngot = new HashMap<IToolBlockSmasher, String>();
+	public static HashMap<IToolBlockSmasher, String> ToolToIngot = new HashMap<IToolBlockSmasher, String>();
 	
 	public static ToolHandle handle;
 	public static ItemSack[] sacks;
@@ -319,7 +319,7 @@ public class ItemManager {
 		}
 	}
 
-	private static void makeMattockRecepie(ItemStack mattockStack,
+	public static void makeMattockRecepie(ItemStack mattockStack,
 			String headMaterial, String handleMaterial) {
         GameRegistry.addRecipe(new ShapedOreRecipe(mattockStack, 
         		"iii",
@@ -330,7 +330,7 @@ public class ItemManager {
         );
 		
 	}
-	private static void makeHammerRecepie(ItemStack sledgeHammerStack,
+	public static void makeHammerRecepie(ItemStack sledgeHammerStack,
 			String headMaterial, String handleMaterial) {
         GameRegistry.addRecipe(new ShapedOreRecipe(sledgeHammerStack, 
         		"iii",
@@ -378,7 +378,6 @@ public class ItemManager {
 
 
 	public static void graphicRegistryBaseMetalsItems() {
-		// TODO Auto-generated method stub
 		
 	}
 	

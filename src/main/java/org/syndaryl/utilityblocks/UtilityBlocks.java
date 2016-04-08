@@ -32,6 +32,9 @@ import org.syndaryl.utilityblocks.handler.ConfigurationHandler;
 import org.syndaryl.utilityblocks.handler.FurnaceFuelHandler;
 import org.syndaryl.utilityblocks.handler.KeyBindHandler;
 import org.syndaryl.utilityblocks.item.ItemManager;
+import org.syndaryl.utilityblocks.item.basemetals.BaseMetalsLoader;
+import org.syndaryl.utilityblocks.item.basemetals.BaseMetalsLoaderDummy;
+import org.syndaryl.utilityblocks.item.basemetals.IBaseMetalsLoader;
 import org.syndaryl.utilityblocks.handler.EventHandler;
 
 @Mod(
@@ -39,9 +42,7 @@ import org.syndaryl.utilityblocks.handler.EventHandler;
 		name       = UtilityBlocks.NAME,
 		version    = UtilityBlocks.VERSION,
 		
-		guiFactory = "org.syndaryl.utilityblocks.handler.GUIFactory", 
-		
-		dependencies = "required-after:basemetals"
+		guiFactory = "org.syndaryl.utilityblocks.handler.GUIFactory"
 	)
 public class UtilityBlocks {
 	public static final String MODID   = "utilityblocks";
@@ -61,6 +62,7 @@ public class UtilityBlocks {
 //	public static final Logger LOG = FMLLog.getLogger(); 
 	@Mod.Instance(MODID)
 	public static UtilityBlocks instance;
+	public IBaseMetalsLoader BASEMETALS;
 	
 	@Mod.EventHandler
 	public void initPre(FMLPreInitializationEvent event) {
@@ -79,18 +81,20 @@ public class UtilityBlocks {
 		BlockManager.initialiseBlock();
 		ItemManager.initialiseItems();
 		KeyBindHandler.initialiseKeyBinds();
+
 		
 		if (Loader.isModLoaded("basemetals"))
 		{
-			try {
-				ItemManager.initialiseBaseMetalsItems();
-				UtilityBlocks.LOG.info("SYNDARYL 'BaseMetals' mod is loaded! Making appropriate items.");
-			}
-			catch (Exception e)
-			{
-				UtilityBlocks.LOG.info("SYNDARYL 'BaseMetals' mod not loaded!");
-			}
+				BASEMETALS = new BaseMetalsLoader();
+				UtilityBlocks.LOG.info("'BaseMetals' mod is loaded! Making appropriate items.");
 		}
+		else
+		{
+			BASEMETALS = new BaseMetalsLoaderDummy();
+			UtilityBlocks.LOG.info("'BaseMetals' mod not loaded! Not making any BaseMetals items.");
+		}
+
+		BASEMETALS.initialiseBaseMetalsItems();
 		
 		BlockManager.registerOreDict();
 		ItemManager.registerOreDict();
@@ -108,18 +112,7 @@ public class UtilityBlocks {
 		BlockManager.addFuels(fuelHandler);
 		BlockManager.addCraftingRecipies();
 		ItemManager.addCraftingRecipies();
-		if (Loader.isModLoaded("basemetals"))
-		{
-			try {
-				ItemManager.addRecipiesBaseMetalsItems();
-				UtilityBlocks.LOG.info("SYNDARYL 'BaseMetals' mod is loaded! Crafting items.");
-			}
-			catch (Exception e)
-			{
-				UtilityBlocks.LOG.info("SYNDARYL 'BaseMetals' mod not loaded!");
-			}
-		}
-		
+		BASEMETALS.addRecipiesBaseMetalsItems();
 		
 		GameRegistry.registerFuelHandler(fuelHandler);
 		if (ConfigurationHandler.isEnabled)
@@ -130,17 +123,7 @@ public class UtilityBlocks {
 		{
 			BlockManager.graphicRegistry();
 			ItemManager.graphicRegistry();
-			if (Loader.isModLoaded("basemetals"))
-			{
-				try {
-					ItemManager.graphicRegistryBaseMetalsItems();
-					UtilityBlocks.LOG.info("SYNDARYL 'BaseMetals' mod is loaded! Registering graphics for items.");
-				}
-				catch (Exception e)
-				{
-					UtilityBlocks.LOG.info("SYNDARYL 'BaseMetals' mod not loaded!");
-				}
-			}
+			BASEMETALS.graphicRegistryBaseMetalsItems();
 		}
 	}
 
