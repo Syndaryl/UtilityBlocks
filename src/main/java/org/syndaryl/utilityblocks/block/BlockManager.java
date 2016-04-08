@@ -39,6 +39,7 @@ public class BlockManager {
 		{Material.ground, 	"utilityblocks_gravel_compressed",     	Block.soundTypeGravel, 	0.6F, 3.0F, 	false,	new ItemStack(Blocks.gravel,1),		0},
 		{Material.rock, 	"utilityblocks_cobblestone_compressed", 	Block.soundTypePiston, 	2.0F, 10.0F, 	false,	new ItemStack(Blocks.cobblestone,1),		0},
 		{Material.rock, 	"utilityblocks_stone_compressed",      	Block.soundTypeStone, 	2.2F, 11.0F, 	false,	new ItemStack(Blocks.stone,1),		0},
+		{Material.rock, 	"utilityblocks_sandstone_compressed",      	Block.soundTypeStone, 	1.5F, 8.0F, 	false,	new ItemStack(Blocks.sandstone,1),		0},
 		{Material.ground, 	"utilityblocks_dirt_compressed",       	Block.soundTypeGravel, 	0.5F, 2.0F, 	false,	new ItemStack(Blocks.dirt,1,0),		0},
 		{Material.sand, 	"utilityblocks_sand_compressed",       	Block.soundTypeSand, 	0.5F, 2.0F, 	false,	new ItemStack(Blocks.sand,1,0),		0},
 		{Material.coral, 	"utilityblocks_charcoal_compressed",   	Block.soundTypePiston, 	0.8F, 5.0F, 	true,	new ItemStack(Items.coal,1,1),  	16000.0F},
@@ -49,7 +50,7 @@ public class BlockManager {
 	public static void initialiseBlock() {
 		for (int i = 0; i < BlockManager.BlockSpecifications.length; i++)
 		{
-			UtilityBlocks.LOG.warn("SYNDARYL: building block "  + BlockManager.BlockSpecifications[i][1] );
+			UtilityBlocks.LOG.info("building block "  + BlockManager.BlockSpecifications[i][1] );
 			BlockManager.COMPRESSEDBLOCKS.add(
 					new BlockCompressed(
 							(Material) BlockManager.BlockSpecifications[i][0], 

@@ -195,7 +195,7 @@ public class ItemManager {
 	 * 
 	 */
 	private static void addRecipiesForVanillaItems() {
-		UtilityBlocks.LOG.info( "SYNDARYL: generating vanilla recipies");
+		UtilityBlocks.LOG.info( "generating vanilla recipies");
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.feather,1), 
         		"rl",
         		"rl",
@@ -210,12 +210,12 @@ public class ItemManager {
 		try{
 			GameRegistry.addShapedRecipe(new ItemStack(Items.feather,1), 
 	        		"rw",
-	        		'r', new ItemStack(Items.reeds,1), 'w', "blockWool"
+	        		'r', new ItemStack(Items.reeds,1), 'w', "materialCloth"
 	        );
 		}
 		catch (Exception e)
 		{
-			UtilityBlocks.LOG.error("Failed while trying to use blockWool from oredict!?");
+			UtilityBlocks.LOG.error("Failed while trying to use materialCloth from oredict!?");
 			UtilityBlocks.LOG.error(e.getMessage());
 			UtilityBlocks.LOG.error(e.getStackTrace());
 
@@ -359,7 +359,7 @@ public class ItemManager {
 		
 		for (ToolSledgehammer s : Sledgehammers.values())
 		{
-			UtilityBlocks.LOG.warn("SYNDARYL: meshing "  + s.getName() );
+			UtilityBlocks.LOG.info("SYNDARYL: meshing "  + s.getName() );
 			registerWithMesher(s, 0);
 		}
 
