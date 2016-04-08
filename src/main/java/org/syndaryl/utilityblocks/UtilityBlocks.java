@@ -45,8 +45,8 @@ import org.syndaryl.utilityblocks.handler.EventHandler;
 	)
 public class UtilityBlocks {
 	public static final String MODID   = "utilityblocks";
-	public static final String NAME    = "Animals Drop Bones";
-	public static final String VERSION = "1.0.8";
+	public static final String NAME    = "UtilityBlocks";
+	public static final String VERSION = "${version}";
 	
 	public static Configuration config;
 	public static final FurnaceFuelHandler fuelHandler = new FurnaceFuelHandler();
