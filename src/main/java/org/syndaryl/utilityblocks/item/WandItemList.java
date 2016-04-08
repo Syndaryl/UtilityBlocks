@@ -3,6 +3,12 @@
  */
 package org.syndaryl.utilityblocks.item;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
+
 import org.syndaryl.utilityblocks.NamespaceManager;
 import org.syndaryl.utilityblocks.UtilityBlocks;
 
@@ -14,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 
 /**
  * @author syndaryl
@@ -36,18 +43,37 @@ public class WandItemList extends Item implements IItemName {
 	@Override
     public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn)
     {
-		UtilityBlocks.LOG.info("Item list");
-		for(ResourceLocation key :  Item.itemRegistry.getKeys() )
+		UtilityBlocks.INFO.info("=================== ITEM LIST ===================");
+		for(String key :  asSorted(Item.itemRegistry.getKeys()) )
 		{
-			UtilityBlocks.LOG.info(key.toString());
+			UtilityBlocks.INFO.info(key);
 		}
-		UtilityBlocks.LOG.info("Block list");
-		for(ResourceLocation key :  Block.blockRegistry.getKeys() )
+		UtilityBlocks.INFO.info("=================== BLOCK LIST ===================");
+		for(String key :  asSorted(Block.blockRegistry.getKeys()) )
 		{
-			UtilityBlocks.LOG.info(key.toString());
+			UtilityBlocks.INFO.info(key);
+		}
+
+		UtilityBlocks.INFO.info("=================== ORE DICTIONARY =================== ");
+		UtilityBlocks.INFO.info("       OreDict contains " + OreDictionary.getOreNames().length + " names");
+		for(String name : OreDictionary.getOreNames())
+		{
+			UtilityBlocks.INFO.info(name);
 		}
         return itemStackIn;
     }
+	
+	public static
+	List<String> asSorted(Set<ResourceLocation> set) {
+		List<String> list = new ArrayList<String>(set.size());
+		for( ResourceLocation o : set )
+		{
+			list.add(o.toString());
+		}
+		
+	  java.util.Collections.sort(list);
+	  return list;
+	}
 
 	/* (non-Javadoc)
 	 * @see org.syndaryl.utilityblocks.item.IItemName#getName()
