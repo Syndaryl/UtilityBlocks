@@ -30,6 +30,7 @@ import org.apache.logging.log4j.util.PropertiesUtil;
 import org.syndaryl.utilityblocks.block.BlockManager;
 import org.syndaryl.utilityblocks.handler.ConfigurationHandler;
 import org.syndaryl.utilityblocks.handler.FurnaceFuelHandler;
+import org.syndaryl.utilityblocks.handler.KeyBindHandler;
 import org.syndaryl.utilityblocks.item.ItemManager;
 import org.syndaryl.utilityblocks.handler.EventHandler;
 
@@ -53,6 +54,10 @@ public class UtilityBlocks {
 			"SyndarylLog", Level.INFO, false, false, true, false, "yyyy/mm/dd hh:mm:ss", 
 			new StringFormatterMessageFactory(), new PropertiesUtil(""), null
 			);
+	public static final SimpleLogger INFO = new SimpleLogger(
+			"SyndarylMinecraftInfoLog", Level.INFO, false, false, true, false, "", 
+			new StringFormatterMessageFactory(), new PropertiesUtil(""), null
+			);
 //	public static final Logger LOG = FMLLog.getLogger(); 
 	@Mod.Instance(MODID)
 	public static UtilityBlocks instance;
@@ -63,6 +68,7 @@ public class UtilityBlocks {
 		ConfigurationHandler.setConfig(event.getSuggestedConfigurationFile());
 		try {
 			LOG.setStream(new PrintStream("logs/syndaryl.log"));
+			INFO.setStream(new PrintStream("logs/syndarylminecraftinfo.log"));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -72,6 +78,8 @@ public class UtilityBlocks {
 		
 		BlockManager.initialiseBlock();
 		ItemManager.initialiseItems();
+		KeyBindHandler.initialiseKeyBinds();
+		
 		if (Loader.isModLoaded("basemetals"))
 		{
 			try {
@@ -90,6 +98,7 @@ public class UtilityBlocks {
 		if(event.getSide() == Side.CLIENT)
 		{
 			ItemManager.variantRegistry();
+			
 		}
 	}
 	
@@ -139,11 +148,6 @@ public class UtilityBlocks {
 	@Mod.EventHandler
 	public void initPost(FMLPostInitializationEvent event) {
 
-		UtilityBlocks.LOG.info("       OreDict contains " + OreDictionary.getOreNames().length + " names");
-		for(String name : OreDictionary.getOreNames())
-		{
-			UtilityBlocks.LOG.info("SYNDARYL OREDICT: '" + name + "'");
-		}
 	}
 	
 	@SubscribeEvent
