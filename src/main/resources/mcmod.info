@@ -11,6 +11,7 @@
   "credits": "Thanks to Vazkii for making ChickenShed open source; it helped me figure out how to add to futz around with MC events.",
   "logoFile": "",
   "screenshots": [],
-  "dependencies": []
+  "dependencies": ["basemetals"],
+  "useDependencyInformation": "true"
 }
 ]
