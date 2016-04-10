@@ -4,13 +4,8 @@
 package org.syndaryl.utilityblocks.item;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-import java.util.SortedSet;
-
-import org.syndaryl.utilityblocks.NamespaceManager;
-import org.syndaryl.utilityblocks.UtilityBlocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -21,6 +16,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
+
+import org.syndaryl.utilityblocks.NamespaceManager;
+import org.syndaryl.utilityblocks.UtilityBlocks;
 
 /**
  * @author syndaryl
