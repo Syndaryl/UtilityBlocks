@@ -78,11 +78,7 @@ dependencies {
     // deobfCompile "applecore:AppleCore:1.8.9-1.3.0+166.beb36:api"
 
     compile files(
-	'lib/BaseMetals/BaseMetals-API-1.7.3.jar'
-	//'BaseMetals-API-1.4.2.jar'
-	//,
-        //'lib/NEI/CodeChickenCore-1.8-1.0.5.34-dev.jar',
-        //'lib/NEI/NotEnoughItems-1.8-1.0.5.84-dev.jar'
+	'lib/BaseMetals/BaseMetals_1.9-API-2.2.2.jar'
     )
 
     // real examples
