@@ -190,7 +190,7 @@ public class UBMaterial {
 	 */
 	public ItemStack getRepairMaterial(){
 		if (this.repairMaterial == null)
-			return new ItemStack(Blocks.bedrock);
+			return new ItemStack(Blocks.BEDROCK);
 		return this.repairMaterial;
 	}
 

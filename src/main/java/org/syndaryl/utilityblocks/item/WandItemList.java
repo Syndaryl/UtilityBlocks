@@ -36,18 +36,17 @@ public class WandItemList extends Item implements IItemName {
 	 * 
 	 */
 	public WandItemList() {
-		this.setCreativeTab(CreativeTabs.tabMisc); // the item will appear on
+		this.setCreativeTab(CreativeTabs.MISC); // the item will appear on
 													// the Miscellaneous tab in
 													// creative
 		setUnlocalizedName(getName());
-		GameRegistry.registerItem(this, getName());
+		ItemManager.registerItem(this, getName());
 	}
 
 	/**
 	 * Called whenever this item is equipped and the right mouse button is
 	 * pressed. Args: itemStack, world, entityPlayer
 	 */
-	@Override
 	public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn,
 			EntityPlayer playerIn) {
 		UtilityBlocks.INFO
@@ -56,7 +55,7 @@ public class WandItemList extends Item implements IItemName {
 		
 		UtilityBlocks.INFO
 				.info("=================== BLOCK LIST ===================");
-		for (String key : asSorted(Block.blockRegistry.getKeys())) {
+		for (String key : asSorted(Block.REGISTRY.getKeys())) {
 			UtilityBlocks.INFO.info(key);
 		}
 
@@ -92,7 +91,7 @@ public class WandItemList extends Item implements IItemName {
 		// TODO Auto-generated method stub
 		try
 		{		
-			for(ResourceLocation key :  asSortedResourceLocation(Item.itemRegistry.getKeys()) )
+			for(ResourceLocation key :  asSortedResourceLocation(Item.REGISTRY.getKeys()) )
 			{
 //				//id
 //				writer.append(String.format("%05d",  Item.itemRegistry.getIDForObject(objItem) ) );
@@ -119,7 +118,7 @@ public class WandItemList extends Item implements IItemName {
 //				writer.append(key.getResourcePath());
 //				writer.append('\n');
 
-				Item objItem = Item.itemRegistry.getObject(key);
+				Item objItem = Item.REGISTRY.getObject(key);
 				List<ItemStack> subItems = new ArrayList<ItemStack>();
 	            for (CreativeTabs tab : objItem.getCreativeTabs())
 	            {
@@ -128,7 +127,7 @@ public class WandItemList extends Item implements IItemName {
 	            for (ItemStack subItem : subItems)
 	            {
 					//id
-					writer.append(String.format("%05d",  Item.itemRegistry.getIDForObject(objItem) ) );
+					writer.append(String.format("%05d",  Item.REGISTRY.getIDForObject(objItem) ) );
 					writer.append(',');
 					//resource_domain
 					writer.append(key.getResourceDomain());

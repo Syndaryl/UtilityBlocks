@@ -3,11 +3,9 @@ package org.syndaryl.utilityblocks.handler;
 import java.util.HashMap;
 
 import net.minecraft.block.Block;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.IFuelHandler;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.syndaryl.utilityblocks.UtilityBlocks;

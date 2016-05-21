@@ -14,12 +14,11 @@ public class ToolHandle extends Item implements IItemName {
 	
 	public ToolHandle() {
 		// TODO Auto-generated constructor stub
-	    this.setCreativeTab(CreativeTabs.tabMisc);   // the item will appear on the Miscellaneous tab in creative
+	    this.setCreativeTab(CreativeTabs.MISC);   // the item will appear on the Miscellaneous tab in creative
 		//setUnlocalizedName(org.syndaryl.utilityblocks.NamespaceManager.getLocalized( getName() ));
 
 		setUnlocalizedName(getName());
-		
-		GameRegistry.registerItem(this, getName());
+		ItemManager.registerItem(this, getName());
 	}
 
 	/* (non-Javadoc)

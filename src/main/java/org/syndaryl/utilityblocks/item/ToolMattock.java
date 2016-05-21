@@ -17,7 +17,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -45,13 +45,12 @@ public class ToolMattock extends ItemSpade implements IItemName, IToolBlockSmash
 			name = NamespaceManager.GetModNameLC() + "_" + name;
 		}
 		setUnlocalizedName(getName());
-		this.setCreativeTab(CreativeTabs.tabTools);
+		this.setCreativeTab(CreativeTabs.TOOLS);
         this.setMaxDamage((int) (material.getMaxUses()*ConfigurationHandler.smasherDurabilityMultiplier));
 
         this.efficiencyOnProperMaterial = (float) (material.getEfficiencyOnProperMaterial() * ConfigurationHandler.smasherEfficiencyMultiplier);
         
-
-		GameRegistry.registerItem(this, getName());
+        ItemManager.registerItem(this, getName());
 	}
 	//@SideOnly(Side.CLIENT)
 	//	public void registerIcons(IIconRegister register)
@@ -110,7 +109,7 @@ public class ToolMattock extends ItemSpade implements IItemName, IToolBlockSmash
             if (! (neighbourBlockContainer.x == worldX && neighbourBlockContainer.y == worldY && neighbourBlockContainer.z == worldZ)) // is not source block
             {
             	BlockPos pos = new BlockPos(worldX, worldY, worldZ);
-            	double hardness = neighbourBlockContainer.b.getBlockHardness(gameWorld_, pos);
+            	double hardness = neighbourBlockContainer.b.getBlockHardness(null, gameWorld_, pos);
                 if (hardness != 0.0D)
                 {
                 	int damage = 1;
@@ -140,11 +139,11 @@ public class ToolMattock extends ItemSpade implements IItemName, IToolBlockSmash
 	@Override
     public void breakBlock(World gameWorld_,
 			BlockWithLocation blockXYZ, EntityLivingBase player) {
-        int fortune = EnchantmentHelper.getFortuneModifier(player);
+        int fortune = EnchantmentHelper.getLootingModifier(player);
         boolean dropItems = true;
         BlockPos pos = new BlockPos(blockXYZ.x, blockXYZ.y, blockXYZ.z);
         //int metadata =  blockXYZ.metadata;// gameWorld_.getBlockMetadata(pos);
-        int xpDrop = blockXYZ.b.getExpDrop(gameWorld_, pos, fortune);
+        int xpDrop = blockXYZ.b.getExpDrop(null, gameWorld_, pos, fortune);
         gameWorld_.destroyBlock(pos, dropItems);
 		blockXYZ.b.dropXpOnBlockBreak(gameWorld_, pos, r.nextBoolean()? xpDrop:0);
 	}
@@ -173,7 +172,7 @@ public class ToolMattock extends ItemSpade implements IItemName, IToolBlockSmash
         		for(int z = worldZ-1; z<=worldZ+1; z++)
         		{
         			BlockPos pos = new BlockPos(x,y,z);
-        			if ( gameWorld_.getBlockState(pos).getBlock().getUnlocalizedName() != Blocks.air.getUnlocalizedName() )	
+        			if ( gameWorld_.getBlockState(pos).getBlock().getUnlocalizedName() != Blocks.AIR.getUnlocalizedName() )	
         			{
         				Block neighbour = gameWorld_.getBlockState(pos).getBlock();
         		        IBlockState neighbourState = gameWorld_.getBlockState(pos);

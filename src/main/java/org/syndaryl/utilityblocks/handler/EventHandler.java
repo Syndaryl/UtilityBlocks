@@ -25,35 +25,35 @@ public class EventHandler {
 	public void onLivingDrops(LivingDropsEvent event) {
 		
 		// Break checking
-		if (event.entity.worldObj.isRemote || !(event.entity instanceof EntityAnimal) )
+		if (event.getEntity().worldObj.isRemote || !(event.getEntity() instanceof EntityAnimal) )
 			return;
 
 		int dropCheck;
 		
 		// all animals except squid, because squid don't have bones dangit
-		if(event.entityLiving instanceof EntityAnimal && !( event.entityLiving instanceof EntitySquid)  && ConfigurationHandler.animalsDropBones)
+		if(event.getEntityLiving() instanceof EntityAnimal && !( event.getEntityLiving() instanceof EntitySquid)  && ConfigurationHandler.animalsDropBones)
 		{
-			dropCheck = event.entityLiving.worldObj.rand.nextInt(ConfigurationHandler.boneFrequency);
+			dropCheck = event.getEntityLiving().worldObj.rand.nextInt(ConfigurationHandler.boneFrequency);
 			if ( dropCheck > 0 )
-				event.entityLiving.entityDropItem(new ItemStack(Items.bone), 1);
+				event.getEntityLiving().entityDropItem(new ItemStack(Items.BONE), 1);
 		}
 		
 		// specific animals
 		if(
-			(event.entityLiving instanceof EntityPig && ConfigurationHandler.pigsDropLeather) 
+			(event.getEntityLiving() instanceof EntityPig && ConfigurationHandler.pigsDropLeather) 
 				)
 		{
-			dropCheck = event.entityLiving.worldObj.rand.nextInt(ConfigurationHandler.pigsLeatherFrequency);
+			dropCheck = event.getEntityLiving().worldObj.rand.nextInt(ConfigurationHandler.pigsLeatherFrequency);
 			if ( dropCheck == 0 )
-				event.entityLiving.entityDropItem(new ItemStack(Items.leather), 1);
+				event.getEntityLiving().entityDropItem(new ItemStack(Items.LEATHER), 1);
 		}
 		if(
-			(event.entityLiving instanceof EntityHorse  && ConfigurationHandler.horsesDropLeather)
+			(event.getEntityLiving() instanceof EntityHorse  && ConfigurationHandler.horsesDropLeather)
 			)
 		{
-			dropCheck = event.entityLiving.worldObj.rand.nextInt(ConfigurationHandler.horseLeatherFrequency);
+			dropCheck = event.getEntityLiving().worldObj.rand.nextInt(ConfigurationHandler.horseLeatherFrequency);
 			if ( dropCheck == 0 )
-				event.entityLiving.entityDropItem(new ItemStack(Items.leather), 1);
+				event.getEntityLiving().entityDropItem(new ItemStack(Items.LEATHER), 1);
 		}
 	}
 

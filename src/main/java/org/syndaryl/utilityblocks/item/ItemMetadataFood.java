@@ -5,23 +5,6 @@ package org.syndaryl.utilityblocks.item;
 
 import java.util.List;
 
-
-
-
-
-
-
-
-
-import org.syndaryl.utilityblocks.UtilityBlocks;
-import org.syndaryl.utilityblocks.NamespaceManager;
-
-
-
-
-
-
-
 //import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,12 +13,13 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.StatList;
 import net.minecraft.world.World;
-//import net.minecraft.util.IIcon;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import org.syndaryl.utilityblocks.NamespaceManager;
+import org.syndaryl.utilityblocks.UtilityBlocks;
+//import net.minecraft.util.IIcon;
 
 /**
  * @author syndaryl
@@ -66,9 +50,8 @@ public class ItemMetadataFood extends ItemFood implements IItemName {
 		
 		this.setHasSubtypes(true);
 		this.setUnlocalizedName(getName());
-		this.setCreativeTab(CreativeTabs.tabFood);
-		
-		GameRegistry.registerItem(this, getName());
+		this.setCreativeTab(CreativeTabs.FOOD);
+		ItemManager.registerItem(this, getName());
 	}
 	
 
@@ -109,12 +92,11 @@ public class ItemMetadataFood extends ItemFood implements IItemName {
 	    return EnumAction.EAT;
     }
 	
-	@Override
-    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityPlayer playerIn)
+	public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityPlayer playerIn)
     {
 		if (stack.getItem().getItemUseAction(stack) == EnumAction.DRINK )
 		{
-			ItemStack bottle = new ItemStack(Items.glass_bottle, 1);
+			ItemStack bottle = new ItemStack(Items.GLASS_BOTTLE, 1);
 			playerIn.inventory.addItemStackToInventory(bottle);
 		}
         return super.onItemUseFinish(stack, worldIn, playerIn);

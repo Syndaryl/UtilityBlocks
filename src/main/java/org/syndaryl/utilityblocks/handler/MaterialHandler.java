@@ -16,6 +16,7 @@ public class MaterialHandler {
 	private static HashMap<String,UBMaterial> allMaterials = new HashMap<>();
 	private static HashMap<UBMaterial,ArmorMaterial> armorMaterialMap= new HashMap<>();
 	private static HashMap<UBMaterial,ToolMaterial> toolMaterialMap= new HashMap<>();
+	private static UBMaterial obsidianToolUBMaterial;
 	
 	ToolMaterial obsidianTool;
 
@@ -24,8 +25,7 @@ public class MaterialHandler {
 	}
 	
 	public static void addAllMaterials(){
-		UBMaterial obsidianTool = MaterialHandler.addMaterial("obsidian", 13, 6, 8, 5, new ItemStack(Blocks.obsidian)); 
-		
+		obsidianToolUBMaterial = MaterialHandler.addMaterial("obsidian", 13, 6, 8, 5, new ItemStack(Blocks.OBSIDIAN));
 	}
 
 	public static UBMaterial addMaterial(String name, double hardness, double strength, double magic, double rarity, ItemStack repairMaterial){
@@ -42,7 +42,7 @@ public class MaterialHandler {
 		String texName = m.getName();
 		int[] protection = m.getDamageReductionArray();
 		int durability = m.getArmorMaxDamageFactor();
-		ArmorMaterial am = EnumHelper.addArmorMaterial(enumName, texName, durability, protection, m.getEnchantability());
+		ArmorMaterial am = EnumHelper.addArmorMaterial(enumName, texName, durability, protection, m.getEnchantability(), null); //TODO - What's this sound event?
 		if(am == null){
 			// uh-oh
 			UtilityBlocks.LOG.error("Failed to create armor material enum for "+m);
@@ -60,9 +60,9 @@ public class MaterialHandler {
 		UtilityBlocks.LOG.info("Created tool material enum "+tm);
 	}
 	/**
-	 * Gets the armor material for a given metal 
+	 * Gets the armour material for a given metal 
 	 * @param m The metal of interest
-	 * @return The armor material for this metal, or null if there isn't one
+	 * @return The armour material for this metal, or null if there isn't one
 	 */
 	public static ArmorMaterial getArmorMaterialFor(UBMaterial m){
 		return armorMaterialMap.get(m);

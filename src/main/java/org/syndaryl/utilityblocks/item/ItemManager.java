@@ -9,13 +9,14 @@ import java.util.Locale;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemModelMesher;
-import net.minecraft.client.resources.model.ModelBakery;
-import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -76,7 +77,7 @@ public class ItemManager {
 		actions = getStringFromList(foodData, ItemManager.ACTIONS);
 		
 		//Object result = EnumHelper.addArmorMaterial(name, textureName, durability, reductionAmounts, enchantability);
-		UBMaterial obsidianTool = MaterialHandler.addMaterial("obsidian", 12, 6, 8, 1, new ItemStack(Blocks.obsidian)); 
+		UBMaterial obsidianTool = MaterialHandler.addMaterial("obsidian", 12, 6, 8, 1, new ItemStack(Blocks.OBSIDIAN)); 
 		
 		foods = (ItemMetadataFood) new ItemMetadataFood(hunger, satiation, names, actions);
 		
@@ -101,8 +102,8 @@ public class ItemManager {
 		mattockIron = (ToolMattock) new ToolMattock(ToolMaterial.IRON);
 		sledgehammerIron = (ToolSledgehammer) new ToolSledgehammer(ToolMaterial.IRON);
 		
-		mattockDiamond = (ToolMattock) new ToolMattock(ToolMaterial.EMERALD);
-		sledgehammerDiamond = (ToolSledgehammer) new ToolSledgehammer(ToolMaterial.EMERALD);
+		mattockDiamond = (ToolMattock) new ToolMattock(ToolMaterial.DIAMOND);
+		sledgehammerDiamond = (ToolSledgehammer) new ToolSledgehammer(ToolMaterial.DIAMOND);
 		
 
 		Mattocks.put("mattockWood", mattockWood);
@@ -128,11 +129,12 @@ public class ItemManager {
 		
 		sacks = new ItemSack[] {
 				new ItemSack(),
-				new ItemSack( new ItemStack(Items.dye,1,3)),
-				new ItemSack(new ItemStack(Items.potato)),
-				new ItemSack(new ItemStack(Items.carrot)),
-				new ItemSack(new ItemStack(Items.wheat_seeds)),
-				new ItemSack(new ItemStack(Items.feather))
+				new ItemSack( new ItemStack(Items.DYE,1,3)),
+				new ItemSack(new ItemStack(Items.POTATO)),
+				new ItemSack(new ItemStack(Items.CARROT)),
+				new ItemSack(new ItemStack(Items.WHEAT_SEEDS)),
+				new ItemSack(new ItemStack(Items.BEETROOT_SEEDS)),
+				new ItemSack(new ItemStack(Items.FEATHER))
 		};
 		
 	}
@@ -196,11 +198,18 @@ public class ItemManager {
 	 */
 	private static void addRecipiesForVanillaItems() {
 		UtilityBlocks.LOG.info( "generating vanilla recipies");
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.feather,1), 
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.FEATHER,1), 
         		"rl",
         		"rl",
         		"rl",
-        		'r', new ItemStack(Items.reeds), 'l', new ItemStack( Blocks.leaves )
+        		'r', new ItemStack(Items.REEDS), 'l', new ItemStack( Blocks.LEAVES )
+        		)
+        );
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.FEATHER,1), 
+        		"rl",
+        		"rl",
+        		"rl",
+        		'r', new ItemStack(Items.REEDS), 'l', new ItemStack( Blocks.LEAVES2 )
         		)
         );
 //		GameRegistry.addShapedRecipe(new ItemStack(Items.feather,1), 
@@ -208,9 +217,9 @@ public class ItemManager {
 //        		'r', new ItemStack(Items.reeds,1), 'w', new ItemStack(Blocks.wool, 1)
 //        );
 		try{
-			GameRegistry.addShapedRecipe(new ItemStack(Items.feather,1), 
+			GameRegistry.addShapedRecipe(new ItemStack(Items.FEATHER,1), 
 	        		"rw",
-	        		'r', new ItemStack(Items.reeds,1), 'w', "materialCloth"
+	        		'r', new ItemStack(Items.REEDS,1), 'w', "materialCloth"
 	        );
 		}
 		catch (Exception e)
@@ -219,60 +228,64 @@ public class ItemManager {
 			UtilityBlocks.LOG.error(e.getMessage());
 			UtilityBlocks.LOG.error(e.getStackTrace());
 
-			GameRegistry.addShapedRecipe(new ItemStack(Items.feather,1), 
+			GameRegistry.addShapedRecipe(new ItemStack(Items.FEATHER,1), 
 	        		"rw",
-	        		'r', new ItemStack(Items.reeds,1), 'w', new ItemStack(Blocks.wool,1)
+	        		'r', new ItemStack(Items.REEDS,1), 'w', new ItemStack(Blocks.WOOL,1)
 	        );
 		}
 		finally
 		{
 		
 		}
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.wool,1), 
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.WOOL,1), 
         		"fff",
         		"fff",
         		"fff",
-        		'f', Items.feather
+        		'f', Items.FEATHER
         		)
         );
-		GameRegistry.addShapelessRecipe(new ItemStack(Blocks.sand, 4), new ItemStack(Blocks.sandstone));
-		GameRegistry.addShapedRecipe(new ItemStack(Blocks.grass),
+		GameRegistry.addShapelessRecipe(new ItemStack(Blocks.SAND, 4), new ItemStack(Blocks.SANDSTONE));
+		GameRegistry.addShapedRecipe(new ItemStack(Blocks.GRASS),
 				"sss",
 				"sds",
 				"sss",
-				's', Items.wheat_seeds,
-				'd', Item.getItemFromBlock(Blocks.dirt)
+				's', Items.WHEAT_SEEDS,
+				'd', Item.getItemFromBlock(Blocks.DIRT)
 				);
 	}
 	/**
 	 * 
 	 */
 	private static void addRecipiesForCustomItems() {
-		ItemStack waterbottle = new ItemStack( Items.potionitem, 1, 0);
-		GameRegistry.addShapedRecipe(new ItemStack(sacks[0],4,0), new Object[]{ "w w", "w w", "www", 	'w', new ItemStack(Blocks.wool)});
-		GameRegistry.addShapedRecipe(new ItemStack(sacks[1],1,0), new Object[]{ "ccc", "csc", "ccc", 	'c', new ItemStack(Items.dye,1,3), 's', new ItemStack(sacks[0],1)});
-		GameRegistry.addShapedRecipe(new ItemStack(sacks[2],1,0), new Object[]{ "ccc", "csc", "ccc", 	'c', new ItemStack(Items.potato), 's', new ItemStack(sacks[0],1)});
-		GameRegistry.addShapedRecipe(new ItemStack(sacks[3],1,0), new Object[]{ "ccc", "csc", "ccc", 	'c', new ItemStack(Items.carrot), 's', new ItemStack(sacks[0],1)});
-		GameRegistry.addShapedRecipe(new ItemStack(sacks[4],1,0), new Object[]{ "ccc", "csc", "ccc", 	'c', new ItemStack(Items.wheat_seeds), 's', new ItemStack(sacks[0],1)});
-		GameRegistry.addShapedRecipe(new ItemStack(sacks[5],1,0), new Object[]{ "ccc", "csc", "ccc", 	'c', new ItemStack(Items.feather), 's', new ItemStack(sacks[0],1)});
+		ItemStack waterbottle = new ItemStack( Items.POTIONITEM, 1, 0);
+		GameRegistry.addShapedRecipe(new ItemStack(sacks[0],4,0), new Object[]{ "w w", "w w", "www", 	'w', new ItemStack(Blocks.WOOL)});
+		GameRegistry.addShapedRecipe(new ItemStack(sacks[1],1,0), new Object[]{ "ccc", "csc", "ccc", 	'c', new ItemStack(Items.DYE,1,3), 's', new ItemStack(sacks[0],1)});
+		GameRegistry.addShapedRecipe(new ItemStack(sacks[2],1,0), new Object[]{ "ccc", "csc", "ccc", 	'c', new ItemStack(Items.POTATO), 's', new ItemStack(sacks[0],1)});
+		GameRegistry.addShapedRecipe(new ItemStack(sacks[3],1,0), new Object[]{ "ccc", "csc", "ccc", 	'c', new ItemStack(Items.CARROT), 's', new ItemStack(sacks[0],1)});
+		GameRegistry.addShapedRecipe(new ItemStack(sacks[4],1,0), new Object[]{ "ccc", "csc", "ccc", 	'c', new ItemStack(Items.WHEAT_SEEDS), 's', new ItemStack(sacks[0],1)});
+		GameRegistry.addShapedRecipe(new ItemStack(sacks[5],1,0), new Object[]{ "ccc", "csc", "ccc", 	'c', new ItemStack(Items.BEETROOT_SEEDS), 's', new ItemStack(sacks[0],1)});
+		GameRegistry.addShapedRecipe(new ItemStack(sacks[6],1,0), new Object[]{ "ccc", "csc", "ccc", 	'c', new ItemStack(Items.FEATHER), 's', new ItemStack(sacks[0],1)});
 		
-		GameRegistry.addShapelessRecipe(new ItemStack(Items.dye,8,3), new ItemStack(sacks[1].setContainerItem(sacks[0])));
-		GameRegistry.addShapelessRecipe(new ItemStack(Items.potato,8), new ItemStack(sacks[2].setContainerItem(sacks[0])));
-		GameRegistry.addShapelessRecipe(new ItemStack(Items.carrot,8), new ItemStack(sacks[3].setContainerItem(sacks[0])));
-		GameRegistry.addShapelessRecipe(new ItemStack(Items.wheat_seeds,8), new ItemStack(sacks[4].setContainerItem(sacks[0])));
-		GameRegistry.addShapelessRecipe(new ItemStack(Items.feather,8), new ItemStack(sacks[4].setContainerItem(sacks[0])));
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.DYE,8,3), new ItemStack(sacks[1].setContainerItem(sacks[0])));
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.POTATO,8), new ItemStack(sacks[2].setContainerItem(sacks[0])));
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.CARROT,8), new ItemStack(sacks[3].setContainerItem(sacks[0])));
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.WHEAT_SEEDS,8), new ItemStack(sacks[4].setContainerItem(sacks[0])));
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.BEETROOT_SEEDS,8), new ItemStack(sacks[5].setContainerItem(sacks[0])));
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.FEATHER,8), new ItemStack(sacks[6].setContainerItem(sacks[0])));
 		
-		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 0),	new Object[]{"A","B", 				'A', new ItemStack( Items.apple), 'B', waterbottle});
-		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 1),	new Object[]{"ASA","WWW", 			'A', new ItemStack( Items.apple), 'W', new ItemStack( Items.wheat), 'S', new ItemStack(foods, 1, 7)});
-		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 1),	new Object[]{"   ", "ASA","WWW", 	'A', new ItemStack( Items.apple), 'W', new ItemStack( Items.wheat), 'S', new ItemStack(foods, 1, 7)});
-		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 2),	new Object[]{"A","M","B", 			'A', new ItemStack( Items.egg), 'M', new ItemStack( Items.milk_bucket.setContainerItem(Items.bucket)), 'B', Items.glass_bottle});
-		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 3),	new Object[]{"A","B", 				'A', new ItemStack( Items.apple), 'B', waterbottle});
-		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 4),	new Object[]{"P","B", 				'P', new ItemStack( Items.potato), 'B', waterbottle});
-		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 5),	new Object[]{"C","B", 				'C', new ItemStack( Items.carrot), 'B', waterbottle});
+		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 0),	new Object[]{"A","B", 				'A', new ItemStack( Items.APPLE), 'B', waterbottle});
+		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 1),	new Object[]{"ASA","WWW", 			'A', new ItemStack( Items.APPLE), 'W', new ItemStack( Items.WHEAT), 'S', new ItemStack(foods, 1, 7)});
+		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 1),	new Object[]{"   ", "ASA","WWW", 	'A', new ItemStack( Items.APPLE), 'W', new ItemStack( Items.WHEAT), 'S', new ItemStack(foods, 1, 7)});
+		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 2),	new Object[]{"A","M","B", 			'A', new ItemStack( Items.EGG), 'M', new ItemStack( Items.MILK_BUCKET.setContainerItem(Items.BUCKET)), 'B', Items.GLASS_BOTTLE});
+		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 3),	new Object[]{"A","B", 				'A', new ItemStack( Items.APPLE), 'B', waterbottle});
+		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 4),	new Object[]{"P","B", 				'P', new ItemStack( Items.POTATO), 'B', waterbottle});
+		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 5),	new Object[]{"C","B", 				'C', new ItemStack( Items.CARROT), 'B', waterbottle});
 		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 6),	new Object[]{"S","B", 				'S', new ItemStack(foods, 1, 7), 'B', waterbottle});
-		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 7),	new Object[]{"SS","SS", 			'S', new ItemStack(Items.sugar)});
-		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 8),	new Object[]{"F","L", 				'F', new ItemStack( Items.fish, 1, 0), 'L', new ItemStack( Blocks.leaves )});		
-		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 8),	new Object[]{"F","L", 				'F', new ItemStack( Items.fish, 1, 1), 'L', new ItemStack( Blocks.leaves )});		
+		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 7),	new Object[]{"SS","SS", 			'S', new ItemStack(Items.SUGAR)});
+		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 8),	new Object[]{"LLL","LFL","LLL", 	'F', new ItemStack( Items.FISH, 1, 0), 'L', new ItemStack( Blocks.LEAVES )});		
+		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 8),	new Object[]{"LLL","LFL","LLL", 	'F', new ItemStack( Items.FISH, 1, 1), 'L', new ItemStack( Blocks.LEAVES )});
+		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 8),	new Object[]{"LLL","LFL","LLL", 	'F', new ItemStack( Items.FISH, 1, 0), 'L', new ItemStack( Blocks.LEAVES2 )});		
+		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 8),	new Object[]{"LLL","LFL","LLL", 	'F', new ItemStack( Items.FISH, 1, 1), 'L', new ItemStack( Blocks.LEAVES2 )});		
 
         makeMattockRecepie(new ItemStack(Mattocks.get("mattockWood"),1), "logWood", "toolHandle");
         makeMattockRecepie(new ItemStack(Mattocks.get("mattockStone"),1), "stone", "toolHandle");
@@ -396,6 +409,19 @@ public class ItemManager {
 
 	    return mesher;
 	}
+
+    static void registerItem(Item item, String itemName)
+    {
+        try
+        {
+            ResourceLocation location = new ResourceLocation(UtilityBlocks.MODID, itemName);
+            if (item != null) GameRegistry.register(item, location);
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException("An error occurred registering an item...");
+        }
+    }
 	
 	private static String[] getStringFromList(Object[][] list, int item)
 	{

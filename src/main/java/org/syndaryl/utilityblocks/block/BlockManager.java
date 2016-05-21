@@ -3,15 +3,17 @@ package org.syndaryl.utilityblocks.block;
 import java.util.LinkedList;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.Block.SoundType;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemModelMesher;
-import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 //import cpw.mods.fml.common.registry.GameRegistry;
 //import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -36,15 +38,15 @@ public class BlockManager {
 	
 	private static final Object[][] BlockSpecifications =
 		new Object[][] {
-		{Material.ground, 	"utilityblocks_gravel_compressed",     	Block.soundTypeGravel, 	0.6F, 3.0F, 	false,	new ItemStack(Blocks.gravel,1),		0},
-		{Material.rock, 	"utilityblocks_cobblestone_compressed", 	Block.soundTypePiston, 	2.0F, 10.0F, 	false,	new ItemStack(Blocks.cobblestone,1),		0},
-		{Material.rock, 	"utilityblocks_stone_compressed",      	Block.soundTypeStone, 	2.2F, 11.0F, 	false,	new ItemStack(Blocks.stone,1),		0},
-		{Material.rock, 	"utilityblocks_sandstone_compressed",      	Block.soundTypeStone, 	1.5F, 8.0F, 	false,	new ItemStack(Blocks.sandstone,1),		0},
-		{Material.ground, 	"utilityblocks_dirt_compressed",       	Block.soundTypeGravel, 	0.5F, 2.0F, 	false,	new ItemStack(Blocks.dirt,1,0),		0},
-		{Material.sand, 	"utilityblocks_sand_compressed",       	Block.soundTypeSand, 	0.5F, 2.0F, 	false,	new ItemStack(Blocks.sand,1,0),		0},
-		{Material.coral, 	"utilityblocks_charcoal_compressed",   	Block.soundTypePiston, 	0.8F, 5.0F, 	true,	new ItemStack(Items.coal,1,1),  	16000.0F},
-		{Material.coral, 	"utilityblocks_bone_compressed",       	Block.soundTypePiston, 	0.7F, 4.0F, 	false,	new ItemStack(Items.bone,1,0),		0},
-		{Material.wood, 	"utilityblocks_sugarcane_compressed",   	Block.soundTypeGrass, 	0.4F, 2.0F, 	true,	new ItemStack(Items.reeds,1,0), 	8000.0F }
+		{Material.GROUND, 	"utilityblocks_gravel_compressed",     	SoundType.GROUND, 	0.6F, 3.0F, 	false,	new ItemStack(Blocks.GRAVEL,1),		0},
+		{Material.ROCK, 	"utilityblocks_cobblestone_compressed", 	SoundType.STONE, 	2.0F, 10.0F, 	false,	new ItemStack(Blocks.COBBLESTONE,1),		0},
+		{Material.ROCK, 	"utilityblocks_stone_compressed",      	SoundType.STONE, 	2.2F, 11.0F, 	false,	new ItemStack(Blocks.STONE,1),		0},
+		{Material.ROCK, 	"utilityblocks_sandstone_compressed",      	SoundType.STONE, 	1.5F, 8.0F, 	false,	new ItemStack(Blocks.SANDSTONE,1),		0},
+		{Material.GROUND, 	"utilityblocks_dirt_compressed",       	SoundType.GROUND, 	0.5F, 2.0F, 	false,	new ItemStack(Blocks.DIRT,1,0),		0},
+		{Material.SAND, 	"utilityblocks_sand_compressed",       	SoundType.SAND, 	0.5F, 2.0F, 	false,	new ItemStack(Blocks.SAND,1,0),		0},
+		{Material.CORAL, 	"utilityblocks_charcoal_compressed",   	SoundType.STONE, 	0.8F, 5.0F, 	true,	new ItemStack(Items.COAL,1,1),  	16000.0F},
+		{Material.CORAL, 	"utilityblocks_bone_compressed",       	SoundType.STONE, 	0.7F, 4.0F, 	false,	new ItemStack(Items.BONE,1,0),		0},
+		{Material.WOOD, 	"utilityblocks_sugarcane_compressed",   	SoundType.PLANT, 	0.4F, 2.0F, 	true,	new ItemStack(Items.REEDS,1,0), 	8000.0F }
 		};
 
 	public static void initialiseBlock() {
@@ -53,15 +55,30 @@ public class BlockManager {
 			UtilityBlocks.LOG.info("building block "  + BlockManager.BlockSpecifications[i][1] );
 			BlockManager.COMPRESSEDBLOCKS.add(
 					new BlockCompressed(
-							(Material) BlockManager.BlockSpecifications[i][0], 
-							(String) BlockManager.BlockSpecifications[i][1], 
-							(SoundType) BlockManager.BlockSpecifications[i][2], 
-							(Float) BlockManager.BlockSpecifications[i][3] * 1.2F, 
-							(Float) BlockManager.BlockSpecifications[i][4])
+							(Material) BlockManager.BlockSpecifications[i][0], // ground
+							(String) BlockManager.BlockSpecifications[i][1],   // block-name
+							(SoundType) BlockManager.BlockSpecifications[i][2], // sound-type
+							(Float) BlockManager.BlockSpecifications[i][3] * 1.2F, // hardness
+							(Float) BlockManager.BlockSpecifications[i][4]) // blast resistance
 					);
 		}
 	}
-	
+
+    static void registerBlockWithItem(Block block, String blockName, Class<? extends ItemBlock> blockClass)
+    {
+        try
+        {
+            Item itemBlock = blockClass != null ? (Item)blockClass.getConstructor(Block.class).newInstance(block) : null;
+            ResourceLocation location = new ResourceLocation(UtilityBlocks.MODID, blockName);
+
+            GameRegistry.register(block, location);
+            if (itemBlock != null) GameRegistry.register(itemBlock, location);
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException("An error occurred associating an item block during registration...");
+        }
+    }
 	public static void registerOreDict() {
 
 		for (int i = 0; i < BlockManager.COMPRESSEDBLOCKS.size(); i++)
@@ -80,7 +97,7 @@ public class BlockManager {
 		{
 			try
 			{
-				OreDictionary.registerOre( "blockWool", new ItemStack(Blocks.wool,1, i) );
+				OreDictionary.registerOre( "blockWool", new ItemStack(Blocks.WOOL,1, i) );
 			}
 			catch (Exception e)
 			{

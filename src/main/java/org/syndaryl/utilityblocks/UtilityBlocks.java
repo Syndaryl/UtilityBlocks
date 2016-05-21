@@ -3,14 +3,8 @@ package org.syndaryl.utilityblocks;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 
-import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.passive.EntityHorse;
-import net.minecraft.entity.passive.EntityPig;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
@@ -21,7 +15,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.message.StringFormatterMessageFactory;
@@ -29,13 +22,13 @@ import org.apache.logging.log4j.simple.SimpleLogger;
 import org.apache.logging.log4j.util.PropertiesUtil;
 import org.syndaryl.utilityblocks.block.BlockManager;
 import org.syndaryl.utilityblocks.handler.ConfigurationHandler;
+import org.syndaryl.utilityblocks.handler.EventHandler;
 import org.syndaryl.utilityblocks.handler.FurnaceFuelHandler;
 import org.syndaryl.utilityblocks.handler.KeyBindHandler;
 import org.syndaryl.utilityblocks.item.ItemManager;
 import org.syndaryl.utilityblocks.item.basemetals.BaseMetalsLoader;
 import org.syndaryl.utilityblocks.item.basemetals.BaseMetalsLoaderDummy;
 import org.syndaryl.utilityblocks.item.basemetals.IBaseMetalsLoader;
-import org.syndaryl.utilityblocks.handler.EventHandler;
 
 @Mod(
 		modid      = UtilityBlocks.MODID,
@@ -108,7 +101,7 @@ public class UtilityBlocks {
 	
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event) {
-		FMLCommonHandler.instance().bus().register(instance);
+		MinecraftForge.EVENT_BUS.register(instance);
 		BlockManager.addFuels(fuelHandler);
 		BlockManager.addCraftingRecipies();
 		ItemManager.addCraftingRecipies();
@@ -135,7 +128,7 @@ public class UtilityBlocks {
 	
 	@SubscribeEvent
 	public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
-		if (event.modID.equals(MODID)) {
+		if (event.getModID().equals(MODID)) {
 			ConfigurationHandler.syncConfig();
 		}
 	}

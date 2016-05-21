@@ -16,7 +16,7 @@ public class ItemSack extends Item implements IItemName {
 	private String contentsName = "";
 	
 	public ItemSack() {
-	    this.setCreativeTab(CreativeTabs.tabMisc);   // the item will appear on the Miscellaneous tab in creative
+	    this.setCreativeTab(CreativeTabs.MISC);   // the item will appear on the Miscellaneous tab in creative
 	    setContents(null);
 		setUnlocalizedName(getName());
 		UtilityBlocks.LOG.info("Making Generic Sacks: "+ getName());
@@ -25,10 +25,10 @@ public class ItemSack extends Item implements IItemName {
 	}
 
 	public ItemSack(ItemStack itemStack) {
-	    this.setCreativeTab(CreativeTabs.tabMisc);   // the item will appear on the Miscellaneous tab in creative
+	    this.setCreativeTab(CreativeTabs.MISC);   // the item will appear on the Miscellaneous tab in creative
 	    setContents(itemStack);
 		setUnlocalizedName(getName());
-		GameRegistry.registerItem(this, getName());
+		ItemManager.registerItem(this, getName());
 		UtilityBlocks.LOG.info("Making " + itemStack.getItem().getUnlocalizedName() + " Sacks: "+ getName());
 	}
 
