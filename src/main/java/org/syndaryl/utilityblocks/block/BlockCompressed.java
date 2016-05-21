@@ -34,8 +34,7 @@ public class BlockCompressed extends Block {
 		  this.name = blockName;
 		  setUnlocalizedName(getName());
 		  BlockManager.registerBlockWithItem(this, this.getName(), null);
-		  ResourceLocation location = new ResourceLocation(UtilityBlocks.MODID, blockName);
-          GameRegistry.register(this, location);
+		  
 		  this.setHardness(hardness);
 		  this.setFuel(false);
 	}
