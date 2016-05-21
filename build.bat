@@ -1,6 +1,6 @@
 @echo off
 @SET UTILITYBLOCKS_BUILD_PATH=build\libs
-@SET UTILITYBLOCKS_DEPLOY_PATH=D:\Games\Minecraft1.8.9\mods\1.8.9
+@SET UTILITYBLOCKS_DEPLOY_PATH=D:\Games\Minecraft1.9.0\mods\1.9
 :BUILD
 call gradlew build
 :CLEARDEPLOYAREA
