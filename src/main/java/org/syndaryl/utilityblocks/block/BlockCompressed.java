@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class BlockCompressed extends Block {
 	private String name;
 	private boolean isFuel;
-	private ItemBlock item;
+//	private ItemBlock item;
 	
 	public BlockCompressed(Material p_i45394_1_) {
 		super(p_i45394_1_);
@@ -65,19 +65,19 @@ public class BlockCompressed extends Block {
 		this.isFuel = isFuel;
 	}
 
-	/**
-	 * @return the item
-	 */
-	public ItemBlock getItem() {
-		return item;
-	}
-
-	/**
-	 * @param item the item to set
-	 */
-	public void setItem(ItemBlock item) {
-		this.item = item;
-	}
+//	/**
+//	 * @return the item
+//	 */
+//	public ItemBlock getItem() {
+//		return item;
+//	}
+//
+//	/**
+//	 * @param item the item to set
+//	 */
+//	public void setItem(ItemBlock item) {
+//		this.item = item;
+//	}
 
 //	@Override
 //	public String getUnlocalizedName(){

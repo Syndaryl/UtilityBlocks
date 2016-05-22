@@ -64,15 +64,25 @@ public class BlockManager {
 		}
 	}
 
-    static void registerBlockWithItem(Block block, String blockName, Class<? extends ItemBlock> blockClass)
+    static void registerBlockWithItem(Block block, String blockName, Class<? extends ItemBlock> itemBlockClass)
     {
         try
         {
-            Item itemBlock = blockClass != null ? (Item)blockClass.getConstructor(Block.class).newInstance(block) : null;
+
             ResourceLocation location = new ResourceLocation(UtilityBlocks.MODID, blockName);
 
             GameRegistry.register(block, location);
-            if (itemBlock != null) GameRegistry.register(itemBlock, location);
+            Item itemBlock;
+        	if (itemBlockClass == null)
+    		{
+        		ResourceLocation registryName = block.getRegistryName();
+				itemBlock = new ItemBlock(block).setRegistryName(registryName);
+    		}
+        	else
+        	{
+        		itemBlock = (Item)itemBlockClass.getConstructor(Block.class).newInstance(block);
+        	}
+            GameRegistry.register(itemBlock);
         }
         catch (Exception e)
         {
@@ -83,14 +93,25 @@ public class BlockManager {
 
 		for (int i = 0; i < BlockManager.COMPRESSEDBLOCKS.size(); i++)
 		{
-			OreDictionary.registerOre(
-					(
-						(BlockCompressed) BlockManager.COMPRESSEDBLOCKS.get(i)).getName()
-						.replaceFirst(NamespaceManager.GetModNameLC() + "_", "")
-						.replaceFirst("(^.+)_(compressed)", "blockCompressed$1"), 
-						new ItemStack(BlockManager.COMPRESSEDBLOCKS.get(i),1
-					)
-			);
+			try
+			{
+				BlockCompressed compressed = BlockManager.COMPRESSEDBLOCKS.get(i);
+				ItemStack block = new ItemStack(Item.getItemFromBlock( compressed),1);
+				String nameBase = block.getItem().getUnlocalizedName();
+				String name = nameBase.replaceFirst(NamespaceManager.GetModNameLC() + "_", "")
+				.replaceFirst("(^.+)_(compressed)", "blockCompressed$1");
+				UtilityBlocks.LOG.info("Registering %s with oredict as %s", nameBase, name );
+				OreDictionary.registerOre(
+							name, 
+							block
+				);
+			}
+			catch (Exception e)
+			{
+				UtilityBlocks.LOG.error("Failed while trying to register compressed blocks with oredict!?");
+				UtilityBlocks.LOG.error(e.getMessage());
+				UtilityBlocks.LOG.error(e.getStackTrace());
+			}
 		}
 		
 		for (int i = 0; i < 16; i++)
