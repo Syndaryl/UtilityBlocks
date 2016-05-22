@@ -20,7 +20,7 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import org.syndaryl.utilityblocks.NamespaceManager;
-import org.syndaryl.utilityblocks.block.BlockWithLocation;
+import org.syndaryl.utilityblocks.block.util.BlockWithLocation;
 import org.syndaryl.utilityblocks.handler.ConfigurationHandler;
 import org.syndaryl.utilityblocks.item.util.BlockSmasher;
 

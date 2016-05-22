@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import org.syndaryl.utilityblocks.block.BlockWithLocation;
+import org.syndaryl.utilityblocks.block.util.BlockWithLocation;
 
 public interface IToolBlockSmasher {
 

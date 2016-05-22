@@ -16,7 +16,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
-import org.syndaryl.utilityblocks.block.BlockWithLocation;
+import org.syndaryl.utilityblocks.UtilityBlocks;
+import org.syndaryl.utilityblocks.block.util.BlockWithLocation;
 import org.syndaryl.utilityblocks.handler.ConfigurationHandler;
 
 public class BlockSmasher {
@@ -68,10 +69,10 @@ public class BlockSmasher {
         {
         	BlockWithLocation neighbourBlockContainer = iter.next();
 
-            if (! (neighbourBlockContainer.x == worldX && neighbourBlockContainer.y == worldY && neighbourBlockContainer.z == worldZ)) // is not source block
+            if (! (neighbourBlockContainer.getX() == worldX && neighbourBlockContainer.getY() == worldY && neighbourBlockContainer.getZ() == worldZ)) // is not source block
             {
             	BlockPos pos = new BlockPos(worldX, worldY, worldZ);
-            	double hardness = neighbourBlockContainer.b.getBlockHardness(null, gameWorld_, pos);
+            	double hardness = neighbourBlockContainer.getBlock().getBlockHardness(null, gameWorld_, pos);
                 if (hardness != 0.0D)
                 {
                 	int damage = 1;
@@ -107,11 +108,11 @@ public class BlockSmasher {
         int fortune = EnchantmentHelper.getLootingModifier(player);
         
         boolean dropItems = true;
-        BlockPos pos = new BlockPos(blockXYZ.x, blockXYZ.y, blockXYZ.z);
+        BlockPos pos = new BlockPos(blockXYZ.getX(), blockXYZ.getY(), blockXYZ.getZ());
         //int metadata =  blockXYZ.metadata;// gameWorld_.getBlockMetadata(pos);
-        int xpDrop = blockXYZ.b.getExpDrop(null, gameWorld_, pos, fortune);
+        int xpDrop = blockXYZ.getBlock().getExpDrop(null, gameWorld_, pos, fortune);
         gameWorld_.destroyBlock(pos, dropItems);
-		blockXYZ.b.dropXpOnBlockBreak(gameWorld_, pos, r.nextBoolean()? xpDrop:0);
+		blockXYZ.getBlock().dropXpOnBlockBreak(gameWorld_, pos, r.nextBoolean()? xpDrop:0);
 	}
 
 	/* (non-Javadoc)
@@ -131,6 +132,7 @@ public class BlockSmasher {
 	public static void getNeighbouringBlocksToDeque(World gameWorld_,
 			Block blockStruck, int worldX, int worldY, int worldZ,
 			Deque<BlockWithLocation> blockDeck) {
+		UtilityBlocks.LOG.info(String.format("getNeighbouringBlocksToDeque() is firing on %i %i %i", worldX, worldY, worldZ));
         IBlockState coreState = gameWorld_.getBlockState( new BlockPos(worldX, worldY, worldZ));
         int coreData = blockStruck.getMetaFromState(coreState);
 		String blockName = blockStruck.getLocalizedName();
