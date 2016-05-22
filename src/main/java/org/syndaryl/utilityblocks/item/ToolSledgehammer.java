@@ -22,6 +22,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.syndaryl.utilityblocks.NamespaceManager;
 import org.syndaryl.utilityblocks.block.BlockWithLocation;
 import org.syndaryl.utilityblocks.handler.ConfigurationHandler;
+import org.syndaryl.utilityblocks.item.util.BlockSmasher;
 
 public class ToolSledgehammer extends ItemPickaxe implements IItemName, IToolBlockSmasher {
     static Random r = new Random();
@@ -42,7 +43,7 @@ public class ToolSledgehammer extends ItemPickaxe implements IItemName, IToolBlo
         this.efficiencyOnProperMaterial = (float) (material.getEfficiencyOnProperMaterial() * ConfigurationHandler.smasherEfficiencyMultiplier);
         
 
-		GameRegistry.registerItem(this, getName());
+		ItemManager.registerItem(this, getName());
 	}
 
 	/* (non-Javadoc)
@@ -51,16 +52,7 @@ public class ToolSledgehammer extends ItemPickaxe implements IItemName, IToolBlo
 	@Override
     public boolean onBlockDestroyed(ItemStack toolInstance, World gameWorld_, Block blockStruck, BlockPos pos, EntityLivingBase actor)
     {
-    	if(!gameWorld_.isRemote)
-    	{
-	        Deque<BlockWithLocation> blockDeck = new LinkedList<BlockWithLocation>();
-	        getNeighbouringBlocksToDeque(gameWorld_, blockStruck, pos.getX(), pos.getY(),
-					pos.getZ(), blockDeck);
-	        hitManyBlocks(toolInstance, gameWorld_, pos.getX(), pos.getY(),
-					pos.getZ(),
-					actor, blockDeck);
-    	}
-        return true;
+        return BlockSmasher.onBlockDestroyed(toolInstance, gameWorld_, blockStruck, pos, actor);
     }
 
 	/* (non-Javadoc)
@@ -71,31 +63,9 @@ public class ToolSledgehammer extends ItemPickaxe implements IItemName, IToolBlo
 	public void hitManyBlocks(ItemStack toolInstance, World gameWorld_,
 			int worldX, int worldY, int worldZ, EntityLivingBase actor,
 			Deque<BlockWithLocation> blockDeck) {
-	    
-        for(Iterator<BlockWithLocation> iter = blockDeck.iterator(); iter.hasNext();)
-        {
-        	BlockWithLocation neighbourBlockContainer = iter.next();
-
-            if (! (neighbourBlockContainer.x == worldX && neighbourBlockContainer.y == worldY && neighbourBlockContainer.z == worldZ)) // is not source block
-            {
-            	BlockPos pos = new BlockPos(worldX, worldY, worldZ);
-            	double hardness = neighbourBlockContainer.b.getBlockHardness(null, gameWorld_, pos);
-                if (hardness != 0.0D)
-                {
-                	int damage = 1;
-					ForgeHooks.isToolEffective(gameWorld_, pos , toolInstance);
-                    if ( ! ForgeHooks.isToolEffective(gameWorld_, pos , toolInstance) )
-                    {
-                        damage = 2;
-                    }
-                    toolInstance.damageItem(damage, actor);
-                }
-                // dumb thing to replace a proper "break block as if broken by player" method until otherwise found
-            	breakBlock(gameWorld_, neighbourBlockContainer, actor);
-            	if (actor instanceof EntityPlayer)
-            		((EntityPlayer) actor).getFoodStats().addExhaustion((float) (ConfigurationHandler.smasherExhaustionPerBonusBlock * 1.5));
-            }
-        }
+	    BlockSmasher.hitManyBlocks(toolInstance, gameWorld_,
+				worldX, worldY, worldZ, actor,
+				blockDeck);
 	}
 
 	/* (non-Javadoc)
@@ -105,15 +75,7 @@ public class ToolSledgehammer extends ItemPickaxe implements IItemName, IToolBlo
     @Override
 	public void breakBlock(World gameWorld_,
 			BlockWithLocation blockXYZ, EntityLivingBase player) {
-
-        int fortune = EnchantmentHelper.getLootingModifier(player);
-        
-        boolean dropItems = true;
-        BlockPos pos = new BlockPos(blockXYZ.x, blockXYZ.y, blockXYZ.z);
-        //int metadata =  blockXYZ.metadata;// gameWorld_.getBlockMetadata(pos);
-        int xpDrop = blockXYZ.b.getExpDrop(null, gameWorld_, pos, fortune);
-        gameWorld_.destroyBlock(pos, dropItems);
-		blockXYZ.b.dropXpOnBlockBreak(gameWorld_, pos, r.nextBoolean()? xpDrop:0);
+		BlockSmasher.breakBlock(gameWorld_, blockXYZ, player);
 	}
 
 	/* (non-Javadoc)
@@ -124,30 +86,7 @@ public class ToolSledgehammer extends ItemPickaxe implements IItemName, IToolBlo
 	public void getNeighbouringBlocksToDeque(World gameWorld_,
 			Block blockStruck, int worldX, int worldY, int worldZ,
 			Deque<BlockWithLocation> blockDeck) {
-        IBlockState coreState = gameWorld_.getBlockState( new BlockPos(worldX, worldY, worldZ));
-        int coreData = blockStruck.getMetaFromState(coreState);
-		String blockName = blockStruck.getLocalizedName();
-		for(int x = worldX-1; x <= worldX+1; x++)
-        {
-        	for(int y = worldY-1; y<= worldY+1; y++)
-        	{
-        		for(int z = worldZ-1; z<=worldZ+1; z++)
-        		{
-        			BlockPos pos = new BlockPos(x,y,z);
-        			if ( gameWorld_.getBlockState(pos).getBlock().getUnlocalizedName() != Blocks.AIR.getUnlocalizedName() )	
-        			{
-        				Block neighbour = gameWorld_.getBlockState(pos).getBlock();
-        		        IBlockState neighbourState = gameWorld_.getBlockState(pos);
-        		        int neighbourMeta = neighbour.getMetaFromState(neighbourState);
-						if (neighbour.getLocalizedName().compareTo(blockName) == 0 && neighbourMeta == coreData)  //  && neighbour != blockStruck
-            			{
-            				BlockWithLocation container = new BlockWithLocation(neighbour, x, y, z, neighbourMeta);
-            				blockDeck.add(container);
-            			}
-        			}
-        		}
-        	}
-        }
+    	BlockSmasher.getNeighbouringBlocksToDeque(gameWorld_, blockStruck, worldX, worldY, worldZ, blockDeck);
 	}
 
 	/* (non-Javadoc)
