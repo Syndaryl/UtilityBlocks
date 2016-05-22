@@ -28,7 +28,18 @@ public class FurnaceFuelHandler implements IFuelHandler {
 
     public void addFuel(Block block, int value)
     {
-        addFuel(Item.getItemFromBlock(block), 0, value);
+		try{
+			UtilityBlocks.LOG.info("SYNDARYL: Making Block Fuel! " + block.getUnlocalizedName() + "\n" );
+			addFuel(Item.getItemFromBlock(block), 0, value);
+		}
+		catch (NullPointerException e)
+		{
+			UtilityBlocks.LOG.error("SYNDARYL: I was asked to make a fuel for a block but I was given a null block?");
+			for ( StackTraceElement stack : e.getStackTrace() )
+			{
+				UtilityBlocks.LOG.error(stack.toString());
+			}
+		}
     }
     public void addFuel(Block block, int meta, int value)
     {
@@ -41,8 +52,18 @@ public class FurnaceFuelHandler implements IFuelHandler {
     }
 	public void addFuel(Item item, int metadata, int value)
 	{
-		UtilityBlocks.LOG.info("SYNDARYL: Making Fuel! " + item.getUnlocalizedName() + "\n" );
-        fuelList.put(Pair.of(item, metadata), value);
+		try{
+			UtilityBlocks.LOG.info("SYNDARYL: Making Fuel! " + item.getUnlocalizedName() + "\n" );
+	        fuelList.put(Pair.of(item, metadata), value);
+		}
+		catch (NullPointerException e)
+		{
+			UtilityBlocks.LOG.error("SYNDARYL: I was asked to make a fuel but I was given a null item?");
+			for ( StackTraceElement stack : e.getStackTrace() )
+			{
+				UtilityBlocks.LOG.error(stack.toString());
+			}
+		}
 	}
 
 
