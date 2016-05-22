@@ -16,6 +16,9 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -45,10 +48,12 @@ public class WandItemList extends Item implements IItemName {
 
 	/**
 	 * Called whenever this item is equipped and the right mouse button is
-	 * pressed. Args: itemStack, world, entityPlayer
+	 * pressed. Args: ItemStack, World, EntityPlayer, EnumHand
 	 */
-	public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn,
-			EntityPlayer playerIn) {
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn,
+			EntityPlayer playerIn, EnumHand hand) {
+		//ActionResult<ItemStack> result = super.onItemRightClick(itemStackIn, worldIn, playerIn, hand);
 		UtilityBlocks.INFO
 				.info("=================== ITEM LIST ===================");
 		generateItemCsvFile("items.csv");
@@ -66,7 +71,9 @@ public class WandItemList extends Item implements IItemName {
 		for (String name : OreDictionary.getOreNames()) {
 			UtilityBlocks.INFO.info(name);
 		}
-		return itemStackIn;
+		ActionResult<ItemStack> result = new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
+		
+		return result;
 	}
 
 	private void generateItemCsvFile(String sFileName) {
