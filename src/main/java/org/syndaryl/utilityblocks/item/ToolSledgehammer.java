@@ -50,44 +50,11 @@ public class ToolSledgehammer extends ItemPickaxe implements IItemName, IToolBlo
 	 * @see org.syndaryl.utilityblocks.item.IToolBlockSmasher#onBlockDestroyed(net.minecraft.item.ItemStack, net.minecraft.world.World, net.minecraft.block.Block, net.minecraft.util.BlockPos, net.minecraft.entity.EntityLivingBase)
 	 */
 	@Override
-    public boolean onBlockDestroyed(ItemStack toolInstance, World gameWorld_, Block blockStruck, BlockPos pos, EntityLivingBase actor)
+    public boolean onBlockDestroyed(ItemStack toolInstance, World gameWorld_, IBlockState blockStruck, BlockPos pos, EntityLivingBase actor)
     {
+		//super.onBlockDestroyed(toolInstance, gameWorld_, blockStruck, pos, actor);
         return BlockSmasher.onBlockDestroyed(toolInstance, gameWorld_, blockStruck, pos, actor);
     }
-
-	/* (non-Javadoc)
-	 * @see org.syndaryl.utilityblocks.item.IToolBlockSmasher#hitManyBlocks(net.minecraft.item.ItemStack, net.minecraft.world.World, int, int, int, net.minecraft.entity.EntityLivingBase, java.util.Deque)
-	 */
-	
-    @Override
-	public void hitManyBlocks(ItemStack toolInstance, World gameWorld_,
-			int worldX, int worldY, int worldZ, EntityLivingBase actor,
-			Deque<BlockWithLocation> blockDeck) {
-	    BlockSmasher.hitManyBlocks(toolInstance, gameWorld_,
-				worldX, worldY, worldZ, actor,
-				blockDeck);
-	}
-
-	/* (non-Javadoc)
-	 * @see org.syndaryl.utilityblocks.item.IToolBlockSmasher#breakBlock(net.minecraft.world.World, org.syndaryl.utilityblocks.block.BlockWithLocation, net.minecraft.entity.EntityLivingBase)
-	 */
-
-    @Override
-	public void breakBlock(World gameWorld_,
-			BlockWithLocation blockXYZ, EntityLivingBase player) {
-		BlockSmasher.breakBlock(gameWorld_, blockXYZ, player);
-	}
-
-	/* (non-Javadoc)
-	 * @see org.syndaryl.utilityblocks.item.IToolBlockSmasher#getNeighbouringBlocksToDeque(net.minecraft.world.World, net.minecraft.block.Block, int, int, int, java.util.Deque)
-	 */
-
-    @Override
-	public void getNeighbouringBlocksToDeque(World gameWorld_,
-			Block blockStruck, int worldX, int worldY, int worldZ,
-			Deque<BlockWithLocation> blockDeck) {
-    	BlockSmasher.getNeighbouringBlocksToDeque(gameWorld_, blockStruck, worldX, worldY, worldZ, blockDeck);
-	}
 
 	/* (non-Javadoc)
 	 * @see org.syndaryl.utilityblocks.item.IItemName#getName()

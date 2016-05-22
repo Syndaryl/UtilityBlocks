@@ -10,10 +10,12 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldSettings.GameType;
 import net.minecraftforge.common.ForgeHooks;
 
 import org.syndaryl.utilityblocks.UtilityBlocks;
@@ -34,16 +36,12 @@ public class BlockSmasher {
 	 * @param pos The world position of the block that's been destroyed
 	 * @param actor The entity that destroyed blockStruck with this tool
 	 */
-    public static boolean onBlockDestroyed(ItemStack toolInstance, World gameWorld_, Block blockStruck, BlockPos pos, EntityLivingBase actor)
+    public static boolean onBlockDestroyed(ItemStack toolInstance, World gameWorld_, IBlockState blockStruck, BlockPos pos, EntityLivingBase actor)
     {
     	if(!gameWorld_.isRemote)
     	{
-	        Deque<BlockWithLocation> blockDeck = new LinkedList<BlockWithLocation>();
-	        getNeighbouringBlocksToDeque(gameWorld_, blockStruck, pos.getX(), pos.getY(),
-					pos.getZ(), blockDeck);
-	        hitManyBlocks(toolInstance, gameWorld_, pos.getX(), pos.getY(),
-					pos.getZ(),
-					actor, blockDeck);
+	        Deque<BlockWithLocation> blockDeck = getNeighbouringBlocksToDeque(gameWorld_, blockStruck, pos);
+	        hitManyBlocks(toolInstance, gameWorld_, pos, actor, blockDeck);
     	}
         return true;
     }
@@ -52,41 +50,35 @@ public class BlockSmasher {
 	 * @see org.syndaryl.utilityblocks.item.IToolBlockSmasher#hitManyBlocks(net.minecraft.item.ItemStack, net.minecraft.world.World, int, int, int, net.minecraft.entity.EntityLivingBase, java.util.Deque)
 	 */
 
-	/**
-	 * @param toolInstance
-	 * @param gameWorld_ world object to search for blocks
-	 * @param worldX x coordinate of blockStruck
-	 * @param worldY y coordinate of blockStruck
-	 * @param worldZ z coordinate of blockStruck
-	 * @param actor holding tool
-	 * @param blockDeck collection of blocks to hammer against
-	 */
-	public static void hitManyBlocks(ItemStack toolInstance, World gameWorld_,
-			int worldX, int worldY, int worldZ, EntityLivingBase actor,
+	private static void hitManyBlocks(ItemStack toolInstance, World gameWorld_,
+			BlockPos pos, EntityLivingBase actor,
 			Deque<BlockWithLocation> blockDeck) {
-	    
+		// hitManyBlocks(toolInstance, gameWorld_, pos.getX(), pos.getY(), pos.getZ(), actor,  blockDeck);
+
         for(Iterator<BlockWithLocation> iter = blockDeck.iterator(); iter.hasNext();)
         {
         	BlockWithLocation neighbourBlockContainer = iter.next();
 
-            if (! (neighbourBlockContainer.getX() == worldX && neighbourBlockContainer.getY() == worldY && neighbourBlockContainer.getZ() == worldZ)) // is not source block
+            if (neighbourBlockContainer.getPos().compareTo(pos) != 0 ) // is not source block
             {
-            	BlockPos pos = new BlockPos(worldX, worldY, worldZ);
             	double hardness = neighbourBlockContainer.getBlock().getBlockHardness(null, gameWorld_, pos);
+            	int damage = 0;
                 if (hardness != 0.0D)
                 {
-                	int damage = 1;
-					ForgeHooks.isToolEffective(gameWorld_, pos , toolInstance);
+                	damage = 1;
+					//ForgeHooks.isToolEffective(gameWorld_, pos , toolInstance);
                     if ( ! ForgeHooks.isToolEffective(gameWorld_, pos , toolInstance) )
                     {
                         damage = 2;
                     }
-                    toolInstance.damageItem(damage, actor);
                 }
-                // dumb thing to replace a proper "break block as if broken by player" method until otherwise found
-            	breakBlock(gameWorld_, neighbourBlockContainer, actor);
-            	if (actor instanceof EntityPlayer)
+
+                if (actor instanceof EntityPlayer)
+                {
+                	breakBlock(gameWorld_, neighbourBlockContainer, actor);
+                    toolInstance.damageItem(damage, actor);
             		((EntityPlayer) actor).getFoodStats().addExhaustion((float) (ConfigurationHandler.smasherExhaustionPerBonusBlock * 1.5));
+                }
             }
         }
 	}
@@ -104,15 +96,14 @@ public class BlockSmasher {
 	 */
 	public static void breakBlock(World gameWorld_,
 			BlockWithLocation blockXYZ, EntityLivingBase player) {
-
+		UtilityBlocks.LOG.info(String.format("breakBlock() is firing on a %s block", blockXYZ.getBlock().getUnlocalizedName()));
         int fortune = EnchantmentHelper.getLootingModifier(player);
         
         boolean dropItems = true;
-        BlockPos pos = new BlockPos(blockXYZ.getX(), blockXYZ.getY(), blockXYZ.getZ());
         //int metadata =  blockXYZ.metadata;// gameWorld_.getBlockMetadata(pos);
-        int xpDrop = blockXYZ.getBlock().getExpDrop(null, gameWorld_, pos, fortune);
-        gameWorld_.destroyBlock(pos, dropItems);
-		blockXYZ.getBlock().dropXpOnBlockBreak(gameWorld_, pos, r.nextBoolean()? xpDrop:0);
+        int xpDrop = blockXYZ.getBlock().getExpDrop(null, gameWorld_, blockXYZ.getPos(), fortune);
+        gameWorld_.destroyBlock(blockXYZ.getPos(), dropItems);
+		blockXYZ.getBlock().dropXpOnBlockBreak(gameWorld_, blockXYZ.getPos(), r.nextBoolean()? xpDrop:0);
 	}
 
 	/* (non-Javadoc)
@@ -128,25 +119,31 @@ public class BlockSmasher {
 	 * @param worldZ z coordinate of blockStruck
 	 * @param blockDeck deque object to add the found neighbours to
 	 */
-
-	public static void getNeighbouringBlocksToDeque(World gameWorld_,
-			Block blockStruck, int worldX, int worldY, int worldZ,
-			Deque<BlockWithLocation> blockDeck) {
-		UtilityBlocks.LOG.info(String.format("getNeighbouringBlocksToDeque() is firing on %i %i %i", worldX, worldY, worldZ));
-        IBlockState coreState = gameWorld_.getBlockState( new BlockPos(worldX, worldY, worldZ));
-        int coreData = blockStruck.getMetaFromState(coreState);
-		String blockName = blockStruck.getLocalizedName();
+	public static LinkedList<BlockWithLocation> getNeighbouringBlocksToDeque(World gameWorld_,
+			IBlockState blockStruck, BlockPos pos)
+			{
+			return getNeighbouringBlocksToDeque(gameWorld_,
+					blockStruck, pos.getX(), pos.getY(), pos.getZ());
+			}
+	public static LinkedList<BlockWithLocation> getNeighbouringBlocksToDeque(World gameWorld_,
+			IBlockState blockStruck, int worldX, int worldY, int worldZ) {
+		LinkedList<BlockWithLocation> blockDeck = new LinkedList<BlockWithLocation>();
+		UtilityBlocks.LOG.info(String.format("getNeighbouringBlocksToDeque() is firing on %d %d %d, a %s block", worldX, worldY, worldZ, blockStruck.getBlock().getUnlocalizedName()));
+        BlockPos posOrigin = new BlockPos(worldX, worldY, worldZ);
+		IBlockState coreState = gameWorld_.getBlockState( posOrigin);
+        int coreData = blockStruck.getBlock().getMetaFromState(coreState);
+		String blockName = blockStruck.getBlock().getLocalizedName();
 		for(int x = worldX-1; x <= worldX+1; x++)
         {
         	for(int y = worldY-1; y<= worldY+1; y++)
         	{
         		for(int z = worldZ-1; z<=worldZ+1; z++)
         		{
-        			BlockPos pos = new BlockPos(x,y,z);
-        			if ( gameWorld_.getBlockState(pos).getBlock().getUnlocalizedName() != Blocks.AIR.getUnlocalizedName() )	
+        			BlockPos posNeighbour = new BlockPos(x,y,z);
+        			if ( gameWorld_.getBlockState(posNeighbour).getBlock().getUnlocalizedName() != Blocks.AIR.getUnlocalizedName() )	
         			{
-        				Block neighbour = gameWorld_.getBlockState(pos).getBlock();
-        		        IBlockState neighbourState = gameWorld_.getBlockState(pos);
+        				Block neighbour = gameWorld_.getBlockState(posNeighbour).getBlock();
+        		        IBlockState neighbourState = gameWorld_.getBlockState(posNeighbour);
         		        int neighbourMeta = neighbour.getMetaFromState(neighbourState);
 						if (neighbour.getLocalizedName().compareTo(blockName) == 0 && neighbourMeta == coreData)  //  && neighbour != blockStruck
             			{
@@ -157,5 +154,7 @@ public class BlockSmasher {
         		}
         	}
         }
+		UtilityBlocks.LOG.info(String.format("getNeighbouringBlocksToDeque() found %d breakable blocks", blockDeck.size()));
+		return blockDeck;
 	}
 }
