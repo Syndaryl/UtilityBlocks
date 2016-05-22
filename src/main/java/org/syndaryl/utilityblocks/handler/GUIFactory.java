@@ -2,6 +2,8 @@ package org.syndaryl.utilityblocks.handler;
 
 import java.util.Set;
 
+import org.syndaryl.utilityblocks.handler.gui.ConfigGUI;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.fml.client.IModGuiFactory;

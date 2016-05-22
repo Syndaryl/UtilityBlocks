@@ -11,23 +11,24 @@ public class ConfigurationHandler {
 	public static Configuration config;
 	
 	public static boolean isEnabled;
+	
 	public static boolean animalsDropBones;
+	public static int boneFrequency;
+
 	public static boolean pigsDropLeather;
 	public static int pigsLeatherFrequency;
 	public static boolean horsesDropLeather;
 	public static int horseLeatherFrequency;
 	public static boolean enableBlockCompresion;
 	
-	public static double smasherDurabilityMultiplier; 
-	public static double smasherEfficiencyMultiplier; 
-
 	public static boolean enableFood;
 
 	public static boolean enableObsidianTools;
-
+	
+	public static double smasherDurabilityMultiplier; 
+	public static double smasherEfficiencyMultiplier; 
 	public static double smasherExhaustionPerBonusBlock;
-
-	public static int boneFrequency;
+	public static boolean smashersSpecific;
 	
 	public static void setConfig(File configFile) {
 		config = new Configuration(configFile);
@@ -40,7 +41,7 @@ public class ConfigurationHandler {
 		
 		// Sets whether the mod is enabled or disabled
 		currProp = config.get(
-				Configuration.CATEGORY_GENERAL,
+				"General",
 				"enable",
 				true,
 				"Enables the mod.\nSet to false to disable the mod."
@@ -162,10 +163,18 @@ public class ConfigurationHandler {
 				0, Float.MAX_VALUE
 				);
 		smasherExhaustionPerBonusBlock = currProp.getDouble(0.25F);
+
+		currProp = config.get(
+				"Tools",
+				"smashersSpecific",
+				true,
+				"Do smashers only 'chain' onto identical materials? (Default true - false means that eg if you break stone, you can also break andesite)"
+				);
+		smashersSpecific = currProp.getBoolean(true);
 		propOrder.add(currProp.getName());
 		
 		// Order configurations
-		config.setCategoryPropertyOrder(Configuration.CATEGORY_GENERAL, propOrder);
+		config.setCategoryPropertyOrder("General", propOrder);
 		config.setCategoryPropertyOrder("Tools", propOrder);
 		config.setCategoryPropertyOrder("Items", propOrder);
 		config.setCategoryPropertyOrder("Blocks", propOrder);
