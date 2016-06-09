@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
@@ -14,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings.GameType;
 import net.minecraftforge.common.ForgeHooks;
@@ -61,7 +63,6 @@ public class BlockSmasher {
 
             if (neighbourBlockContainer.getPos().compareTo(pos) != 0 ) // is not source block
             {
-            	double hardness = neighbourBlockContainer.getBlock().getBlockHardness(null, gameWorld_, pos);
             	int damage = 0;
                 if (hardness != 0.0D)
                 {
@@ -120,26 +121,18 @@ public class BlockSmasher {
 	 * @param blockDeck deque object to add the found neighbours to
 	 */
 	public static LinkedList<BlockWithLocation> getNeighbouringBlocksToDeque(World gameWorld_,
-			IBlockState blockStruck, BlockPos pos)
+			IBlockState blockStruck, BlockPos posOrigin)
 			{
-			return getNeighbouringBlocksToDeque(gameWorld_,
-					blockStruck, pos.getX(), pos.getY(), pos.getZ());
-			}
-	public static LinkedList<BlockWithLocation> getNeighbouringBlocksToDeque(World gameWorld_,
-			IBlockState blockStruck, int worldX, int worldY, int worldZ) {
-		LinkedList<BlockWithLocation> blockDeck = new LinkedList<BlockWithLocation>();
-		UtilityBlocks.LOG.info(String.format("getNeighbouringBlocksToDeque() is firing on %d %d %d, a %s block", worldX, worldY, worldZ, blockStruck.getBlock().getUnlocalizedName()));
-        BlockPos posOrigin = new BlockPos(worldX, worldY, worldZ);
-		IBlockState coreState = gameWorld_.getBlockState( posOrigin);
-        int coreData = blockStruck.getBlock().getMetaFromState(coreState);
-		String blockName = blockStruck.getBlock().getLocalizedName();
-		for(int x = worldX-1; x <= worldX+1; x++)
-        {
-        	for(int y = worldY-1; y<= worldY+1; y++)
-        	{
-        		for(int z = worldZ-1; z<=worldZ+1; z++)
-        		{
-        			BlockPos posNeighbour = new BlockPos(x,y,z);
+				UtilityBlocks.LOG.info(String.format("getNeighbouringBlocksToDeque() is firing on %d %d %d, a %s block", posOrigin.getX(), posOrigin.getY(), posOrigin.getZ(), blockStruck.getBlock().getUnlocalizedName()));
+				LinkedList<BlockWithLocation> blockDeck = new LinkedList<BlockWithLocation>();
+				IBlockState coreState = gameWorld_.getBlockState( posOrigin);
+		        int coreData = blockStruck.getBlock().getMetaFromState(coreState);
+				String blockName = blockStruck.getBlock().getLocalizedName();
+				
+				Iterable<BlockPos> candidates = BlockPos.getAllInBox(posOrigin.subtract(new Vec3i(-1,-1,-1)), posOrigin.add( new Vec3i(1,1,1)));
+				for (BlockPos posNeighbour : candidates )
+				{
+        			//BlockPos posNeighbour = new BlockPos(x,y,z);
         			if ( gameWorld_.getBlockState(posNeighbour).getBlock().getUnlocalizedName() != Blocks.AIR.getUnlocalizedName() )	
         			{
         				Block neighbour = gameWorld_.getBlockState(posNeighbour).getBlock();
@@ -147,14 +140,18 @@ public class BlockSmasher {
         		        int neighbourMeta = neighbour.getMetaFromState(neighbourState);
 						if (neighbour.getLocalizedName().compareTo(blockName) == 0 && neighbourMeta == coreData)  //  && neighbour != blockStruck
             			{
-            				BlockWithLocation container = new BlockWithLocation(neighbour, x, y, z, neighbourMeta);
+            				BlockWithLocation container = new BlockWithLocation(neighbour, posNeighbour, neighbourMeta);
             				blockDeck.add(container);
             			}
         			}
-        		}
-        	}
-        }
-		UtilityBlocks.LOG.info(String.format("getNeighbouringBlocksToDeque() found %d breakable blocks", blockDeck.size()));
-		return blockDeck;
+		        }
+				UtilityBlocks.LOG.info(String.format("getNeighbouringBlocksToDeque() found %d breakable blocks", blockDeck.size()));
+				return blockDeck;
+//			return getNeighbouringBlocksToDeque(gameWorld_,
+//					blockStruck, posOrigin.getX(), posOrigin.getY(), posOrigin.getZ());
+			}
+	public static LinkedList<BlockWithLocation> getNeighbouringBlocksToDeque(World gameWorld_,
+			IBlockState blockStruck, int worldX, int worldY, int worldZ) {
+        return getNeighbouringBlocksToDeque(gameWorld_, blockStruck, new BlockPos(worldX,worldY,worldZ));
 	}
 }
