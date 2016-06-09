@@ -4,9 +4,11 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.util.EnumHelper;
 
 import org.syndaryl.utilityblocks.UtilityBlocks;
@@ -42,7 +44,7 @@ public class MaterialHandler {
 		String texName = m.getName();
 		int[] protection = m.getDamageReductionArray();
 		int durability = m.getArmorMaxDamageFactor();
-		ArmorMaterial am = EnumHelper.addArmorMaterial(enumName, texName, durability, protection, m.getEnchantability(), null); //TODO - What's this sound event?
+		ArmorMaterial am = EnumHelper.addArmorMaterial(enumName, texName, durability, protection, m.getEnchantability(), SoundEvents.ITEM_ARMOR_EQUIP_IRON, durability);
 		if(am == null){
 			// uh-oh
 			UtilityBlocks.LOG.error("Failed to create armor material enum for "+m);
