@@ -63,6 +63,7 @@ public class BlockSmasher {
 
             if (neighbourBlockContainer.getPos().compareTo(pos) != 0 ) // is not source block
             {
+            	double hardness = neighbourBlockContainer.getBlock().getBlockState().getBaseState().getBlockHardness(gameWorld_, neighbourBlockContainer.getPos());
             	int damage = 0;
                 if (hardness != 0.0D)
                 {
