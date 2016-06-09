@@ -30,6 +30,7 @@ public class BaseMetalsLoader implements IBaseMetalsLoader {
 		for(MetalMaterial m : Materials.getAllMetals())
 		{
 			if ( ! ( // if none of the following are true - skip the vanilla materials
+					 // because those are hard-coded in case BaseMetals isn't loaded
 					m.getName().toLowerCase(Locale.ENGLISH).equals("iron") ||
 					m.getName().toLowerCase(Locale.ENGLISH).equals("stone") ||
 					m.getName().toLowerCase(Locale.ENGLISH).equals("wood") ||

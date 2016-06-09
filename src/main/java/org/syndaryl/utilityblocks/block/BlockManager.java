@@ -1,5 +1,6 @@
 package org.syndaryl.utilityblocks.block;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 
 import net.minecraft.block.Block;
@@ -36,58 +37,73 @@ public class BlockManager {
 	
 	public static final LinkedList<BlockCompressed> COMPRESSEDBLOCKS = new LinkedList<BlockCompressed>();
 	
-	private static final Object[][] BlockSpecifications =
-		new Object[][] {
-		{Material.GROUND, 	"utilityblocks_gravel_compressed",     	SoundType.GROUND, 	0.6F, 3.0F, 	false,	new ItemStack(Blocks.GRAVEL,1),		0},
-		{Material.ROCK, 	"utilityblocks_cobblestone_compressed", 	SoundType.STONE, 	2.0F, 10.0F, 	false,	new ItemStack(Blocks.COBBLESTONE,1),		0},
-		{Material.ROCK, 	"utilityblocks_stone_compressed",      	SoundType.STONE, 	2.2F, 11.0F, 	false,	new ItemStack(Blocks.STONE,1),		0},
-		{Material.ROCK, 	"utilityblocks_sandstone_compressed",      	SoundType.STONE, 	1.5F, 8.0F, 	false,	new ItemStack(Blocks.SANDSTONE,1),		0},
-		{Material.GROUND, 	"utilityblocks_dirt_compressed",       	SoundType.GROUND, 	0.5F, 2.0F, 	false,	new ItemStack(Blocks.DIRT,1,0),		0},
-		{Material.SAND, 	"utilityblocks_sand_compressed",       	SoundType.SAND, 	0.5F, 2.0F, 	false,	new ItemStack(Blocks.SAND,1,0),		0},
-		{Material.CORAL, 	"utilityblocks_charcoal_compressed",   	SoundType.STONE, 	0.8F, 5.0F, 	true,	new ItemStack(Items.COAL,1,1),  	16000.0F},
-		{Material.CORAL, 	"utilityblocks_bone_compressed",       	SoundType.STONE, 	0.7F, 4.0F, 	false,	new ItemStack(Items.BONE,1,0),		0},
-		{Material.WOOD, 	"utilityblocks_sugarcane_compressed",   	SoundType.PLANT, 	0.4F, 2.0F, 	true,	new ItemStack(Items.REEDS,1,0), 	8000.0F }
-		};
-
+	public static final LinkedList<Object[]> BlockConstruct =
+		new LinkedList<Object[]> ();
+	static Object[][] BlockStruct = new Object[][]{
+			{Material.GROUND, 	"utilityblocks_gravel_compressed",     	SoundType.GROUND, 	0.6F, 3.0F, 	false,	new ItemStack(Blocks.GRAVEL,1),		0},
+			{Material.ROCK, 	"utilityblocks_cobblestone_compressed", 	SoundType.STONE, 	2.0F, 10.0F, 	false,	new ItemStack(Blocks.COBBLESTONE,1),		0},
+			{Material.ROCK, 	"utilityblocks_stone_compressed",      	SoundType.STONE, 	2.2F, 11.0F, 	false,	new ItemStack(Blocks.STONE,1),		0},
+			{Material.ROCK, 	"utilityblocks_sandstone_compressed",      	SoundType.STONE, 	1.5F, 8.0F, 	false,	new ItemStack(Blocks.SANDSTONE,1),		0},
+			{Material.GROUND, 	"utilityblocks_dirt_compressed",       	SoundType.GROUND, 	0.5F, 2.0F, 	false,	new ItemStack(Blocks.DIRT,1,0),		0},
+			{Material.SAND, 	"utilityblocks_sand_compressed",       	SoundType.SAND, 	0.5F, 2.0F, 	false,	new ItemStack(Blocks.SAND,1,0),		0},
+			{Material.CORAL, 	"utilityblocks_charcoal_compressed",   	SoundType.STONE, 	0.8F, 5.0F, 	true,	new ItemStack(Items.COAL,1,1),  	16000.0F},
+			{Material.CORAL, 	"utilityblocks_bone_compressed",       	SoundType.STONE, 	0.7F, 4.0F, 	false,	new ItemStack(Items.BONE,1,0),		0},
+			{Material.WOOD, 	"utilityblocks_sugarcane_compressed",   	SoundType.PLANT, 	0.4F, 2.0F, 	true,	new ItemStack(Items.REEDS,1,0), 	8000.0F }
+			};
 	public static void initialiseBlock() {
-		for (int i = 0; i < BlockManager.BlockSpecifications.length; i++)
+
+		for (Object[] o : 		BlockStruct)
 		{
-			UtilityBlocks.LOG.info("building block "  + BlockManager.BlockSpecifications[i][1] );
+			BlockManager.BlockConstruct.add(o);
+		}
+		
+		for (int i = 0; i < BlockManager.BlockConstruct.size(); i++)
+		{
+			UtilityBlocks.LOG.info("building block "  + BlockManager.BlockConstruct.get(i)[1] );
 			BlockManager.COMPRESSEDBLOCKS.add(
 					new BlockCompressed(
-							(Material) BlockManager.BlockSpecifications[i][0], // ground
-							(String) BlockManager.BlockSpecifications[i][1],   // block-name
-							(SoundType) BlockManager.BlockSpecifications[i][2], // sound-type
-							(Float) BlockManager.BlockSpecifications[i][3] * 1.2F, // hardness
-							(Float) BlockManager.BlockSpecifications[i][4]) // blast resistance
+							(Material) BlockManager.BlockConstruct.get(i)[0], // ground
+							(String) BlockManager.BlockConstruct.get(i)[1],   // block-name
+							(SoundType) BlockManager.BlockConstruct.get(i)[2], // sound-type
+							(Float) BlockManager.BlockConstruct.get(i)[3] * 1.2F, // hardness
+							(Float) BlockManager.BlockConstruct.get(i)[4]) // blast resistance
 					);
 		}
 	}
 
     static void registerBlockWithItem(Block block, String blockName, Class<? extends ItemBlock> itemBlockClass)
     {
-        try
-        {
-
             ResourceLocation location = new ResourceLocation(UtilityBlocks.MODID, blockName);
 
-            GameRegistry.register(block, location);
+    		try {
+    			GameRegistry.register(block, location);
+			} catch ( IllegalArgumentException | SecurityException e) {
+				// TODO Auto-generated catch block
+				UtilityBlocks.LOG.fatal(e);
+			}
             Item itemBlock;
         	if (itemBlockClass == null)
     		{
         		ResourceLocation registryName = block.getRegistryName();
 				itemBlock = new ItemBlock(block).setRegistryName(registryName);
+        		try {
+        			GameRegistry.register(itemBlock);
+				} catch ( IllegalArgumentException | SecurityException e) {
+					// TODO Auto-generated catch block
+					UtilityBlocks.LOG.fatal(e);
+				}
     		}
         	else
         	{
-        		itemBlock = (Item)itemBlockClass.getConstructor(Block.class).newInstance(block);
+        		try {
+					itemBlock = (Item)itemBlockClass.getConstructor(Block.class).newInstance(block);
+		            GameRegistry.register(itemBlock);
+				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+					// TODO Auto-generated catch block
+					UtilityBlocks.LOG.fatal(e);
+				}
         	}
-            GameRegistry.register(itemBlock);
-        }
-        catch (Exception e)
-        {
-            throw new RuntimeException("An error occurred associating an item block during registration...");
-        }
     }
 	public static void registerOreDict() {
 
@@ -152,9 +168,9 @@ public class BlockManager {
 	public static void addFuels(FurnaceFuelHandler fuelhandler) {
 		for (int i = 0; i < BlockManager.COMPRESSEDBLOCKS.size(); i++)
 		{
-			if ((Boolean) BlockManager.BlockSpecifications[i][5] )
+			if ((Boolean) BlockManager.BlockConstruct.get(i)[5] )
 			fuelhandler.addFuel((Block)BlockManager.COMPRESSEDBLOCKS.get(i), Math.round( 
-					(Float)BlockManager.BlockSpecifications[i][7]) 
+					(Float)BlockManager.BlockConstruct.get(i)[7]) 
 				);
 		}
 	}
@@ -163,9 +179,9 @@ public class BlockManager {
 		for (int i = 0; i < BlockManager.COMPRESSEDBLOCKS.size(); i++)
 		{
 			// Shaped Recipe
-			registerCompressedRecipie((ItemStack)BlockManager.BlockSpecifications[i][6], BlockManager.COMPRESSEDBLOCKS.get(i));
+			registerCompressedRecipie((ItemStack)BlockManager.BlockConstruct.get(i)[6], BlockManager.COMPRESSEDBLOCKS.get(i));
 			//Shapeless Recipe
-			registerDecompressedRecipie(new ItemStack(((ItemStack)BlockManager.BlockSpecifications[i][6]).getItem(), 9, ((ItemStack)BlockManager.BlockSpecifications[i][6]).getMetadata()), BlockManager.COMPRESSEDBLOCKS.get(i));
+			registerDecompressedRecipie(new ItemStack(((ItemStack)BlockManager.BlockConstruct.get(i)[6]).getItem(), 9, ((ItemStack)BlockManager.BlockConstruct.get(i)[6]).getMetadata()), BlockManager.COMPRESSEDBLOCKS.get(i));
 		}
 	}
 	/**

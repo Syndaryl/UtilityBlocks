@@ -34,4 +34,8 @@ public class NamespaceManager {
 	public static String capitalizeWord(String word) {
 		return word.substring(0, 1).toUpperCase(Locale.ENGLISH) + word.substring(1).toLowerCase();
 	}
+	public static String MakeName(String string) {
+		// TODO Auto-generated method stub
+		return GetModNameLC() + ":" + string;
+	}
 }

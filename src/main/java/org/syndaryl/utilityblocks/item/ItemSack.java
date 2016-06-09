@@ -21,7 +21,7 @@ public class ItemSack extends Item implements IItemName {
 		setUnlocalizedName(getName());
 		UtilityBlocks.LOG.info("Making Generic Sacks: "+ getName());
 		
-		GameRegistry.registerItem(this, getName());
+		ItemManager.registerItem(this, getName());
 	}
 
 	public ItemSack(ItemStack itemStack) {
