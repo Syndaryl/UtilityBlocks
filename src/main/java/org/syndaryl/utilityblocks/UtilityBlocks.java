@@ -29,6 +29,9 @@ import org.syndaryl.utilityblocks.item.ItemManager;
 import org.syndaryl.utilityblocks.item.basemetals.BaseMetalsLoader;
 import org.syndaryl.utilityblocks.item.basemetals.BaseMetalsLoaderDummy;
 import org.syndaryl.utilityblocks.item.basemetals.IBaseMetalsLoader;
+import org.syndaryl.utilityblocks.mineralogy.IMineralogyLoader;
+import org.syndaryl.utilityblocks.mineralogy.MineralogyLoader;
+import org.syndaryl.utilityblocks.mineralogy.MineralogyLoaderDummy;
 
 @Mod(
 		modid      = UtilityBlocks.MODID,
@@ -56,6 +59,7 @@ public class UtilityBlocks {
 	@Mod.Instance(MODID)
 	public static UtilityBlocks instance;
 	public IBaseMetalsLoader BASEMETALS;
+	public IMineralogyLoader MINERALOGY;
 	
 	@Mod.EventHandler
 	public void initPre(FMLPreInitializationEvent event) {
@@ -70,6 +74,16 @@ public class UtilityBlocks {
 		}
 		
 		//MaterialHandler.addAllMaterials();
+		
+		if (Loader.isModLoaded("mineralogy"))
+		{
+			MINERALOGY = new MineralogyLoader();
+		}
+		else
+		{
+			MINERALOGY = new MineralogyLoaderDummy();
+		}
+		//MINERALOGY.initialiseMineralogyItems();
 		
 		BlockManager.initialiseBlock();
 		ItemManager.initialiseItems();
