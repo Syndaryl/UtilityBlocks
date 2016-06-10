@@ -29,13 +29,19 @@ public class EventHandler {
 			return;
 
 		int dropCheck;
-		
+		double bonemealDropCheck;
 		// all animals except squid, because squid don't have bones dangit
 		if(event.getEntityLiving() instanceof EntityAnimal && !( event.getEntityLiving() instanceof EntitySquid)  && ConfigurationHandler.animalsDropBones)
 		{
 			dropCheck = event.getEntityLiving().worldObj.rand.nextInt(ConfigurationHandler.boneFrequency);
-			if ( dropCheck > 0 )
-				event.getEntityLiving().entityDropItem(new ItemStack(Items.BONE), 1);
+			if ( dropCheck == 0 )
+			{
+				bonemealDropCheck = event.getEntityLiving().worldObj.rand.nextDouble();
+				if (bonemealDropCheck <= ConfigurationHandler.bonemealFrequency)
+					event.getEntityLiving().entityDropItem(new ItemStack(Items.DYE,15), 1);
+				else
+					event.getEntityLiving().entityDropItem(new ItemStack(Items.BONE), 1);
+			}
 		}
 		
 		// specific animals

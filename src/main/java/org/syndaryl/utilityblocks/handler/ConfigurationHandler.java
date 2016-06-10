@@ -13,21 +13,25 @@ public class ConfigurationHandler {
 	public static boolean isEnabled;
 	
 	public static boolean animalsDropBones;
-	public static int boneFrequency;
+	public static int     boneFrequency;
+	public static double     bonemealFrequency;
 
 	public static boolean pigsDropLeather;
-	public static int pigsLeatherFrequency;
+	public static int     pigsLeatherFrequency;
 	public static boolean horsesDropLeather;
-	public static int horseLeatherFrequency;
+	public static int     horseLeatherFrequency;
 	public static boolean enableBlockCompresion;
 	
 	public static boolean enableFood;
+	public static boolean enableDrinkPotions;
+	public static boolean isEggnogGross;
+	public static int     drinkPotionDuration;
 
 	public static boolean enableObsidianTools;
 	
-	public static double smasherDurabilityMultiplier; 
-	public static double smasherEfficiencyMultiplier; 
-	public static double smasherExhaustionPerBonusBlock;
+	public static double  smasherDurabilityMultiplier; 
+	public static double  smasherEfficiencyMultiplier; 
+	public static double  smasherExhaustionPerBonusBlock;
 	public static boolean smashersSpecific;
 	
 	public static void setConfig(File configFile) {
@@ -65,6 +69,16 @@ public class ConfigurationHandler {
 				"What is the rate of animal bone drops (drops 1 in X kills, so smaller numbers = more drops)"
 				);
 		boneFrequency = currProp.getInt(5);
+		
+		propOrder.add(currProp.getName());
+		currProp = config.get(
+				"Drops",
+				"bonemealFrequency",
+				5,
+				"What is the %age of bone drops that are bonemeal instead (decimal number between 0 and 1 - default is 0.6)",
+				0, 1
+				);
+		bonemealFrequency = currProp.getDouble(0.6);
 		propOrder.add(currProp.getName());
 		
 		currProp = config.get(
@@ -120,7 +134,36 @@ public class ConfigurationHandler {
 				);
 		enableFood = currProp.getBoolean(true);
 		propOrder.add(currProp.getName());
-
+		
+		currProp = config.get(
+				"Items",
+				"enableDrinkPotions",
+				true,
+				"If the food items are enabled, do the new drinks apply short duration potion effects?"
+				);
+		enableDrinkPotions = currProp.getBoolean(true);
+		propOrder.add(currProp.getName());
+		
+		currProp = config.get(
+				"Items",
+				"isEggnogGross",
+				false,
+				"Is eggnogg gross? (Gross eggnog briefly applies nausea, otherwise briefly applies jump boost)"
+				);
+		isEggnogGross = currProp.getBoolean(true);
+		propOrder.add(currProp.getName());
+		
+		//drinkPotionDuration
+		currProp = config.get(
+				"Tools",
+				"drinkPotionDuration",
+				3,
+				"Duration of the brief potion effect associated with drinks? (1-5 seconds)",
+				// Value range: 0+
+				1, 5
+				);
+		drinkPotionDuration = currProp.getInt(3);
+		propOrder.add(currProp.getName());
 		
 		currProp = config.get(
 				"Tools",

@@ -16,6 +16,9 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.PotionHealthBoost;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
@@ -50,15 +53,15 @@ public class ItemManager {
 	private final static int ACTIONS = 3;
 	
 	private static Object[][] foodData = new Object[][]{
-		{"apple_juice",       "2",     "1", 	"DRINK"},	
-		{"apple_pie",         "5",     "3", 	"EAT" },	
-		{"eggnog",            "2",     "1", 	"DRINK" },	
-		{"energy_drink",      "3",     "0.5", 	"DRINK" },	
-		{"potato_juice",      "2",     "0.75", 	"DRINK" },	
-		{"carrot_juice",      "2",     "1", 	"DRINK" },	
-		{"sugar_water",       "1",     "0.5", 	"DRINK" },	
-		{"sugar_cube",        "1",     "0.5", 	"EAT" },	
-		{"sushi",             "6",     "6", 	"EAT" },	
+		{"apple_juice",       "2",     "1", 	"DRINK", Potion.getPotionFromResourceLocation("health_boost")},	
+		{"apple_pie",         "5",     "3", 	"EAT", null },	
+		{"eggnog",            "2",     "1", 	"DRINK", Potion.getPotionFromResourceLocation("jump_boost") },	
+		{"energy_drink",      "3",     "0.5", 	"DRINK", Potion.getPotionFromResourceLocation("speed") },	
+		{"potato_juice",      "2",     "0.75", 	"DRINK", Potion.getPotionFromResourceLocation("absorption") },	
+		{"carrot_juice",      "2",     "1", 	"DRINK", Potion.getPotionFromResourceLocation("night_vision") },	
+		{"sugar_water",       "1",     "0.5", 	"DRINK", Potion.getPotionFromResourceLocation("haste") },	
+		{"sugar_cube",        "1",     "0.5", 	"EAT", null },	
+		{"sushi",             "6",     "6", 	"EAT", null },	
 
 	};
 	
@@ -212,6 +215,13 @@ public class ItemManager {
         		'r', new ItemStack(Items.REEDS), 'l', new ItemStack( Blocks.LEAVES2 )
         		)
         );
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.FLINT,1), 
+				"ggg", 
+				"gGg", 
+				"ggg", 
+				'g', new ItemStack(Blocks.GRAVEL,1),
+				'G', new ItemStack(Items.GOLD_NUGGET,1)
+				));
 //		GameRegistry.addShapedRecipe(new ItemStack(Items.feather,1), 
 //        		"rw",
 //        		'r', new ItemStack(Items.reeds,1), 'w', new ItemStack(Blocks.wool, 1)
