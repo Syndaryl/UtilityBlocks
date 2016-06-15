@@ -60,76 +60,47 @@ public class WandItemList extends Item implements IItemName {
 		
 		UtilityBlocks.INFO
 				.info("=================== BLOCK LIST ===================");
-		for (String key : asSorted(Block.REGISTRY.getKeys())) {
-			UtilityBlocks.INFO.info(key);
-		}
+		generateBlockCsvFile("blocks.csv");
 
 		UtilityBlocks.INFO
 				.info("=================== ORE DICTIONARY =================== ");
 		UtilityBlocks.INFO.info("       OreDict contains "
 				+ OreDictionary.getOreNames().length + " names");
-		for (String name : OreDictionary.getOreNames()) {
-			UtilityBlocks.INFO.info(name);
-		}
+		generateOreDictCsvFile("oredict.csv");
 		ActionResult<ItemStack> result = new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
 		
 		return result;
 	}
 
-	private void generateItemCsvFile(String sFileName) {
-		FileWriter writer;
-		try {
-			writer = new FileWriter(sFileName);
-			writeItemCsvHeader(writer);
-			writeItemCsvBody(writer);
-			writer.flush();
-			writer.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-			UtilityBlocks.LOG.error(e.toString());
-			for(StackTraceElement stacktrace : e.getStackTrace() )
-			{
-				UtilityBlocks.LOG.error(stacktrace.toString());
-			}
+	/**
+	 * @param fileName 
+	 * 
+	 */
+	private void generateOreDictCsvFile(String fileName) {
+		for (String name : OreDictionary.getOreNames()) {
+			UtilityBlocks.INFO.info(name);
 		}
 	}
 
-	private void writeItemCsvBody(FileWriter writer) {
-		// TODO Auto-generated method stub
-		try
-		{		
-			for(ResourceLocation key :  asSortedResourceLocation(Item.REGISTRY.getKeys()) )
-			{
-//				//id
-//				writer.append(String.format("%05d",  Item.itemRegistry.getIDForObject(objItem) ) );
-//				writer.append(',');
-//				//display_name
-//				writer.append(objItem.getItemStackDisplayName(new ItemStack(objItem)));
-//				writer.append(',');
-//				//name
-//				writer.append(objItem.toString());
-//				writer.append(',');
-//				//meta
-//				writer.append("0");
-//				writer.append(',');
-//				//unlocalized_name
-//				writer.append(objItem.getUnlocalizedName());
-//				writer.append(',');
-//				//object_class
-//				writer.append(objItem.getClass().getName());
-//				writer.append(',');
-//				//resource_domain
-//				writer.append(key.getResourceDomain());
-//				writer.append(',');
-//				//resource_path
-//				writer.append(key.getResourcePath());
-//				writer.append('\n');
-
-				Item objItem = Item.REGISTRY.getObject(key);
+	/**
+	 * @param fileName 
+	 * 
+	 */
+	private void generateBlockCsvFile(String fileName) {
+		FileWriter writer;
+		try {
+			writer = new FileWriter(fileName);
+			String[] headers = new String[]{
+					"id","modid:objectname","meta","display_name","unlocalized_name","object_class"
+			}; 
+			writeCsvHeader(writer, headers);
+			for (ResourceLocation key : asSortedResourceLocation(Block.REGISTRY.getKeys())) {
+				//UtilityBlocks.INFO.info(key);
+				ItemStack objItem = new ItemStack( Block.REGISTRY.getObject(key));
 				List<ItemStack> subItems = new ArrayList<ItemStack>();
-	            for (CreativeTabs tab : objItem.getCreativeTabs())
+	            for (CreativeTabs tab : objItem.getItem().getCreativeTabs())
 	            {
-	            	objItem.getSubItems(objItem, tab, subItems);
+	            	objItem.getItem().getSubItems(objItem.getItem(), tab, subItems);
 	            }
 	            for (ItemStack subItem : subItems)
 	            {
@@ -155,6 +126,55 @@ public class WandItemList extends Item implements IItemName {
 					writer.append(objItem.getClass().getName());
 					writer.append('\n');
 	            }
+			}
+			writer.flush();
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			UtilityBlocks.LOG.error(e.toString());
+			for(StackTraceElement stacktrace : e.getStackTrace() )
+			{
+				UtilityBlocks.LOG.error(stacktrace.toString());
+			}
+		}
+	}
+
+	private void generateItemCsvFile(String fileName) {
+		FileWriter writer;
+		try {
+			writer = new FileWriter(fileName);
+			String[] headers = new String[]{
+					"id","modid:objectname","meta","display_name","unlocalized_name","object_class"
+			}; 
+			writeCsvHeader(writer, headers);
+			writeItemCsvBody(writer, false);
+			writer.flush();
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			UtilityBlocks.LOG.error(e.toString());
+			for(StackTraceElement stacktrace : e.getStackTrace() )
+			{
+				UtilityBlocks.LOG.error(stacktrace.toString());
+			}
+		}
+	}
+
+	private void writeItemCsvBody(FileWriter writer, boolean blocks) {
+		try
+		{		
+			for(ResourceLocation key :  asSortedResourceLocation(Item.REGISTRY.getKeys()) )
+			{
+				Item objItem = Item.REGISTRY.getObject(key);
+				Block dummy = new Block(null);
+				if ((dummy.getClass()).isInstance(objItem) && blocks)
+				{
+					writeCsvLineItem(writer, key, objItem);
+				}
+				else if (!(dummy.getClass()).isInstance(objItem) && !blocks)
+				{
+					writeCsvLineItem(writer, key, objItem);
+				}
 	            
 			}
 			writer.flush();
@@ -170,21 +190,52 @@ public class WandItemList extends Item implements IItemName {
 		} 
 	}
 
-	private void writeItemCsvHeader(FileWriter writer) {
-		try {
-			writer.append("id");
+	/**
+	 * @param writer
+	 * @param key
+	 * @param objItem
+	 * @throws IOException
+	 */
+	private void writeCsvLineItem(FileWriter writer, ResourceLocation key, Item objItem) throws IOException {
+		List<ItemStack> subItems = new ArrayList<ItemStack>();
+		for (CreativeTabs tab : objItem.getCreativeTabs())
+		{
+			objItem.getSubItems(objItem, tab, subItems);
+		}
+		for (ItemStack subItem : subItems)
+		{
+			//id
+			writer.append(String.format("%05d",  Item.REGISTRY.getIDForObject(objItem) ) );
 			writer.append(',');
-			writer.append("modid:objectname");
+			//resource_domain
+			writer.append(key.getResourceDomain());
+			writer.append(':');
+			//resource_path
+			writer.append(key.getResourcePath());
 			writer.append(',');
-			writer.append("meta");
+			//meta
+			writer.append(String.format("%d",  subItem.getMetadata()));
 			writer.append(',');
-			writer.append("display_name");
+			//display_name
+			writer.append(subItem.getDisplayName());
 			writer.append(',');
-			writer.append("unlocalized_name");
+			//unlocalized_name
+			writer.append(objItem.getUnlocalizedName());
 			writer.append(',');
-			writer.append("object_class");
+			//object_class
+			writer.append(objItem.getClass().getName());
 			writer.append('\n');
+		}
+	}
 
+	private void writeCsvHeader(FileWriter writer, String[] headers) {
+		try {
+			for (String header : headers)
+			{
+				writer.append(header);
+				writer.append(',');
+			}
+			writer.append('\n');
 			writer.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
