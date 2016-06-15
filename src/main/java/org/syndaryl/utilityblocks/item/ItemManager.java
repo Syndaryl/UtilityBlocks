@@ -51,17 +51,18 @@ public class ItemManager {
 	private final static int HUNGER = 1;
 	private final static int SATIATION = 2;
 	private final static int ACTIONS = 3;
+	private static final int POTIONS = 4;
 	
 	private static Object[][] foodData = new Object[][]{
-		{"apple_juice",       "2",     "1", 	"DRINK", Potion.getPotionFromResourceLocation("health_boost")},	
-		{"apple_pie",         "5",     "3", 	"EAT", null },	
-		{"eggnog",            "2",     "1", 	"DRINK", Potion.getPotionFromResourceLocation("jump_boost") },	
-		{"energy_drink",      "3",     "0.5", 	"DRINK", Potion.getPotionFromResourceLocation("speed") },	
-		{"potato_juice",      "2",     "0.75", 	"DRINK", Potion.getPotionFromResourceLocation("absorption") },	
-		{"carrot_juice",      "2",     "1", 	"DRINK", Potion.getPotionFromResourceLocation("night_vision") },	
-		{"sugar_water",       "1",     "0.5", 	"DRINK", Potion.getPotionFromResourceLocation("haste") },	
-		{"sugar_cube",        "1",     "0.5", 	"EAT", null },	
-		{"sushi",             "6",     "6", 	"EAT", null },	
+		{"apple_juice",       "2",     "1", 	"DRINK", "health_boost"},	
+		{"apple_pie",         "5",     "3", 	"EAT", "" },	
+		{"eggnog",            "2",     "1", 	"DRINK", ConfigurationHandler.isEggnogGross?"nausea":"jump_boost" },	
+		{"energy_drink",      "3",     "0.5", 	"DRINK", "speed" },	
+		{"potato_juice",      "2",     "0.75", 	"DRINK", "absorption" },	
+		{"carrot_juice",      "2",     "1", 	"DRINK", "night_vision" },	
+		{"sugar_water",       "1",     "0.5", 	"DRINK", "haste" },	
+		{"sugar_cube",        "1",     "0.5", 	"EAT", "" },	
+		{"sushi",             "6",     "6", 	"EAT", "" },	
 
 	};
 	
@@ -74,15 +75,17 @@ public class ItemManager {
 		int[] hunger;
 		float[] satiation;
 		String[] actions;
+		String[] potions;
 		names = getStringFromList(foodData, ItemManager.NAME);
 		hunger = (int[]) getIntFromList(foodData, ItemManager.HUNGER);
 		satiation = getFloatFromList(foodData, ItemManager.SATIATION);
 		actions = getStringFromList(foodData, ItemManager.ACTIONS);
+		potions = getStringFromList(foodData, ItemManager.POTIONS);
 		
 		//Object result = EnumHelper.addArmorMaterial(name, textureName, durability, reductionAmounts, enchantability);
 		UBMaterial obsidianTool = MaterialHandler.addMaterial("obsidian", 12, 6, 8, 1, new ItemStack(Blocks.OBSIDIAN)); 
 		
-		foods = (ItemMetadataFood) new ItemMetadataFood(hunger, satiation, names, actions);
+		foods = (ItemMetadataFood) new ItemMetadataFood(hunger, satiation, names, actions, potions);
 		
 		ToolMattock 		mattockWood;
 		ToolSledgehammer 	sledgehammerWood;
