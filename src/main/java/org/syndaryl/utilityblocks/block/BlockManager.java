@@ -37,7 +37,7 @@ public class BlockManager {
 	
 	public static final LinkedList<BlockCompressed> COMPRESSEDBLOCKS = new LinkedList<BlockCompressed>();
 	
-	public static final LinkedList<Object[]> BlockConstruct =
+	public static LinkedList<Object[]> BlockConstruct =
 		new LinkedList<Object[]> ();
 	static Object[][] BlockStruct = new Object[][]{
 			{Material.GROUND, 	"utilityblocks_gravel_compressed",     	SoundType.GROUND, 	0.6F, 3.0F, 	false,	new ItemStack(Blocks.GRAVEL,1),		0},
