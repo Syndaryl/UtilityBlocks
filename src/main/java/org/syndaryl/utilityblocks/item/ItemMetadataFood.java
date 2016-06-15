@@ -13,12 +13,15 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.syndaryl.utilityblocks.NamespaceManager;
 import org.syndaryl.utilityblocks.UtilityBlocks;
+import org.syndaryl.utilityblocks.handler.ConfigurationHandler;
 //import net.minecraft.util.IIcon;
 
 /**
@@ -32,6 +35,7 @@ public class ItemMetadataFood extends ItemFood implements IItemName {
 	private String[] names;
 	private final String  name = NamespaceManager.GetModNameLC() + "_food";
 	private String[] actions;
+	private String[] potions;
 	//private String[] icons;
 	//	private IIcon[] icons;
 	/**
@@ -41,19 +45,24 @@ public class ItemMetadataFood extends ItemFood implements IItemName {
 	 */
 	public ItemMetadataFood(int[] hungerValues, float[] saturationModifiers, String[] names, String[] actions)
 	{
+		this(hungerValues,saturationModifiers,names,actions,new String[0]);
+	}
+	
+
+	public ItemMetadataFood(int[] hungerValues, float[] saturationModifiers, String[] names, String[] actions, String[] potions) {
 		super(0, 0f, false);
 		this.hungerValues = hungerValues;
 		this.saturationModifiers = saturationModifiers;
 		this.names = names;
 		this.actions = actions;
-		//icons = names.clone();
-		
+		this.potions = potions;
+
 		this.setHasSubtypes(true);
 		this.setUnlocalizedName(getName());
 		this.setCreativeTab(CreativeTabs.FOOD);
 		ItemManager.registerItem(this, getName());
 	}
-	
+
 
 	/**
 	* @return The hunger value of the ItemStack
@@ -62,7 +71,7 @@ public class ItemMetadataFood extends ItemFood implements IItemName {
 	public int getHealAmount(ItemStack itemStack)
 	{
 		int meta = itemStack.getItemDamage();
-		UtilityBlocks.LOG.info("SYNDARYL: heal amount Item"+itemStack.getDisplayName() + " meta " + meta + " getMaxMetadata() " + getMaxMetadata());
+		//UtilityBlocks.LOG.info("SYNDARYL: heal amount Item"+itemStack.getDisplayName() + " meta " + meta + " getMaxMetadata() " + getMaxMetadata());
 		if (meta < getMaxMetadata())
 			return hungerValues[meta];
 		
@@ -76,7 +85,7 @@ public class ItemMetadataFood extends ItemFood implements IItemName {
 	public float getSaturationModifier(ItemStack itemStack)
 	{
 		int meta = itemStack.getItemDamage();
-		UtilityBlocks.LOG.info("SYNDARYL: saturation amount Item"+itemStack.getDisplayName() + " meta " + meta + " getMaxMetadata() " + getMaxMetadata());
+		//UtilityBlocks.LOG.info("SYNDARYL: saturation amount Item"+itemStack.getDisplayName() + " meta " + meta + " getMaxMetadata() " + getMaxMetadata());
 		if (meta < getMaxMetadata())
 			return saturationModifiers[meta];
 		UtilityBlocks.LOG.warn("SYNDARYL: saturation amount fell through to 0!");
@@ -96,6 +105,13 @@ public class ItemMetadataFood extends ItemFood implements IItemName {
     {
 		if (stack.getItem().getItemUseAction(stack) == EnumAction.DRINK )
 		{
+			if (ConfigurationHandler.enableDrinkPotions && potions.length >= stack.getMetadata() && !potions[stack.getMetadata()].equals(""))
+			{
+				//Potion.getPotionFromResourceLocation(potions[stack.getMetadata()])
+				PotionEffect eff = new PotionEffect(Potion.getPotionFromResourceLocation(potions[stack.getMetadata()]), 
+						ConfigurationHandler.drinkPotionDuration * 20);
+				playerIn.addPotionEffect(eff);
+			}
 			ItemStack bottle = new ItemStack(Items.GLASS_BOTTLE, 1);
 			playerIn.inventory.addItemStackToInventory(bottle);
 		}
