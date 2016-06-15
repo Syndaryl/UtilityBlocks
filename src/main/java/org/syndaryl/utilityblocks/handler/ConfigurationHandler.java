@@ -14,12 +14,13 @@ public class ConfigurationHandler {
 	
 	public static boolean animalsDropBones;
 	public static int     boneFrequency;
-	public static double     bonemealFrequency;
+	public static double  bonemealFrequency;
 
 	public static boolean pigsDropLeather;
 	public static int     pigsLeatherFrequency;
 	public static boolean horsesDropLeather;
 	public static int     horseLeatherFrequency;
+	
 	public static boolean enableBlockCompresion;
 	
 	public static boolean enableFood;
@@ -33,6 +34,9 @@ public class ConfigurationHandler {
 	public static double  smasherEfficiencyMultiplier; 
 	public static double  smasherExhaustionPerBonusBlock;
 	public static boolean smashersSpecific;
+
+	public static boolean noSilverfish;
+	public static boolean noSilverfishForkbomb;
 	
 	public static void setConfig(File configFile) {
 		config = new Configuration(configFile);
@@ -69,17 +73,18 @@ public class ConfigurationHandler {
 				"What is the rate of animal bone drops (drops 1 in X kills, so smaller numbers = more drops)"
 				);
 		boneFrequency = currProp.getInt(5);
+		propOrder.add(currProp.getName());
 		
-		propOrder.add(currProp.getName());
-		currProp = config.get(
-				"Drops",
-				"bonemealFrequency",
-				5,
-				"What is the %age of bone drops that are bonemeal instead (decimal number between 0 and 1 - default is 0.6)",
-				0, 1
-				);
-		bonemealFrequency = currProp.getDouble(0.6);
-		propOrder.add(currProp.getName());
+		bonemealFrequency = 0.6F;
+//		currProp = config.get(
+//				"Drops",
+//				"bonemealFrequency",
+//				0.6F,
+//				"What is the %age of bone drops that are bonemeal instead (valid options are decimal numbers between 0 and 1 (inclusive) - default is 0.6)",
+//				0, Float.MAX_VALUE
+//				);
+//		bonemealFrequency = currProp.getDouble(0.6F);
+//		propOrder.add(currProp.getName());
 		
 		currProp = config.get(
 				"Drops",
@@ -148,22 +153,23 @@ public class ConfigurationHandler {
 				"Items",
 				"isEggnogGross",
 				false,
-				"Is eggnogg gross? (Gross eggnog briefly applies nausea, otherwise briefly applies jump boost)"
+				"Is eggnogg gross? (Gross eggnog briefly applies nausea, otherwise briefly applies jump boost) requires server restart to see effect!!!"
 				);
 		isEggnogGross = currProp.getBoolean(true);
 		propOrder.add(currProp.getName());
 		
-		//drinkPotionDuration
-		currProp = config.get(
-				"Tools",
-				"drinkPotionDuration",
-				3,
-				"Duration of the brief potion effect associated with drinks? (1-5 seconds)",
-				// Value range: 0+
-				1, 5
-				);
-		drinkPotionDuration = currProp.getInt(3);
-		propOrder.add(currProp.getName());
+		drinkPotionDuration = 3;
+//		//drinkPotionDuration
+//		currProp = config.get(
+//				"Items",
+//				"drinkPotionDuration",
+//				3,
+//				"Duration of the brief potion effect associated with drinks? (1-5 seconds)",
+//				// Value range: 0+
+//				1, 5
+//				);
+//		drinkPotionDuration = currProp.getInt(3);
+//		propOrder.add(currProp.getName());
 		
 		currProp = config.get(
 				"Tools",
@@ -214,6 +220,24 @@ public class ConfigurationHandler {
 				"Do smashers only 'chain' onto identical materials? (Default true - false means that eg if you break stone, you can also break andesite)"
 				);
 		smashersSpecific = currProp.getBoolean(true);
+		propOrder.add(currProp.getName());
+
+		currProp = config.get(
+				"Spawns",
+				"noSilverfish",
+				false,
+				"Prevent Silverfish from spawning entirely (default false)"
+				);
+		noSilverfish = currProp.getBoolean(false);
+		propOrder.add(currProp.getName());
+
+		currProp = config.get(
+				"Spawns",
+				"noSilverfishForkbomb",
+				true,
+				"Stop Silverfish from creating new silverfish (default true)"
+				);
+		noSilverfishForkbomb = currProp.getBoolean(true);
 		propOrder.add(currProp.getName());
 		
 		// Order configurations
