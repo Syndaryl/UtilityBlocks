@@ -105,7 +105,7 @@ public class WandItemList extends Item implements IItemName {
 	            for (ItemStack subItem : subItems)
 	            {
 					//id
-					writer.append(String.format("%05d",  Item.REGISTRY.getIDForObject(objItem) ) );
+					writer.append(String.format("%05d",  Item.REGISTRY.getIDForObject(objItem.getItem()) ) );
 					writer.append(',');
 					//resource_domain
 					writer.append(key.getResourceDomain());
