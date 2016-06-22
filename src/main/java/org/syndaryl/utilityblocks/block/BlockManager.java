@@ -37,6 +37,17 @@ public class BlockManager {
 	
 	public static final LinkedList<BlockCompressed> COMPRESSEDBLOCKS = new LinkedList<BlockCompressed>();
 	
+	public static class BlockData {
+		static int GROUND = 0;
+		static int BLOCKNAME = 1;
+		static int SOUNDTYPE = 2;
+		static int HARDNESS = 3;
+		static int BLASTRESISTANCE =4;
+		static int ISFUEL=5;
+		static int COMPONENTITEM=6;
+		static int FUELVALUE=7;
+	};
+	
 	public static LinkedList<Object[]> BlockConstruct =
 		new LinkedList<Object[]> ();
 	static Object[][] BlockStruct = new Object[][]{
@@ -48,7 +59,8 @@ public class BlockManager {
 			{Material.SAND, 	"utilityblocks_sand_compressed",       	SoundType.SAND, 	0.5F, 2.0F, 	false,	new ItemStack(Blocks.SAND,1,0),		0},
 			{Material.CORAL, 	"utilityblocks_charcoal_compressed",   	SoundType.STONE, 	0.8F, 5.0F, 	true,	new ItemStack(Items.COAL,1,1),  	16000.0F},
 			{Material.CORAL, 	"utilityblocks_bone_compressed",       	SoundType.STONE, 	0.7F, 4.0F, 	false,	new ItemStack(Items.BONE,1,0),		0},
-			{Material.WOOD, 	"utilityblocks_sugarcane_compressed",   	SoundType.PLANT, 	0.4F, 2.0F, 	true,	new ItemStack(Items.REEDS,1,0), 	8000.0F }
+			{Material.WOOD, 	"utilityblocks_sugarcane_compressed",   	SoundType.PLANT, 	0.4F, 2.0F, 	true,	new ItemStack(Items.REEDS,1,0), 	8000.0F },
+			{Material.ROCK, 	"utilityblocks_flint_compressed", 	SoundType.STONE, 	2.1F, 10.5F, 	false,	new ItemStack(Items.FLINT,1),		0},
 			};
 	public static void initialiseBlock() {
 
@@ -62,11 +74,11 @@ public class BlockManager {
 			UtilityBlocks.LOG.info("building block "  + BlockManager.BlockConstruct.get(i)[1] );
 			BlockManager.COMPRESSEDBLOCKS.add(
 					new BlockCompressed(
-							(Material) BlockManager.BlockConstruct.get(i)[0], // ground
-							(String) BlockManager.BlockConstruct.get(i)[1],   // block-name
-							(SoundType) BlockManager.BlockConstruct.get(i)[2], // sound-type
-							(Float) BlockManager.BlockConstruct.get(i)[3] * 1.2F, // hardness
-							(Float) BlockManager.BlockConstruct.get(i)[4]) // blast resistance
+							(Material) BlockManager.BlockConstruct.get(i)[BlockData.GROUND], // ground
+							(String) BlockManager.BlockConstruct.get(i)[BlockData.BLOCKNAME],   // block-name
+							(SoundType) BlockManager.BlockConstruct.get(i)[BlockData.SOUNDTYPE], // sound-type
+							(Float) BlockManager.BlockConstruct.get(i)[BlockData.HARDNESS] * 1.2F, // hardness
+							(Float) BlockManager.BlockConstruct.get(i)[BlockData.BLASTRESISTANCE]) // blast resistance
 					);
 		}
 	}
@@ -168,9 +180,9 @@ public class BlockManager {
 	public static void addFuels(FurnaceFuelHandler fuelhandler) {
 		for (int i = 0; i < BlockManager.COMPRESSEDBLOCKS.size(); i++)
 		{
-			if ((Boolean) BlockManager.BlockConstruct.get(i)[5] )
+			if ((Boolean) BlockManager.BlockConstruct.get(i)[BlockData.ISFUEL] )
 			fuelhandler.addFuel((Block)BlockManager.COMPRESSEDBLOCKS.get(i), Math.round( 
-					(Float)BlockManager.BlockConstruct.get(i)[7]) 
+					(Float)BlockManager.BlockConstruct.get(i)[BlockData.FUELVALUE]) 
 				);
 		}
 	}
@@ -181,7 +193,7 @@ public class BlockManager {
 			// Shaped Recipe
 			registerCompressedRecipie((ItemStack)BlockManager.BlockConstruct.get(i)[6], BlockManager.COMPRESSEDBLOCKS.get(i));
 			//Shapeless Recipe
-			registerDecompressedRecipie(new ItemStack(((ItemStack)BlockManager.BlockConstruct.get(i)[6]).getItem(), 9, ((ItemStack)BlockManager.BlockConstruct.get(i)[6]).getMetadata()), BlockManager.COMPRESSEDBLOCKS.get(i));
+			registerDecompressedRecipie(new ItemStack(((ItemStack)BlockManager.BlockConstruct.get(i)[BlockData.COMPONENTITEM]).getItem(), 9, ((ItemStack)BlockManager.BlockConstruct.get(i)[BlockData.COMPONENTITEM]).getMetadata()), BlockManager.COMPRESSEDBLOCKS.get(i));
 		}
 	}
 	/**
