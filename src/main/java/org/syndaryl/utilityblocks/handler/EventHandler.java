@@ -93,9 +93,9 @@ public class EventHandler {
 			dropCheck = event.getEntityLiving().worldObj.rand.nextInt(ConfigurationHandler.boneFrequency);
 			if ( dropCheck == 0 )
 			{
-				bonemealDropCheck = event.getEntityLiving().worldObj.rand.nextDouble();
-				if (bonemealDropCheck <= ConfigurationHandler.bonemealFrequency)
-					event.getEntityLiving().entityDropItem(new ItemStack(Items.DYE,15), 1);
+				bonemealDropCheck = event.getEntityLiving().worldObj.rand.nextInt(ConfigurationHandler.bonemealFrequency);
+				if (bonemealDropCheck != 0)
+					event.getEntityLiving().entityDropItem(new ItemStack(Items.DYE,1,15), 1);
 				else
 					event.getEntityLiving().entityDropItem(new ItemStack(Items.BONE), 1);
 			}
