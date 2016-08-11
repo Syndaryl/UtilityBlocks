@@ -12,6 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -60,7 +61,7 @@ public class WandItemList extends Item implements IItemName {
 		
 		UtilityBlocks.INFO
 				.info("=================== BLOCK LIST ===================");
-		generateBlockCsvFile("blocks.csv");
+		// generateBlockCsvFile("blocks.csv");
 
 		UtilityBlocks.INFO
 				.info("=================== ORE DICTIONARY =================== ");
@@ -85,8 +86,10 @@ public class WandItemList extends Item implements IItemName {
 	/**
 	 * @param fileName 
 	 * 
+	 * Writes the CSV file for blocks
 	 */
 	private void generateBlockCsvFile(String fileName) {
+		UtilityBlocks.LOG.info("Writing BodyCSV file");
 		FileWriter writer;
 		try {
 			writer = new FileWriter(fileName);
@@ -94,16 +97,38 @@ public class WandItemList extends Item implements IItemName {
 					"id","modid:objectname","meta","display_name","unlocalized_name","object_class"
 			}; 
 			writeCsvHeader(writer, headers);
-			for (ResourceLocation key : asSortedResourceLocation(Block.REGISTRY.getKeys())) {
-				//UtilityBlocks.INFO.info(key);
-				ItemStack objItem = new ItemStack( Block.REGISTRY.getObject(key));
+			writeItemCsvBody(writer, true);
+			//writeBlockCSVBody(writer);
+			writer.flush();
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			UtilityBlocks.LOG.error(e.toString());
+			for(StackTraceElement stacktrace : e.getStackTrace() )
+			{
+				UtilityBlocks.LOG.error(stacktrace.toString());
+			}
+		}
+	}
+
+	/**
+	 * @param writer
+	 * @throws IOException
+	 */
+	private void writeBlockCSVBody(FileWriter writer) throws IOException {
+		for (ResourceLocation key : asSortedResourceLocation(Block.REGISTRY.getKeys())) {
+			//UtilityBlocks.INFO.info(key);
+			Block b = Block.REGISTRY.getObject(key);
+			if (b != null)
+			{
+				ItemStack objItem = new ItemStack( b );
 				List<ItemStack> subItems = new ArrayList<ItemStack>();
-	            for (CreativeTabs tab : objItem.getItem().getCreativeTabs())
-	            {
-	            	objItem.getItem().getSubItems(objItem.getItem(), tab, subItems);
-	            }
-	            for (ItemStack subItem : subItems)
-	            {
+		        for (CreativeTabs tab : objItem.getItem().getCreativeTabs())
+		        {
+		        	objItem.getItem().getSubItems(objItem.getItem(), tab, subItems);
+		        }
+		        for (ItemStack subItem : subItems)
+		        {
 					//id
 					writer.append(String.format("%05d",  Item.REGISTRY.getIDForObject(objItem.getItem()) ) );
 					writer.append(',');
@@ -125,22 +150,14 @@ public class WandItemList extends Item implements IItemName {
 					//object_class
 					writer.append(objItem.getClass().getName());
 					writer.append('\n');
-	            }
-			}
-			writer.flush();
-			writer.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-			UtilityBlocks.LOG.error(e.toString());
-			for(StackTraceElement stacktrace : e.getStackTrace() )
-			{
-				UtilityBlocks.LOG.error(stacktrace.toString());
+		        }
 			}
 		}
 	}
 
 	private void generateItemCsvFile(String fileName) {
 		FileWriter writer;
+		UtilityBlocks.LOG.info("Writing ItemCSV file");
 		try {
 			writer = new FileWriter(fileName);
 			String[] headers = new String[]{
@@ -158,22 +175,42 @@ public class WandItemList extends Item implements IItemName {
 				UtilityBlocks.LOG.error(stacktrace.toString());
 			}
 		}
+		UtilityBlocks.LOG.info("Finished ItemCSV file");
 	}
 
-	private void writeItemCsvBody(FileWriter writer, boolean blocks) {
+	/**
+	 * Writes the body of a CSV item list to file writer
+	 * @param writer
+	 * @param writeBlocksOrWriteItems - true = write blocks, false is write everything else
+	 */
+	private void writeItemCsvBody(FileWriter writer, boolean writeBlocksOrWriteItems) {
 		try
 		{		
 			for(ResourceLocation key :  asSortedResourceLocation(Item.REGISTRY.getKeys()) )
 			{
 				Item objItem = Item.REGISTRY.getObject(key);
-				Block dummy = new Block(null);
-				if ((dummy.getClass()).isInstance(objItem) && blocks)
+				
+				Block dummy = new Block(Material.WOOD);
+				
+				// If instructed to write only blocks, and is a block, write it
+				final boolean thisIsABlock = (dummy.getClass()).isInstance(objItem);
+				if (thisIsABlock && writeBlocksOrWriteItems == true)
 				{
 					writeCsvLineItem(writer, key, objItem);
 				}
-				else if (!(dummy.getClass()).isInstance(objItem) && !blocks)
+				// if instructed to write only blocks, and is NOT a block, don't write it
+				else if ( ! (dummy.getClass()).isInstance(objItem) && writeBlocksOrWriteItems == true)
+				{
+					// Don't write blocks to this file
+				}
+				// if NOT instructed to write blocks, and is a not-block, write it
+				else if (writeBlocksOrWriteItems == false && ! (dummy.getClass()).isInstance(objItem))
 				{
 					writeCsvLineItem(writer, key, objItem);
+				}
+				else
+				{
+					// fall through case, don't write it
 				}
 	            
 			}
