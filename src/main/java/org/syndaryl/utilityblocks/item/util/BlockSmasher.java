@@ -14,10 +14,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.server.SPacketBlockChange;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldSettings.GameType;
 import net.minecraftforge.common.ForgeHooks;
 
 import org.syndaryl.utilityblocks.UtilityBlocks;
@@ -56,7 +56,8 @@ public class BlockSmasher {
 			BlockPos pos, EntityLivingBase actor,
 			Deque<BlockWithLocation> blockDeck) {
 		// hitManyBlocks(toolInstance, gameWorld_, pos.getX(), pos.getY(), pos.getZ(), actor,  blockDeck);
-
+		UtilityBlocks.LOG.info(String.format("hitManyBlocks() is starting from origin %s and hitting %d blocks", pos.toString(), blockDeck.size()));
+        
         for(Iterator<BlockWithLocation> iter = blockDeck.iterator(); iter.hasNext();)
         {
         	BlockWithLocation neighbourBlockContainer = iter.next();
@@ -77,7 +78,8 @@ public class BlockSmasher {
 
                 if (actor instanceof EntityPlayer)
                 {
-                	breakBlock(gameWorld_, neighbourBlockContainer, actor);
+                	UtilityBlocks.LOG.info(String.format("hitManyBlocks() is breaking a child %s block at %s", neighbourBlockContainer.getBlock().getUnlocalizedName(), neighbourBlockContainer.getPos().toString()));
+                    breakBlock(gameWorld_, neighbourBlockContainer, actor);
                     toolInstance.damageItem(damage, actor);
             		((EntityPlayer) actor).getFoodStats().addExhaustion((float) (ConfigurationHandler.smasherExhaustionPerBonusBlock * 1.5));
                 }
@@ -93,24 +95,68 @@ public class BlockSmasher {
 	 * dumb thing to replace a proper "break block" method until otherwise found
 	 * Tries to generate a proper item drop, spawn the appropriate item, and then get the block to commit suicide. 
 	 * 
-	 * @param gameWorld_
+	 * @param theWorld
 	 * @param blockXYZ
 	 */
-	public static void breakBlock(World gameWorld_,
+	public static void breakBlock(World theWorld,
 			BlockWithLocation blockXYZ, EntityLivingBase player) {
-		UtilityBlocks.LOG.info(String.format("breakBlock() is firing on a %s block", blockXYZ.getBlock().getUnlocalizedName()));
-        int fortune = EnchantmentHelper.getLootingModifier(player);
+		BlockPos pos = blockXYZ.getPos();
+		UtilityBlocks.LOG.info(String.format("breakBlock() is firing on a %s block at %s", blockXYZ.getBlock().getUnlocalizedName(), pos.toString()));
+//        int fortune = EnchantmentHelper.getLootingModifier(player);
         
-        boolean dropItems = true;
+//        boolean dropItems = true;
+        IBlockState iblockstate = theWorld.getBlockState(pos);
         //int metadata =  blockXYZ.metadata;// gameWorld_.getBlockMetadata(pos);
-        int xpDrop = blockXYZ.getBlock().getExpDrop(null, gameWorld_, blockXYZ.getPos(), fortune);
-        gameWorld_.destroyBlock(blockXYZ.getPos(), dropItems);
-		blockXYZ.getBlock().dropXpOnBlockBreak(gameWorld_, blockXYZ.getPos(), r.nextBoolean()? xpDrop:0);
+
+        EntityPlayerMP entityPlayerMP = (EntityPlayerMP) player;
+//        int xpDrop = blockXYZ.getBlock().getExpDrop(iblockstate, theWorld, pos, fortune);
+        int exp = net.minecraftforge.common.ForgeHooks.onBlockBreakEvent(theWorld, entityPlayerMP.interactionManager.getGameType(), entityPlayerMP, pos);
+        if (exp == -1)
+        {
+           return;
+        }
+        boolean removedBlock;
+		if (entityPlayerMP.isCreative())
+        {
+			removedBlock = BlockSmasher.removeBlock(pos, theWorld, entityPlayerMP, false);
+            entityPlayerMP.connection.sendPacket(new SPacketBlockChange(theWorld, pos));
+        }
+		else
+		{
+			removedBlock = BlockSmasher.removeBlock(pos, theWorld, entityPlayerMP, true);
+			if (removedBlock)
+				blockXYZ.getBlock().harvestBlock(theWorld, entityPlayerMP, pos, iblockstate, theWorld.getTileEntity(pos), entityPlayerMP.getHeldItemMainhand());
+			//theWorld.destroyBlock(blockXYZ.getPos(), dropItems);
+			//blockXYZ.getBlock().dropXpOnBlockBreak(theWorld, blockXYZ.getPos(), r.nextBoolean()? xpDrop:0);
+		}
+		if (!entityPlayerMP.isCreative() && removedBlock && exp > 0)
+            {
+            	blockXYZ.getBlock().dropXpOnBlockBreak(theWorld, pos, exp);
+            }
+//        boolean success = ((EntityPlayerMP)player).interactionManager.tryHarvestBlock(pos);
+		//        if (success)
+		//        {
+		//            //blockXYZ.getBlock().harvestBlock(theWorld, (EntityPlayer) player, pos, iblockstate, null, null);
+		//            blockXYZ.getBlock().onBlockDestroyedByPlayer(theWorld, pos, iblockstate);
+		//        }
 	}
 
-	/* (non-Javadoc)
-	 * @see org.syndaryl.utilityblocks.item.IToolBlockSmasher#getNeighbouringBlocksToDeque(net.minecraft.world.World, net.minecraft.block.Block, int, int, int, java.util.Deque)
+	/**
+	 * Removes a block and triggers the appropriate events
 	 */
+
+	private static boolean removeBlock(BlockPos pos, World theWorld, EntityPlayerMP thisPlayerMP, boolean canHarvest)
+	{
+	        IBlockState iblockstate = theWorld.getBlockState(pos);
+	        boolean flag = iblockstate.getBlock().removedByPlayer(iblockstate, theWorld, pos, thisPlayerMP, canHarvest);
+
+	        if (flag)
+	        {
+	            iblockstate.getBlock().onBlockDestroyedByPlayer(theWorld, pos, iblockstate);
+	        }
+
+	        return flag;
+	}
 
 	/**
 	 * Collects the neighbouring blocks which are of the same block type as the struck block into a deQue object.
@@ -124,26 +170,38 @@ public class BlockSmasher {
 	public static LinkedList<BlockWithLocation> getNeighbouringBlocksToDeque(World gameWorld_,
 			IBlockState blockStruck, BlockPos posOrigin)
 			{
-				UtilityBlocks.LOG.info(String.format("getNeighbouringBlocksToDeque() is firing on %d %d %d, a %s block", posOrigin.getX(), posOrigin.getY(), posOrigin.getZ(), blockStruck.getBlock().getUnlocalizedName()));
 				LinkedList<BlockWithLocation> blockDeck = new LinkedList<BlockWithLocation>();
 				IBlockState coreState = gameWorld_.getBlockState( posOrigin);
 		        int coreData = blockStruck.getBlock().getMetaFromState(coreState);
-				String blockName = blockStruck.getBlock().getLocalizedName();
+				String blockName = blockStruck.getBlock().getRegistryName().toString();
+				UtilityBlocks.LOG.info(String.format("getNeighbouringBlocksToDeque() is firing on %s, a %s:%d block", posOrigin.toString(), blockName, coreData));
+				BlockPos bottom = posOrigin.subtract(new Vec3i(-1,-1,-1));
+				BlockPos top = posOrigin.subtract(new Vec3i(1,1,1));
+				UtilityBlocks.LOG.info(String.format("   searching from %s to %s", bottom.toString(), top.toString()));
 				
-				Iterable<BlockPos> candidates = BlockPos.getAllInBox(posOrigin.subtract(new Vec3i(-1,-1,-1)), posOrigin.add( new Vec3i(1,1,1)));
+				
+				Iterable<BlockPos> candidates = BlockPos.getAllInBox(bottom, top);
+				
 				for (BlockPos posNeighbour : candidates )
 				{
         			//BlockPos posNeighbour = new BlockPos(x,y,z);
-        			if ( gameWorld_.getBlockState(posNeighbour).getBlock().getUnlocalizedName() != Blocks.AIR.getUnlocalizedName() )	
+					
+					String neighborName = gameWorld_.getBlockState(posNeighbour).getBlock().getRegistryName().toString();
+					if ( neighborName != Blocks.AIR.getRegistryName().toString() )	
         			{
         				Block neighbour = gameWorld_.getBlockState(posNeighbour).getBlock();
         		        IBlockState neighbourState = gameWorld_.getBlockState(posNeighbour);
         		        int neighbourMeta = neighbour.getMetaFromState(neighbourState);
-						if (neighbour.getLocalizedName().compareTo(blockName) == 0 && neighbourMeta == coreData)  //  && neighbour != blockStruck
-            			{
-            				BlockWithLocation container = new BlockWithLocation(neighbour, posNeighbour, neighbourMeta);
-            				blockDeck.add(container);
-            			}
+        		        UtilityBlocks.LOG.info(String.format("getNeighbouringBlocksToDeque() examining neighbor %s:%d at %s", neighborName,  neighbourMeta, posNeighbour.toString()));
+            			if (neighborName.compareTo(blockName) == 0)
+						{
+		        			if( neighbourMeta == coreData)  //  && neighbour != blockStruck
+	            			{
+								UtilityBlocks.LOG.info(String.format("getNeighbouringBlocksToDeque() decided this is breakable"));
+	            				BlockWithLocation container = new BlockWithLocation(neighbour, posNeighbour, neighbourMeta);
+	            				blockDeck.add(container);
+	            			}
+						}
         			}
 		        }
 				UtilityBlocks.LOG.info(String.format("getNeighbouringBlocksToDeque() found %d breakable blocks", blockDeck.size()));
