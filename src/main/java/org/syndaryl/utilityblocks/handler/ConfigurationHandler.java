@@ -14,7 +14,7 @@ public class ConfigurationHandler {
 	
 	public static boolean animalsDropBones;
 	public static int     boneFrequency;
-	public static double  bonemealFrequency;
+	public static int     bonemealFrequency;
 
 	public static boolean pigsDropLeather;
 	public static int     pigsLeatherFrequency;
@@ -69,22 +69,21 @@ public class ConfigurationHandler {
 		currProp = config.get(
 				"Drops",
 				"boneFrequency",
-				5,
-				"What is the rate of animal bone drops (drops 1 in X kills, so smaller numbers = more drops)"
+				3,
+				"What is the rate of animal bonemeal drops (drops 1 in X kills, so smaller numbers = more drops)"
 				);
-		boneFrequency = currProp.getInt(5);
+		boneFrequency = currProp.getInt(3);
 		propOrder.add(currProp.getName());
 		
-		bonemealFrequency = 0.6F;
-//		currProp = config.get(
-//				"Drops",
-//				"bonemealFrequency",
-//				0.6F,
-//				"What is the %age of bone drops that are bonemeal instead (valid options are decimal numbers between 0 and 1 (inclusive) - default is 0.6)",
-//				0, Float.MAX_VALUE
-//				);
-//		bonemealFrequency = currProp.getDouble(0.6F);
-//		propOrder.add(currProp.getName());
+		//bonemealFrequency = 0.6F;
+		currProp = config.get(
+				"Drops",
+				"bonemealFrequency",
+				4,
+				"What is the rate of animal bonemeal drops that are bones instead? (1 in X drops)"
+				);
+		bonemealFrequency = currProp.getInt(3);
+		propOrder.add(currProp.getName());
 		
 		currProp = config.get(
 				"Drops",
