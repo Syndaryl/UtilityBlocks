@@ -5,12 +5,15 @@ import java.util.Locale;
 import net.minecraft.item.ItemStack;
 
 import org.syndaryl.utilityblocks.UtilityBlocks;
+import org.syndaryl.utilityblocks.block.BlockManager;
 import org.syndaryl.utilityblocks.item.ItemManager;
 import org.syndaryl.utilityblocks.item.ToolMattock;
 import org.syndaryl.utilityblocks.item.ToolSledgehammer;
 
+import cyano.basemetals.BaseMetals;
 import cyano.basemetals.init.Materials;
 import cyano.basemetals.material.MetalMaterial;
+import cyano.basemetals.registry.CrusherRecipeRegistry;
 
 /*
  * If BaseMetals is loaded, do things.
@@ -73,6 +76,10 @@ public class BaseMetalsLoader implements IBaseMetalsLoader {
 				ItemManager.makeHammerRecepie(new ItemStack(s,1), ItemManager.ToolToIngot.get(s), "toolHandle");
 			}
 		}
+
+		// Register smashing formulas
+		ItemStack output = new ItemStack( cyano.basemetals.init.Items.carbon_powder,9,0 );
+		CrusherRecipeRegistry.addNewCrusherRecipe(BlockManager.COMPRESSEDBLOCKS.get(6), output);
 	}
 
 	@Override
