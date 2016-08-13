@@ -3,17 +3,25 @@
  */
 package org.syndaryl.utilityblocks.item;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
-import java.io.FileWriter;
-import java.io.IOException;
+
+import org.syndaryl.utilityblocks.NamespaceManager;
+import org.syndaryl.utilityblocks.UtilityBlocks;
+
+import com.google.common.collect.BiMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -22,17 +30,16 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.EntityRegistry.EntityRegistration;
 import net.minecraftforge.oredict.OreDictionary;
-
-import org.syndaryl.utilityblocks.NamespaceManager;
-import org.syndaryl.utilityblocks.UtilityBlocks;
 
 /**
  * @author syndaryl
  *
  */
 public class WandItemList extends Item implements IItemName {
+	private static BiMap<Class<? extends Entity>, EntityRegistration> entityList;
 	private String name = NamespaceManager.GetModNameLC() + "_"
 			+ "wand_item_list";
 
@@ -55,32 +62,135 @@ public class WandItemList extends Item implements IItemName {
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn,
 			EntityPlayer playerIn, EnumHand hand) {
 		//ActionResult<ItemStack> result = super.onItemRightClick(itemStackIn, worldIn, playerIn, hand);
+		@SuppressWarnings("unused")
+		boolean success;
 		UtilityBlocks.INFO
 				.info("=================== ITEM LIST ===================");
-		generateItemCsvFile("items.csv");
+		success = generateItemCsvFile("items.csv");
 		
-		UtilityBlocks.INFO
-				.info("=================== BLOCK LIST ===================");
+		//UtilityBlocks.INFO
+		//		.info("=================== BLOCK LIST ===================");
 		// generateBlockCsvFile("blocks.csv");
 
 		UtilityBlocks.INFO
 				.info("=================== ORE DICTIONARY =================== ");
 		UtilityBlocks.INFO.info("       OreDict contains "
 				+ OreDictionary.getOreNames().length + " names");
-		generateOreDictCsvFile("oredict.csv");
+		success = generateOreDictCsvFile("oredict.csv");
+
+		UtilityBlocks.INFO
+				.info("=================== ENTITY CLASS LIST =================== ");
+		success = generateEntityCsvFile("entity.csv");
+		
 		ActionResult<ItemStack> result = new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
 		
 		return result;
 	}
 
+	private boolean generateEntityCsvFile(String fileName) {
+		FileWriter writer;
+		if (entityList == null)
+		{
+			boolean success = initializeEntityRegistry();
+			if (!success) return false;
+		}
+		try{
+
+			writer = new FileWriter(fileName);
+			UtilityBlocks.INFO.info(String.format("I have found %d entities", EntityList.CLASS_TO_NAME.size()));
+			UtilityBlocks.LOG.info(String.format("Writing %d entities", EntityList.CLASS_TO_NAME.size()));
+			for (Class<? extends Entity> name : EntityList.CLASS_TO_NAME.keySet() ) {
+				if (name != null){
+					String[] line = new String[] {name.getName(), EntityList.CLASS_TO_NAME.get(name)}; 
+					writeCsvLine(writer, line);
+				}
+			}
+			UtilityBlocks.LOG.info(String.format("Finished writing entities", entityList.size()));
+			//writeBlockCSVBody(writer);
+			writer.flush();
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			UtilityBlocks.LOG.error("Error in Oredict dump");
+			UtilityBlocks.LOG.error(e.toString());
+			for(StackTraceElement stacktrace : e.getStackTrace() )
+			{
+				UtilityBlocks.LOG.error(stacktrace.toString());
+			}
+			return false;
+		}
+		
+		return true;
+	}
+
+	/**
+	 * @throws SecurityException
+	 * @throws IllegalArgumentException
+	 */
+	@SuppressWarnings("unchecked")
+	private boolean initializeEntityRegistry() throws SecurityException, IllegalArgumentException {
+		try {
+			Field f = EntityRegistry.instance().getClass().getDeclaredField("entityClassRegistrations"); //NoSuchFieldException
+			f.setAccessible(true);
+			entityList = (BiMap<Class<? extends Entity>, EntityRegistration>) f.get(EntityRegistry.instance()); //IllegalAccessException
+		} catch (NoSuchFieldException e){
+
+			UtilityBlocks.LOG.error("Error in Oredict dump");
+			UtilityBlocks.LOG.error(e.toString());
+			for(StackTraceElement stacktrace : e.getStackTrace() )
+			{
+				UtilityBlocks.LOG.error(stacktrace.toString());
+			}
+			return false;
+		} catch (IllegalAccessException e){
+
+			UtilityBlocks.LOG.error("Error in Oredict dump");
+			UtilityBlocks.LOG.error(e.toString());
+			for(StackTraceElement stacktrace : e.getStackTrace() )
+			{
+				UtilityBlocks.LOG.error(stacktrace.toString());
+			}
+			return false;
+		}catch (Exception e){
+			e.printStackTrace();
+			UtilityBlocks.LOG.error(e.toString());
+			for(StackTraceElement stacktrace : e.getStackTrace() )
+			{
+				UtilityBlocks.LOG.error(stacktrace.toString());
+			}
+			return false;
+		}
+		return true;
+	}
+
 	/**
 	 * @param fileName 
+	 * @return 
 	 * 
 	 */
-	private void generateOreDictCsvFile(String fileName) {
-		for (String name : OreDictionary.getOreNames()) {
-			UtilityBlocks.INFO.info(name);
+	private boolean generateOreDictCsvFile(String fileName) {
+		FileWriter writer;
+		try {
+			writer = new FileWriter(fileName);
+
+			for (String name : OreDictionary.getOreNames()) {
+				writer.write(name);
+				writer.write("\r\n");
+			}
+			//writeBlockCSVBody(writer);
+			writer.flush();
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			UtilityBlocks.LOG.error("Error in Oredict dump");
+			UtilityBlocks.LOG.error(e.toString());
+			for(StackTraceElement stacktrace : e.getStackTrace() )
+			{
+				UtilityBlocks.LOG.error(stacktrace.toString());
+			}
+			return false;
 		}
+		return true;
 	}
 
 	/**
@@ -96,7 +206,7 @@ public class WandItemList extends Item implements IItemName {
 			String[] headers = new String[]{
 					"id","modid:objectname","meta","display_name","unlocalized_name","object_class"
 			}; 
-			writeCsvHeader(writer, headers);
+			writeCsvLine(writer, headers);
 			writeItemCsvBody(writer, true);
 			//writeBlockCSVBody(writer);
 			writer.flush();
@@ -155,7 +265,7 @@ public class WandItemList extends Item implements IItemName {
 		}
 	}
 
-	private void generateItemCsvFile(String fileName) {
+	private boolean generateItemCsvFile(String fileName) {
 		FileWriter writer;
 		UtilityBlocks.LOG.info("Writing ItemCSV file");
 		try {
@@ -163,7 +273,7 @@ public class WandItemList extends Item implements IItemName {
 			String[] headers = new String[]{
 					"id","modid:objectname","meta","display_name","unlocalized_name","object_class"
 			}; 
-			writeCsvHeader(writer, headers);
+			writeCsvLine(writer, headers);
 			writeItemCsvBody(writer, false);
 			writer.flush();
 			writer.close();
@@ -174,8 +284,10 @@ public class WandItemList extends Item implements IItemName {
 			{
 				UtilityBlocks.LOG.error(stacktrace.toString());
 			}
+			return false;
 		}
 		UtilityBlocks.LOG.info("Finished ItemCSV file");
+		return true;
 	}
 
 	/**
@@ -265,7 +377,7 @@ public class WandItemList extends Item implements IItemName {
 		}
 	}
 
-	private void writeCsvHeader(FileWriter writer, String[] headers) {
+	private void writeCsvLine(FileWriter writer, String[] headers) {
 		try {
 			for (String header : headers)
 			{
@@ -293,15 +405,6 @@ public class WandItemList extends Item implements IItemName {
 		java.util.Collections.sort(list);
 		return list;
 	}
-//	public static List<String> asSorted(Set<ResourceLocation> set) {
-//		List<String> list = new ArrayList<String>(set.size());
-//		for (String o : set.toString()) {
-//			list.add(o);
-//		}
-//
-//		java.util.Collections.sort(list);
-//		return list;
-//	}
 
 	public static List<ResourceLocation> asSortedResourceLocation(Set<ResourceLocation> set) {
 		UtilityBlocks.LOG.info("%d items", set.size());
