@@ -7,6 +7,13 @@ package org.syndaryl.utilityblocks.item;
 import java.util.HashMap;
 import java.util.Locale;
 
+import org.syndaryl.utilityblocks.UtilityBlocks;
+import org.syndaryl.utilityblocks.handler.ConfigurationHandler;
+import org.syndaryl.utilityblocks.handler.MaterialHandler;
+import org.syndaryl.utilityblocks.materials.UBMaterial;
+
+import cyano.basemetals.init.Materials;
+import cyano.basemetals.material.MetalMaterial;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemModelMesher;
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -16,21 +23,10 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.potion.PotionHealthBoost;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-
-import org.syndaryl.utilityblocks.UtilityBlocks;
-import org.syndaryl.utilityblocks.handler.ConfigurationHandler;
-import org.syndaryl.utilityblocks.handler.MaterialHandler;
-import org.syndaryl.utilityblocks.materials.UBMaterial;
-
-import cyano.basemetals.init.Materials;
-import cyano.basemetals.material.MetalMaterial;
 
 /**
  * @author syndaryl
@@ -45,7 +41,8 @@ public class ItemManager {
 	
 	public static ToolHandle handle;
 	public static ItemSack[] sacks;
-	public static WandItemList wand;
+	public static WandItemList wandItems;
+	public static WandRecipeList wandRecipes;
 	
 	private final static int NAME = 0;
 	private final static int HUNGER = 1;
@@ -130,8 +127,9 @@ public class ItemManager {
 			Sledgehammers.put("sledgehammerObsidian", sledgehammerObsidian);
 		}
 		
-		handle = (ToolHandle) new ToolHandle();
-		wand = (WandItemList) new WandItemList();
+		handle = new ToolHandle();
+		wandItems = new WandItemList();
+		wandRecipes = new WandRecipeList();
 		
 		sacks = new ItemSack[] {
 				new ItemSack(),
@@ -162,7 +160,8 @@ public class ItemManager {
 	
 	public static void registerOreDict() {
     	OreDictionary.registerOre("toolHandle", new ItemStack(handle,1));
-    	OreDictionary.registerOre("wandMagic", new ItemStack(wand,1));
+    	OreDictionary.registerOre("wandMagic", new ItemStack(wandItems,1));
+    	OreDictionary.registerOre("wandMagic", new ItemStack(wandRecipes,1));
     	OreDictionary.registerOre("sack", new ItemStack(sacks[0],1));
 		
 	}
@@ -286,20 +285,22 @@ public class ItemManager {
 		GameRegistry.addShapelessRecipe(new ItemStack(Items.BEETROOT_SEEDS,8), new ItemStack(sacks[5].setContainerItem(sacks[0])));
 		GameRegistry.addShapelessRecipe(new ItemStack(Items.FEATHER,8), new ItemStack(sacks[6].setContainerItem(sacks[0])));
 		
-		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 0),	new Object[]{"A","B", 				'A', new ItemStack( Items.APPLE), 'B', waterbottle});
-		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 1),	new Object[]{"ASA","WWW", 			'A', new ItemStack( Items.APPLE), 'W', new ItemStack( Items.WHEAT), 'S', new ItemStack(foods, 1, 7)});
-		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 1),	new Object[]{"   ", "ASA","WWW", 	'A', new ItemStack( Items.APPLE), 'W', new ItemStack( Items.WHEAT), 'S', new ItemStack(foods, 1, 7)});
-		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 2),	new Object[]{"A","M","B", 			'A', new ItemStack( Items.EGG), 'M', new ItemStack( Items.MILK_BUCKET.setContainerItem(Items.BUCKET)), 'B', Items.GLASS_BOTTLE});
-		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 3),	new Object[]{"A","B", 				'A', new ItemStack( Items.APPLE), 'B', waterbottle});
-		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 4),	new Object[]{"P","B", 				'P', new ItemStack( Items.POTATO), 'B', waterbottle});
-		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 5),	new Object[]{"C","B", 				'C', new ItemStack( Items.CARROT), 'B', waterbottle});
-		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 6),	new Object[]{"S","B", 				'S', new ItemStack(foods, 1, 7), 'B', waterbottle});
-		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 7),	new Object[]{"SS","SS", 			'S', new ItemStack(Items.SUGAR)});
-		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 8),	new Object[]{"LLL","LFL","LLL", 	'F', new ItemStack( Items.FISH, 1, 0), 'L', new ItemStack( Blocks.LEAVES )});		
-		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 8),	new Object[]{"LLL","LFL","LLL", 	'F', new ItemStack( Items.FISH, 1, 1), 'L', new ItemStack( Blocks.LEAVES )});
-		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 8),	new Object[]{"LLL","LFL","LLL", 	'F', new ItemStack( Items.FISH, 1, 0), 'L', new ItemStack( Blocks.LEAVES2 )});		
-		GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 8),	new Object[]{"LLL","LFL","LLL", 	'F', new ItemStack( Items.FISH, 1, 1), 'L', new ItemStack( Blocks.LEAVES2 )});		
-
+		if (ConfigurationHandler.enableFood)
+		{
+			GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 0),	new Object[]{"A","B", 				'A', new ItemStack( Items.APPLE), 'B', waterbottle});
+			GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 1),	new Object[]{"ASA","WWW", 			'A', new ItemStack( Items.APPLE), 'W', new ItemStack( Items.WHEAT), 'S', new ItemStack(foods, 1, 7)});
+			GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 1),	new Object[]{"   ", "ASA","WWW", 	'A', new ItemStack( Items.APPLE), 'W', new ItemStack( Items.WHEAT), 'S', new ItemStack(foods, 1, 7)});
+			GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 2),	new Object[]{"A","M","B", 			'A', new ItemStack( Items.EGG), 'M', new ItemStack( Items.MILK_BUCKET.setContainerItem(Items.BUCKET)), 'B', Items.GLASS_BOTTLE});
+			GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 3),	new Object[]{"A","B", 				'A', new ItemStack( Items.APPLE), 'B', waterbottle});
+			GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 4),	new Object[]{"P","B", 				'P', new ItemStack( Items.POTATO), 'B', waterbottle});
+			GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 5),	new Object[]{"C","B", 				'C', new ItemStack( Items.CARROT), 'B', waterbottle});
+			GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 6),	new Object[]{"S","B", 				'S', new ItemStack(foods, 1, 7), 'B', waterbottle});
+			GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 7),	new Object[]{"SS","SS", 			'S', new ItemStack(Items.SUGAR)});
+			GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 8),	new Object[]{"LLL","LFL","LLL", 	'F', new ItemStack( Items.FISH, 1, 0), 'L', new ItemStack( Blocks.LEAVES )});		
+			GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 8),	new Object[]{"LLL","LFL","LLL", 	'F', new ItemStack( Items.FISH, 1, 1), 'L', new ItemStack( Blocks.LEAVES )});
+			GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 8),	new Object[]{"LLL","LFL","LLL", 	'F', new ItemStack( Items.FISH, 1, 0), 'L', new ItemStack( Blocks.LEAVES2 )});		
+			GameRegistry.addShapedRecipe(new ItemStack(foods, 1, 8),	new Object[]{"LLL","LFL","LLL", 	'F', new ItemStack( Items.FISH, 1, 1), 'L', new ItemStack( Blocks.LEAVES2 )});		
+		}
         makeMattockRecepie(new ItemStack(Mattocks.get("mattockWood"),1), "logWood", "toolHandle");
         makeMattockRecepie(new ItemStack(Mattocks.get("mattockStone"),1), "stone", "toolHandle");
         makeMattockRecepie(new ItemStack(Mattocks.get("mattockIron"),1), "ingotIron", "toolHandle");
@@ -310,7 +311,7 @@ public class ItemManager {
         makeHammerRecepie(new ItemStack(Sledgehammers.get("sledgehammerStone"),1), "stone", "toolHandle");
         makeHammerRecepie(new ItemStack(Sledgehammers.get("sledgehammerIron"),1), "ingotIron", "toolHandle");
         makeHammerRecepie(new ItemStack(Sledgehammers.get("sledgehammerDiamond"),1), "gemDiamond", "toolHandle");
-        makeMattockRecepie(new ItemStack(Sledgehammers.get("sledgehammerObsidian"),1), "obsidian", "toolHandle");
+        makeHammerRecepie(new ItemStack(Sledgehammers.get("sledgehammerObsidian"),1), "obsidian", "toolHandle");
         
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(handle,1), 
         		"s  ",
@@ -319,11 +320,18 @@ public class ItemManager {
         		's', "stickWood"
         		)
         );
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(wand,1), 
-        		"s  ",
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(wandItems,1), 
+        		"d  ",
         		" s ",
         		"  s",
-        		's', "toolHandle"
+        		's', "toolHandle",'d', "blockDiamond"
+        		)
+        );
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(wandRecipes,1), 
+        		"d  ",
+        		" s ",
+        		"  s",
+        		's', "toolHandle",'d', "oreDiamond"
         		)
         );
 	}
@@ -390,7 +398,8 @@ public class ItemManager {
 		}
 
 		registerWithMesher(handle, 0);
-		registerWithMesher(wand, 0);
+		registerWithMesher(wandItems, 0);
+		registerWithMesher(wandRecipes, 0);
 		
 		for (ItemSack sack : sacks){
 				registerWithMesher(sack,0);
@@ -428,10 +437,12 @@ public class ItemManager {
         try
         {
             ResourceLocation location = new ResourceLocation(UtilityBlocks.MODID, itemName);
-            if (item != null) GameRegistry.register(item, location);
+            if (item != null) 
+            	GameRegistry.register(item, location);
         }
         catch (Exception e)
         {
+        	UtilityBlocks.LOG.error(e);
             throw new RuntimeException("An error occurred registering an item...");
         }
     }
