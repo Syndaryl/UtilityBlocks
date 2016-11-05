@@ -34,6 +34,7 @@ public class ConfigurationHandler {
 	public static double  smasherEfficiencyMultiplier; 
 	public static double  smasherExhaustionPerBonusBlock;
 	public static boolean smashersSpecific;
+	public static int     smasherRange;
 
 	public static boolean noSilverfish;
 	public static boolean noSilverfishForkbomb;
@@ -52,7 +53,7 @@ public class ConfigurationHandler {
 				"General",
 				"enable",
 				true,
-				"Enables the mod.\nSet to false to disable the mod."
+				"Enables the mod.\nSet to false to disable the mod, requires restart."
 				);
 		isEnabled = currProp.getBoolean(true);
 		propOrder.add(currProp.getName());
@@ -143,7 +144,7 @@ public class ConfigurationHandler {
 				"Items",
 				"enableDrinkPotions",
 				true,
-				"If the food items are enabled, do the new drinks apply short duration potion effects?"
+				"If the food items are enabled, do the new drinks apply short duration potion effects? (WIP)"
 				);
 		enableDrinkPotions = currProp.getBoolean(true);
 		propOrder.add(currProp.getName());
@@ -152,7 +153,7 @@ public class ConfigurationHandler {
 				"Items",
 				"isEggnogGross",
 				false,
-				"Is eggnogg gross? (Gross eggnog briefly applies nausea, otherwise briefly applies jump boost) requires server restart to see effect!!!"
+				"Is eggnogg gross? (Gross eggnog briefly applies nausea, otherwise briefly applies jump boost) requires server restart to see effect!!! (WIP)"
 				);
 		isEggnogGross = currProp.getBoolean(true);
 		propOrder.add(currProp.getName());
@@ -220,12 +221,25 @@ public class ConfigurationHandler {
 				);
 		smashersSpecific = currProp.getBoolean(true);
 		propOrder.add(currProp.getName());
+		
+		currProp = config.get(
+				"Tools",
+				"smasherRange",
+				3,
+				"Size of cube smashed, as measured by side length (defaults to 3). Should always be an odd number (if not odd, 1 will be subtracted to make an odd number). If 0 or less, smashers will be disabled."
+				);
+		smasherRange = currProp.getInt();
+		if (smasherRange % 2 == 0)
+		{
+			smasherRange = smasherRange-1;
+		}
+		propOrder.add(currProp.getName());
 
 		currProp = config.get(
 				"Spawns",
 				"noSilverfish",
 				false,
-				"Prevent Silverfish from spawning entirely (default false)"
+				"Prevent Silverfish from spawning entirely (default false) (WIP)"
 				);
 		noSilverfish = currProp.getBoolean(false);
 		propOrder.add(currProp.getName());
@@ -234,7 +248,7 @@ public class ConfigurationHandler {
 				"Spawns",
 				"noSilverfishForkbomb",
 				true,
-				"Stop Silverfish from creating new silverfish (default true)"
+				"Stop Silverfish from creating new silverfish (default true) (WIP)"
 				);
 		noSilverfishForkbomb = currProp.getBoolean(true);
 		propOrder.add(currProp.getName());

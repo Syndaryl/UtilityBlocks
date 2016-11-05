@@ -175,8 +175,11 @@ public class BlockSmasher {
 		        int coreData = blockStruck.getBlock().getMetaFromState(coreState);
 				String blockName = blockStruck.getBlock().getRegistryName().toString();
 				UtilityBlocks.LOG.info(String.format("getNeighbouringBlocksToDeque() is firing on %s, a %s:%d block", posOrigin.toString(), blockName, coreData));
-				BlockPos bottom = posOrigin.subtract(new Vec3i(-1,-1,-1));
-				BlockPos top = posOrigin.subtract(new Vec3i(1,1,1));
+				
+				int blockOffset = (ConfigurationHandler.smasherRange -1)/2;
+				
+				BlockPos bottom = posOrigin.subtract(new Vec3i(-1*blockOffset,-1*blockOffset,-1*blockOffset));
+				BlockPos top = posOrigin.subtract(new Vec3i(blockOffset,blockOffset,blockOffset));
 				UtilityBlocks.LOG.info(String.format("   searching from %s to %s", bottom.toString(), top.toString()));
 				
 				
