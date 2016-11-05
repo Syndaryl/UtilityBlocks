@@ -47,7 +47,7 @@ public class UtilityBlocks {
 	public static Configuration config;
 	public static final FurnaceFuelHandler fuelHandler = new FurnaceFuelHandler();
 	public static final SimpleLogger LOG = new SimpleLogger(
-			"SyndarylLog", Level.INFO, false, false, true, false, "yyyy/mm/dd hh:mm:ss", 
+			"SyndarylLog", Level.ALL, false, false, true, false, "yyyy/mm/dd hh:mm:ss", 
 			new StringFormatterMessageFactory(), new PropertiesUtil(""), null
 			);
 	public static final SimpleLogger INFO = new SimpleLogger(
@@ -71,71 +71,79 @@ public class UtilityBlocks {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		//MaterialHandler.addAllMaterials();
-		
-		if (Loader.isModLoaded("mineralogy"))
-		{
-			MINERALOGY = new MineralogyLoader();
-		}
-		else
-		{
-			MINERALOGY = new MineralogyLoaderDummy();
-		}
-		//MINERALOGY.initialiseMineralogyItems();
-		
-		BlockManager.initialiseBlock();
-		ItemManager.initialiseItems();
-		KeyBindHandler.initialiseKeyBinds();
 
-		
-		if (Loader.isModLoaded("basemetals"))
+		if (ConfigurationHandler.isEnabled)
 		{
-				BASEMETALS = new BaseMetalsLoader();
-				UtilityBlocks.LOG.info("'BaseMetals' mod is loaded! Making appropriate items.");
-		}
-		else
-		{
-			BASEMETALS = new BaseMetalsLoaderDummy();
-			UtilityBlocks.LOG.info("'BaseMetals' mod not loaded! Not making any BaseMetals items.");
-		}
-
-		BASEMETALS.initialiseBaseMetalsItems();
-		
-		BlockManager.registerOreDict();
-		ItemManager.registerOreDict();
-		
-		if(event.getSide() == Side.CLIENT)
-		{
-			ItemManager.variantRegistry();
+			//MaterialHandler.addAllMaterials();
 			
+			if (Loader.isModLoaded("mineralogy"))
+			{
+				MINERALOGY = new MineralogyLoader();
+			}
+			else
+			{
+				MINERALOGY = new MineralogyLoaderDummy();
+			}
+			//MINERALOGY.initialiseMineralogyItems();
+			
+			BlockManager.initialiseBlock();
+			ItemManager.initialiseItems();
+			KeyBindHandler.initialiseKeyBinds();
+	
+			
+			if (Loader.isModLoaded("basemetals"))
+			{
+					BASEMETALS = new BaseMetalsLoader();
+					UtilityBlocks.LOG.info("'BaseMetals' mod is loaded! Making appropriate items.");
+			}
+			else
+			{
+				BASEMETALS = new BaseMetalsLoaderDummy();
+				UtilityBlocks.LOG.info("'BaseMetals' mod not loaded! Not making any BaseMetals items.");
+			}
+	
+			BASEMETALS.initialiseBaseMetalsItems();
+			
+			BlockManager.registerOreDict();
+			ItemManager.registerOreDict();
+			
+			if(event.getSide() == Side.CLIENT)
+			{
+				ItemManager.variantRegistry();
+			}	
 		}
 	}
 	
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event) {
-		MinecraftForge.EVENT_BUS.register(instance);
-		BlockManager.addFuels(fuelHandler);
-		BlockManager.addCraftingRecipies();
-		ItemManager.addCraftingRecipies();
-		BASEMETALS.addRecipiesBaseMetalsItems();
-		
-		GameRegistry.registerFuelHandler(fuelHandler);
 		if (ConfigurationHandler.isEnabled)
-			MinecraftForge.EVENT_BUS.register(this);
-		MinecraftForge.EVENT_BUS.register(EventHandler.getInstance());
-		
-		if(event.getSide() == Side.CLIENT)
 		{
-			BlockManager.graphicRegistry();
-			ItemManager.graphicRegistry();
-			BASEMETALS.graphicRegistryBaseMetalsItems();
+			MinecraftForge.EVENT_BUS.register(instance);
+			BlockManager.addFuels(fuelHandler);
+			BlockManager.addCraftingRecipies();
+			ItemManager.addCraftingRecipies();
+			BASEMETALS.addRecipiesBaseMetalsItems();
+			
+			GameRegistry.registerFuelHandler(fuelHandler);
+			MinecraftForge.EVENT_BUS.register(this);
+			MinecraftForge.EVENT_BUS.register(EventHandler.getInstance());
+			
+			if(event.getSide() == Side.CLIENT)
+			{
+				BlockManager.graphicRegistry();
+				ItemManager.graphicRegistry();
+				BASEMETALS.graphicRegistryBaseMetalsItems();
+			}
 		}
 	}
 
 
 	@Mod.EventHandler
 	public void initPost(FMLPostInitializationEvent event) {
+		if (ConfigurationHandler.isEnabled)
+		{
+			
+		}
 
 	}
 	
