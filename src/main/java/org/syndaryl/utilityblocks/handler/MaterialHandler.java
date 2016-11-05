@@ -3,16 +3,15 @@ package org.syndaryl.utilityblocks.handler;
 import java.util.Collection;
 import java.util.HashMap;
 
+import org.syndaryl.utilityblocks.UtilityBlocks;
+import org.syndaryl.utilityblocks.materials.UBMaterial;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.util.EnumHelper;
-
-import org.syndaryl.utilityblocks.UtilityBlocks;
-import org.syndaryl.utilityblocks.materials.UBMaterial;
 
 public class MaterialHandler {
 	private static HashMap<String,UBMaterial> allMaterials = new HashMap<>();

@@ -1,20 +1,12 @@
 package org.syndaryl.utilityblocks.block;
 
-import java.util.Iterator;
-import java.util.List;
 import java.util.Random;
-import java.util.Set;
-
-import org.syndaryl.utilityblocks.UtilityBlocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class BlockCompressed extends Block {
 	private String name;

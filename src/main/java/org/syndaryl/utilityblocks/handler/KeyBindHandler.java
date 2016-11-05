@@ -1,10 +1,8 @@
 package org.syndaryl.utilityblocks.handler;
 import org.syndaryl.utilityblocks.UtilityBlocks;
 
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
-import net.minecraft.client.settings.KeyBinding;
 
 public class KeyBindHandler {
 
