@@ -9,6 +9,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -24,6 +25,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -99,6 +101,8 @@ public class WandItemList extends Item implements IItemName {
 			writer = new FileWriter(fileName);
 			UtilityBlocks.INFO.info(String.format("I have found %d entities", EntityList.CLASS_TO_NAME.size()));
 			UtilityBlocks.LOG.info(String.format("Writing %d entities", EntityList.CLASS_TO_NAME.size()));
+			String[] headers = new String[] {"java_class", "internal_name"};
+			
 			for (Class<? extends Entity> name : EntityList.CLASS_TO_NAME.keySet() ) {
 				if (name != null){
 					String[] line = new String[] {name.getName(), EntityList.CLASS_TO_NAME.get(name)}; 
@@ -174,8 +178,24 @@ public class WandItemList extends Item implements IItemName {
 			writer = new FileWriter(fileName);
 
 			for (String name : OreDictionary.getOreNames()) {
-				writer.write(name);
-				writer.write("\r\n");
+				List<String> oreLine = new LinkedList<String>();
+				oreLine.add(name);
+				try{
+					for (ItemStack ore : OreDictionary.getOres(name))
+					{
+							oreLine.add(ore.getUnlocalizedName());
+					}
+				} catch (Exception e)
+				{
+					e.printStackTrace();
+					UtilityBlocks.LOG.error("Error in Oredict dump of dictEntries");
+					UtilityBlocks.LOG.error(e.toString());
+					for(StackTraceElement stacktrace : e.getStackTrace() )
+					{
+						UtilityBlocks.LOG.error(stacktrace.toString());
+					}
+				}
+				writeCsvLine(writer, oreLine.toArray(new String[0]));
 			}
 			//writeBlockCSVBody(writer);
 			writer.flush();
@@ -271,7 +291,7 @@ public class WandItemList extends Item implements IItemName {
 		try {
 			writer = new FileWriter(fileName);
 			String[] headers = new String[]{
-					"id","modid:objectname","meta","display_name","unlocalized_name","object_class"
+					"id","modid:objectname","meta","display_name","unlocalized_name","food_value","saturation_value","object_class","oredict_entries"
 			}; 
 			writeCsvLine(writer, headers);
 			writeItemCsvBody(writer, false);
@@ -353,35 +373,74 @@ public class WandItemList extends Item implements IItemName {
 		}
 		for (ItemStack subItem : subItems)
 		{
+			List<String> fields = new ArrayList<String>();
 			//id
-			writer.append(String.format("%05d",  Item.REGISTRY.getIDForObject(objItem) ) );
-			writer.append(',');
+			fields.add(String.format("%05d",  Item.REGISTRY.getIDForObject(objItem) ) );
 			//resource_domain
-			writer.append(key.getResourceDomain());
-			writer.append(':');
-			//resource_path
-			writer.append(key.getResourcePath());
-			writer.append(',');
+			fields.add(key.getResourceDomain() + ':' + key.getResourcePath());
 			//meta
-			writer.append(String.format("%d",  subItem.getMetadata()));
-			writer.append(',');
+			fields.add(String.format("%d",  subItem.getMetadata()));
 			//display_name
-			writer.append(subItem.getDisplayName());
-			writer.append(',');
+			fields.add(subItem.getDisplayName());
 			//unlocalized_name
-			writer.append(objItem.getUnlocalizedName());
-			writer.append(',');
+			fields.add(objItem.getUnlocalizedName());
+			//food_value
+			try{
+				if(net.minecraft.item.ItemFood.class.isAssignableFrom(objItem.getClass()))
+				{
+					fields.add( String.valueOf(((ItemFood)objItem).getHealAmount(subItem)) );
+				}
+				else
+				{
+					fields.add("0.0");
+				}
+			}
+			catch (java.lang.ClassCastException e)
+			{
+				UtilityBlocks.LOG.error(e);
+				fields.add("0.0");
+			}
+			try{
+			//saturation_value
+				if(net.minecraft.item.ItemFood.class.isAssignableFrom(objItem.getClass()))
+				{
+					fields.add( String.valueOf(((ItemFood)objItem).getSaturationModifier(subItem)) );
+				}
+				else
+				{
+					fields.add("0.0");
+				}
+			}
+			catch (java.lang.ClassCastException e)
+			{
+				UtilityBlocks.LOG.error(e);
+				fields.add("0.0");
+			}
 			//object_class
-			writer.append(objItem.getClass().getName());
-			writer.append('\n');
+			fields.add(objItem.getClass().getName());
+			// ore dictionary
+			List<String> ore = new ArrayList<String>();
+			for (int id : OreDictionary.getOreIDs(subItem))
+			{
+				ore.add( OreDictionary.getOreName(id));
+			}
+			// oredict entries
+			if (! ore.isEmpty())
+				fields.add(String.join(";", ore));
+			else
+				fields.add("");
+			
+			writeCsvLine(writer, fields.toArray(new String[0]));
 		}
 	}
 
-	private void writeCsvLine(FileWriter writer, String[] headers) {
+	private void writeCsvLine(FileWriter writer, String[] record) {
 		try {
-			for (String header : headers)
+			for (String field : record)
 			{
-				writer.append(header);
+				writer.append('"');
+				writer.append(field);
+				writer.append('"');
 				writer.append(',');
 			}
 			writer.append('\n');
