@@ -71,6 +71,7 @@ item.utilityblocks_basemetals_zinc_mattock.name=Zinc Mattock
 
 item.utilityblocks_tool_handle.name=Tool Handle
 item.utilityblocks_wand_item_list.name=Item Listing Wand
+item.utilityblocks_wand_recipe_list.name=Recipe Listing Wand
 
 item.utilityblocks_sack.name=Sack
 item.utilityblocks_sack_carrots.name=Sack of Carrots
