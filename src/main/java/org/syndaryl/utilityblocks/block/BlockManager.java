@@ -22,6 +22,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.syndaryl.utilityblocks.UtilityBlocks;
 import org.syndaryl.utilityblocks.NamespaceManager;
+import org.syndaryl.utilityblocks.handler.ConfigurationHandler;
 import org.syndaryl.utilityblocks.handler.FurnaceFuelHandler;
 
 public class BlockManager {
@@ -188,12 +189,17 @@ public class BlockManager {
 	}
 	
 	public static void addCraftingRecipies() {
-		for (int i = 0; i < BlockManager.COMPRESSEDBLOCKS.size(); i++)
-		{
-			// Shaped Recipe
-			registerCompressedRecipie((ItemStack)BlockManager.BlockConstruct.get(i)[6], BlockManager.COMPRESSEDBLOCKS.get(i));
-			//Shapeless Recipe
-			registerDecompressedRecipie(new ItemStack(((ItemStack)BlockManager.BlockConstruct.get(i)[BlockData.COMPONENTITEM]).getItem(), 9, ((ItemStack)BlockManager.BlockConstruct.get(i)[BlockData.COMPONENTITEM]).getMetadata()), BlockManager.COMPRESSEDBLOCKS.get(i));
+			for (int i = 0; i < BlockManager.COMPRESSEDBLOCKS.size(); i++)
+			{
+				if (ConfigurationHandler.enableBlockCompresion)
+				{
+					// Shaped Recipe
+					registerCompressedRecipie((ItemStack)BlockManager.BlockConstruct.get(i)[BlockData.COMPONENTITEM], BlockManager.COMPRESSEDBLOCKS.get(i));
+				}
+				// Always allow de-compressing blocks, so compressed blocks can be recovered after a configuration change
+				//Shapeless Recipe
+				registerDecompressedRecipie(new ItemStack(((ItemStack)BlockManager.BlockConstruct.get(i)[BlockData.COMPONENTITEM]).getItem(), 9, ((ItemStack)BlockManager.BlockConstruct.get(i)[BlockData.COMPONENTITEM]).getMetadata()), BlockManager.COMPRESSEDBLOCKS.get(i));
+
 		}
 	}
 	/**
